@@ -1,62 +1,62 @@
 package ENTITY;
 
 public class Transaction {
-    private double importo;
-    private String causale;
-    private String dataTransazione;
-    private String orarioTransazione;
-    private String tipoTransazione;
+    private double amount;
+    private String causal;
+    private String dateTransaction;
+    private String timeTransaction;
+    private String typeTransaction;
     private String iban; //iban di chi ci manda soldi, o a chi inviamo soldi
-    private ContoCorrente contoCorrente;
+    private BankAccount bankAccount;
 
-    public Transaction(double importo, String causale, String dataTransazione, String orarioTransazione, String tipoTransazione, String iban, ContoCorrente contoCorrente) {
-        setImporto(importo);
-        setCausale(causale);
-        setDataTransazione(dataTransazione);
-        setOrarioTransazione(orarioTransazione);
-        setTipoTransazione(tipoTransazione);
+    public Transaction(double amount, String causal, String dateTransaction, String timeTransaction, String typeTransaction, String iban, BankAccount bankAccount) {
+        setAmount(amount);
+        setCausal(causal);
+        setDataTransazione(dateTransaction);
+        setTimeTransaction(timeTransaction);
+        setTypeTransaction(typeTransaction);
         setIban(iban);
-        setContoCorrente(contoCorrente);
+        setBankAccount(bankAccount);
     }
 
-    public double getImporto() {
-        return importo;
+    public double getAmount() {
+        return amount;
     }
 
-    public void setImporto(double importo) {
-        this.importo = importo;
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 
-    public String getCausale() {
-        return causale;
+    public String getCausal() {
+        return causal;
     }
 
-    public void setCausale(String causale) {
-        this.causale = causale;
+    public void setCausal(String causal) {
+        this.causal = causal;
     }
 
     public String getDataTransazione() {
-        return dataTransazione;
+        return dateTransaction;
     }
 
     public void setDataTransazione(String dataTransazione) {
-        this.dataTransazione = dataTransazione;
+        this.dateTransaction = dataTransazione;
     }
 
-    public String getOrarioTransazione() {
-        return orarioTransazione;
+    public String getTimeTransaction() {
+        return timeTransaction;
     }
 
-    public void setOrarioTransazione(String orarioTransazione) {
-        this.orarioTransazione = orarioTransazione;
+    public void setTimeTransaction(String timeTransaction) {
+        this.timeTransaction = timeTransaction;
     }
 
-    public String getTipoTransazione() {
-        return tipoTransazione;
+    public String getTypeTransaction() {
+        return typeTransaction;
     }
 
-    public void setTipoTransazione(String tipoTransazione) {
-        this.tipoTransazione = tipoTransazione;
+    public void setTypeTransaction(String typeTransaction) {
+        this.typeTransaction = typeTransaction;
     }
 
     public String getIban() {
@@ -67,22 +67,22 @@ public class Transaction {
         this.iban = iban;
     }
 
-    public ContoCorrente getContoCorrente() {
-        return contoCorrente;
+    public BankAccount getBankAccount() {
+        return bankAccount;
     }
 
-    public void setContoCorrente(ContoCorrente contoCorrente) {
-        this.contoCorrente = contoCorrente;
+    public void setBankAccount(BankAccount bankAccount) {
+        this.bankAccount = bankAccount;
     }
 
     @Override
     public String toString() {
         return "Transazione{" +
-                "importo=" + importo +
-                ", causale='" + causale + '\'' +
-                ", dataTransazione='" + dataTransazione + '\'' +
-                ", orarioTransazione='" + orarioTransazione + '\'' +
-                ", tipoTransazione='" + tipoTransazione + '\'' +
+                "importo=" + amount +
+                ", causale='" + causal + '\'' +
+                ", dataTransazione='" + dateTransaction + '\'' +
+                ", orarioTransazione='" + timeTransaction + '\'' +
+                ", tipoTransazione='" + typeTransaction + '\'' +
                 ", iban='" + iban + '\'' +
                 '}';
     }

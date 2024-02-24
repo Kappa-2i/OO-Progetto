@@ -2,7 +2,6 @@ package ENTITY;
 
 import EXCEPTIONS.MyExc;
 
-import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -12,116 +11,116 @@ import java.util.Calendar;
 public class Person {
 
     //Attributi
-    String codiceFiscale;
-    String nome;
-    String cognome;
-    String dataNascita;
-    String numeroTelefono;
-    String citta;
-    String via;
-    String nCivico;
+    String fiscalCode;
+    String name;
+    String surname;
+    String dateOfBirth;
+    String phoneNumber;
+    String city;
+    String street;
+    String houseNumber;
     String cap;
 
     //Costruttori
-    public Person(String nome, String cognome, String numeroTelefono, String dataNascita, String citta, String via, String nCivico, String cap, String codiceFiscale) throws MyExc {
-        setNome(nome);
-        setCognome(cognome);
-        setNumeroTelefono(numeroTelefono);
-        setDataNascita(dataNascita);
-        setCitta(citta);
-        setVia(via);
-        setnCivico(nCivico);
+    public Person(String name, String surname, String phoneNumber, String dateOfBirth, String city, String street, String houseNumber, String cap, String codiceFiscale) throws MyExc {
+        setName(name);
+        setSurname(surname);
+        setPhoneNumber(phoneNumber);
+        setDateOfBirth(dateOfBirth);
+        setCity(city);
+        setStreet(street);
+        setHouseNumber(houseNumber);
         setCap(cap);
-        setCodiceFiscale(codiceFiscale);
+        setFiscalCode(codiceFiscale);
     }
 
     //Getter e Setter
-    public String getCodiceFiscale() {
-        return codiceFiscale;
+    public String getFiscalCode() {
+        return fiscalCode;
     }
 
-    public void setCodiceFiscale(String codiceFiscale) throws MyExc {
-        if(codiceFiscale.length() == 16)
-            this.codiceFiscale = codiceFiscale;
+    public void setFiscalCode(String fiscalCode) throws MyExc {
+        if(fiscalCode.length() == 16)
+            this.fiscalCode = fiscalCode;
         else
             throw new MyExc("Il codice fiscale deve essere di 16 caratteri.");
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getCognome() {
-        return cognome;
+    public String getSurname() {
+        return surname;
     }
 
-    public void setCognome(String cognome) {
-        this.cognome = cognome;
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
-    public String getDataNascita() {
-        return dataNascita;
+    public String getDateOfBirth() {
+        return dateOfBirth;
     }
 
-    public void setDataNascita(String dataNascita) throws MyExc {
+    public void setDateOfBirth(String dateOfBirth) throws MyExc {
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Imposta il formato della data
-            java.util.Date utilDate = dateFormat.parse(dataNascita); // Converte la stringa in java.util.Date
-            java.sql.Date sqlDataNascita = new java.sql.Date(utilDate.getTime()); // Converte in java.sql.Date
+            java.util.Date utilDate = dateFormat.parse(dateOfBirth); // Converte la stringa in java.util.Date
+            java.sql.Date sqlDateOfBirth = new java.sql.Date(utilDate.getTime()); // Converte in java.sql.Date
 
             // Calcola la data di maggiore età (18 anni fa)
             Calendar cal = Calendar.getInstance();
             cal.add(Calendar.YEAR, -18);
-            java.util.Date dataMaggiorenne = cal.getTime();
+            java.util.Date dataOfAge = cal.getTime();
 
             // Verifica se la data di nascita è maggiorenne
-            if (sqlDataNascita.after(dataMaggiorenne)) {
+            if (sqlDateOfBirth.after(dataOfAge)) {
                 throw new MyExc("Devi essere maggiorenne per poterti registrare.");
             } else {
-                this.dataNascita = String.valueOf(sqlDataNascita);
+                this.dateOfBirth = String.valueOf(sqlDateOfBirth);
             }
         } catch (ParseException e) {
             throw new MyExc("Formato data non valido. Utilizza il formato 'yyyy-MM-dd'.");
         }
     }
 
-    public String getNumeroTelefono() {
-        return numeroTelefono;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setNumeroTelefono(String numeroTelefono) throws MyExc {
-        if (numeroTelefono.length() == 10)
-            this.numeroTelefono = numeroTelefono;
+    public void setPhoneNumber(String phoneNumber) throws MyExc {
+        if (phoneNumber.length() == 10)
+            this.phoneNumber = phoneNumber;
         else
             throw new MyExc("Il numero di telefono deve esserre di 10 cifre");
     }
 
-    public String getCitta() {
-        return citta;
+    public String getCity() {
+        return city;
     }
 
-    public void setCitta(String citta) {
-        this.citta = citta;
+    public void setCity(String city) {
+        this.city = city;
     }
 
-    public String getVia() {
-        return via;
+    public String getStreet() {
+        return street;
     }
 
-    public void setVia(String via) {
-        this.via = via;
+    public void setStreet(String street) {
+        this.street = street;
     }
 
-    public String getnCivico() {
-        return nCivico;
+    public String getHouseNumber() {
+        return houseNumber;
     }
 
-    public void setnCivico(String nCivico) {
-        this.nCivico = nCivico;
+    public void setHouseNumber(String houseNumber) {
+        this.houseNumber = houseNumber;
     }
 
     public String getCap() throws MyExc {
@@ -138,14 +137,14 @@ public class Person {
     @Override
     public String toString() {
         return "Persona{" +
-                "codiceFiscale='" + codiceFiscale + '\'' +
-                ", nome='" + nome + '\'' +
-                ", cognome='" + cognome + '\'' +
-                ", dataNascita='" + dataNascita + '\'' +
-                ", numeroTelefono='" + numeroTelefono + '\'' +
-                ", citta='" + citta + '\'' +
-                ", via='" + via + '\'' +
-                ", nCivico='" + nCivico + '\'' +
+                "codiceFiscale='" + fiscalCode + '\'' +
+                ", nome='" + name + '\'' +
+                ", cognome='" + surname + '\'' +
+                ", dataNascita='" + dateOfBirth + '\'' +
+                ", numeroTelefono='" + phoneNumber + '\'' +
+                ", citta='" + city + '\'' +
+                ", via='" + street + '\'' +
+                ", nCivico='" + houseNumber + '\'' +
                 ", cap='" + cap + '\'' +
                 '}';
     }

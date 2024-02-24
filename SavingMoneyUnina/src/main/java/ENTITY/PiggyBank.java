@@ -5,81 +5,81 @@ package ENTITY;
 public class PiggyBank {
 
     //Attributi
-    private String nomeSalvadanaio;
-    private String descrizione;
-    private double obiettivo;
-    private double saldoRisparmio;
-    private double saldoRimanente;
-    private String dataCreazione;
+    private String namePiggyBank;
+    private String description;
+    private double target;
+    private double savingBalance;
+    private double remainingBalance;
+    private String creationDate;
 
     //Costruttori
-    public PiggyBank(String nomeSalvadanaio, String descrizione, double obiettivo, double saldoRisparmio, double saldoRimanente, String dataApertura) {
-        setNomeSalvadanaio(nomeSalvadanaio);
-        setDescrizione(descrizione);
-        setObiettivo(obiettivo);
-        setSaldoRisparmio(saldoRisparmio);
-        setSaldoRimanente(saldoRimanente);
-        setDataCreazione(dataApertura);
+    public PiggyBank(String namePiggyBank, String description, double target, double savingBalance, double remainingBalance, String creationDate) {
+        setNamePiggyBank(namePiggyBank);
+        setDescription(description);
+        setTarget(target);
+        setSavingBalance(savingBalance);
+        setRemainingBalance(remainingBalance);
+        setCreationDate(creationDate);
     }
 
     //Getter e Setter
-    public String getNomeSalvadanaio() {
-        return nomeSalvadanaio;
+    public String getNamePiggyBank() {
+        return namePiggyBank;
     }
 
-    public void setNomeSalvadanaio(String nomeSalvadanaio) {
-        this.nomeSalvadanaio = nomeSalvadanaio;
+    public void setNamePiggyBank(String namePiggyBank) {
+        this.namePiggyBank = namePiggyBank;
     }
 
-    public String getDescrizione() {
-        return descrizione;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescrizione(String descrizione) {
-        this.descrizione = descrizione;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public double getObiettivo() {
-        return obiettivo;
+    public double getTarget() {
+        return target;
     }
 
-    public void setObiettivo(double obiettivo) {
-        this.obiettivo = obiettivo;
+    public void setTarget(double target) {
+        this.target = target;
     }
 
-    public double getSaldoRisparmio() {
-        return saldoRisparmio;
+    public double getSavingBalance() {
+        return savingBalance;
     }
 
-    public void setSaldoRisparmio(double saldoRisparmio) {
-        this.saldoRisparmio = saldoRisparmio;
+    public void setSavingBalance(double savingBalance) {
+        this.savingBalance = savingBalance;
     }
 
-    public double getSaldoRimanente() {
-        return saldoRimanente;
+    public double getRemainingBalance() {
+        return remainingBalance;
     }
 
-    public void setSaldoRimanente(double saldoRimanente) {
-        this.saldoRimanente = saldoRimanente;
+    public void setRemainingBalance(double remainingBalance) {
+        this.remainingBalance = remainingBalance;
     }
 
-    public String getDataCreazione() {
-        return dataCreazione;
+    public String getCreationDate() {
+        return creationDate;
     }
 
-    public void setDataCreazione(String dataCreazione) {
-        this.dataCreazione = dataCreazione;
+    public void setCreationDate(String creationDate) {
+        this.creationDate = creationDate;
     }
 
     @Override
     public String toString() {
         return "Salvadanaio{" +
-                "nomeSalvadanaio='" + nomeSalvadanaio + '\'' +
-                ", descrizione='" + descrizione + '\'' +
-                ", obiettivo=" + obiettivo +
-                ", saldoRisparmio=" + saldoRisparmio +
-                ", saldoRimanente=" + saldoRimanente +
-                ", dataCreazione='" + dataCreazione + '\'' +
+                "nomeSalvadanaio='" + namePiggyBank + '\'' +
+                ", descrizione='" + description + '\'' +
+                ", obiettivo=" + target +
+                ", saldoRisparmio=" + savingBalance +
+                ", saldoRimanente=" + remainingBalance +
+                ", dataCreazione='" + creationDate + '\'' +
                 '}';
     }
 }

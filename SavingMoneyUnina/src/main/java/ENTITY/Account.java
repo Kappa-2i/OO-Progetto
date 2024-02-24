@@ -11,27 +11,27 @@ public class Account {
     //Attributi
     private String email;
     private String password;
-    private String nomeutente;
+    private String username;
     private Person person;
-    private ArrayList<ContoCorrente> conti;
+    private ArrayList<BankAccount> bankAccounts;
 
     //Costruttori
-    public Account(String email, String password, String nomeutente) throws MyExc {
+    public Account(String email, String password, String username) throws MyExc {
         setEmail(email);
         setPassword(password);
-        setNomeutente(nomeutente);
+        setUsername(username);
     }
 
-    public Account(String email, String password, String nomeutente, Person person) throws MyExc {
+    public Account(String email, String password, String username, Person person) throws MyExc {
         setEmail(email);
         setPassword(password);
-        setNomeutente(nomeutente);
+        setUsername(username);
         setPerson(person);
     }
 
     //Getter e Setter
-    public Account(ArrayList<ContoCorrente> conti) {
-        setConti(conti);
+    public Account(ArrayList<BankAccount> bankAccounts) {
+        setBankAccounts(bankAccounts);
     }
 
     public String getEmail() {
@@ -54,12 +54,12 @@ public class Account {
         this.password = password;
     }
 
-    public String getNomeutente() {
-        return nomeutente;
+    public String getUsername() {
+        return username;
     }
 
-    public void setNomeutente(String nomeutente) {
-        this.nomeutente = nomeutente;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Person getPerson() {
@@ -70,12 +70,12 @@ public class Account {
         this.person= person;
     }
 
-    public ArrayList<ContoCorrente> getConti() {
-        return conti;
+    public ArrayList<BankAccount> getBankAccounts() {
+        return bankAccounts;
     }
 
-    public void setConti(ArrayList<ContoCorrente> conti) {
-        this.conti = conti;
+    public void setBankAccounts(ArrayList<BankAccount> bankAccounts) {
+        this.bankAccounts = bankAccounts;
     }
 
     // Metodo per contare le occorrenze di un carattere in una stringa

@@ -13,6 +13,7 @@ public class LoginViewGUI extends JFrame{
 
     //Dichiarazione del controller
     private Controller controller;
+
     //Dichiarazioni Variabili per i Font
     private Font fontRegular;
     private Font fontBold;
@@ -97,7 +98,7 @@ public class LoginViewGUI extends JFrame{
             emailField.setFont(fontRegular);
         }
 
-        emailField.setMaximumSize(new Dimension(Integer.MAX_VALUE, emailField.getPreferredSize().height));
+        //emailField.setMaximumSize(new Dimension(Integer.MAX_VALUE, emailField.getPreferredSize().height));
         emailField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
         emailField.addFocusListener(new FocusAdapter() {
             @Override
@@ -253,13 +254,13 @@ public class LoginViewGUI extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 //Chiamiamo la funzione checkCredentials dal controller passandogli i dati inseriti
-//                try {
-//                    controller.checkCredentials(emailField.getText(), passwordField.getText());
-//                    emailField.setText("");
-//                    passwordField.setText("");
-//                } catch (SQLException ex) {
-//                    throw new RuntimeException(ex);
-//                }
+                try {
+                    controller.checkCredentials(emailField.getText(), passwordField.getText());
+                    emailField.setText("");
+                    passwordField.setText("");
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
         gbc.gridy = 9;

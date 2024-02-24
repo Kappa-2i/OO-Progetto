@@ -1,8 +1,9 @@
 package CONTROLLER;
 
+import DAO.*;
+import DAOIMPL.*;
 import ENTITY.*;
-import GUI.BankAccountPickViewGUI;
-import GUI.LoginViewGUI;
+import GUI.*;
 
 import javax.swing.*;
 import java.sql.SQLException;
@@ -12,19 +13,29 @@ public class Controller {
 
     //Dichiarazione delle variabili
     public Account account = null;
-    public Person persona = null;
-    public ArrayList<ContoCorrente> conti = null;
-    public ContoCorrente contoScelto = null;
-    public ArrayList<PiggyBank> salvadanai = null;
-    public ArrayList<Transaction> transazioni = null;
+    public Person person = null;
+    public ArrayList<BankAccount> bankAccounts = null;
+    public BankAccount selectedBankAccount = null;
+    public ArrayList<PiggyBank> piggyBanks = null;
+    public ArrayList<Transaction> transactions = null;
 
     //Dichiarazioni delle Gui
     private LoginViewGUI frameLogin;
     private BankAccountPickViewGUI framePick;
 
+    //Dichiarazioni delle Dao
+    private AccountDAO accountDao;
+    private PersonDAO personDAO;
+    private BankAccountDAO bankAccountDAO;
+
     public Controller(){
         frameLogin = new LoginViewGUI(this); //LoginView accetta ControllerLogin come parametro
         frameLogin(true);
+
+        //DAO
+        this.accountDao = new AccountDAOImpl();
+        this.personDAO = new PersonDAOImpl();
+        this.bankAccountDAO = new BankAccountDAOImpl();
 
     }
 
@@ -39,8 +50,8 @@ public class Controller {
         if((!email.isEmpty()) && (!password.isEmpty())){
             account = accountDao.checkCredentials(email.toLowerCase(), password);
             if (account != null){
-                persona = personaDao.selectPersonaFromEmail(email.toLowerCase());
-                account.setPerson(persona);
+                person = personDAO.selectPersonaFromEmail(email.toLowerCase());
+                account.setPerson(person);
                 frameLogin(false);
                 showPickFrame();
             }
@@ -64,6 +75,22 @@ public class Controller {
         }
     }
 
+   /* *//**
+     *Metodo che permette di gestire la viusalizzazione della pagina di SignIn.*//*
+    public void showFrameSignIn(){
+        frameLogin(false);
+        frameSignIn = new SignInViewGUI(this);
+        frameSignIn(true);
+    }*/
+
+
+    public boolean confirmedPassword(String password, String confirmedPassword){
+        if (password.equals(confirmedPassword))
+            return true;
+        else
+            return false;
+    }
+
     /**
      *Metodo che permette di gestire la viusalizzazione della pagina di framePick.*/
     public void showPickFrame(){
@@ -72,14 +99,41 @@ public class Controller {
     }
 
     /**
+     * Metodo che seleziona tutti i conti relativi all'account che gli viene passato
+     * @param account riferimento per i conti da selzionare
+     * */
+    public ArrayList<BankAccount> selectBankAccountByAccount(Account account){
+        bankAccounts = new ArrayList<BankAccount>();
+        bankAccounts = bankAccountDAO.selectBankAccountByAccount(account);
+        account.setBankAccounts(bankAccounts);
+        return bankAccounts;
+    }
+
+    /**
      * Metodo che aggiunge un nuovo Conto Corrente. <br>Ritorna true in caso venga completato correttanente, false altrimenti.
      * @param email riferimeto per il conto da aggiungere.*/
     public Boolean insertBankAccount(String email){
-        if (contoCorrenteDAO.insertBankAccount(email)){
+        if (bankAccountDAO.insertBankAccount(email)){
             return true;
         }
         else
             return false;
+    }
+
+
+    /**
+     * Metodo che permette di tornare alla pagina di Login.
+     */
+    public void backLoginPage(){
+        //Quando si torna alla pagina di Login l'account viene settato a null.
+        account = null;
+        //Quando si torna alla pagina di Login il conto scelto viene settato a null.
+        if (bankAccounts!= null)
+            bankAccounts = null;
+
+        framePick(false);
+        //frameHome(false);
+        frameLogin(true);
     }
 
 
@@ -93,7 +147,7 @@ public class Controller {
 
 
     /**
-     * Metodo che gestisce la visibilità della pagina di scelata del conto.
+     * Metodo che gestisce la visibilità della pagina di scelta del conto.
      * @param isVisibile setta la visibilità della pagina
      * */
     public void framePick(Boolean isVisibile){
