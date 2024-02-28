@@ -12,21 +12,24 @@ import java.util.ArrayList;
 public class Controller {
 
     //Dichiarazione delle variabili
-    public Account account = null;
-    public Person person = null;
-    public ArrayList<BankAccount> bankAccounts = null;
-    public BankAccount selectedBankAccount = null;
-    public ArrayList<PiggyBank> piggyBanks = null;
-    public ArrayList<Transaction> transactions = null;
+    private Account account = null;
+    private Person person = null;
+    private ArrayList<BankAccount> bankAccounts = null;
+    private BankAccount selectedBankAccount = null;
+    private ArrayList<PiggyBank> piggyBanks = null;
+    private ArrayList<Transaction> transactions = null;
+    private Card card = null;
 
     //Dichiarazioni delle Gui
     private LoginViewGUI frameLogin;
     private BankAccountPickViewGUI framePick;
+    private HomePageGUI frameHome;
 
     //Dichiarazioni delle Dao
     private AccountDAO accountDao;
     private PersonDAO personDAO;
     private BankAccountDAO bankAccountDAO;
+    private CardDAO cardDAO;
 
     public Controller(){
         frameLogin = new LoginViewGUI(this); //LoginView accetta ControllerLogin come parametro
@@ -36,6 +39,7 @@ public class Controller {
         this.accountDao = new AccountDAOImpl();
         this.personDAO = new PersonDAOImpl();
         this.bankAccountDAO = new BankAccountDAOImpl();
+        this.cardDAO = new CardDAOImpl();
 
     }
 
@@ -136,6 +140,58 @@ public class Controller {
         frameLogin(true);
     }
 
+    /**
+     * Metodo per gesitre la visualizzaione della pagina di Home page.
+     * @param conto riferimento per le informazioni da visualizzare in Home Page.*/
+    public void showHomePage(BankAccount bankAccount){
+
+        //Viene selezionato il conto dopo averlo scelto dalla pagina di selzione.
+        selectedBankAccount = bankAccount;
+        //Viene recuperata la carta associata al conto scelto.
+        card = cardDAO.selectCard(selectedBankAccount);
+
+        framePick(false);
+//        if(frameSalvadanaio != null)
+//            frameSalvadanaio(false);
+        frameHome = new HomePageGUI(this);
+        frameHome(true);
+    }
+
+
+    /**
+     * Metodo che permette di effettuare l'upgrade della carta da Debito (default) a Credito.
+     * @param pan riferimento per la carta da aggiornare.*/
+    public void upgradeCard(String pan){
+        cardDAO.upgradeCard(pan);
+        ImageIcon iconChecked = new ImageIcon(Controller.class.getResource("/IMG/checked.png")); //Inserisce l'immagine sul JOptionPane.
+        JOptionPane.showMessageDialog(
+                null,
+                "La tua carta è stata aggiornata a carta di credito!",
+                "Aggiornamento effettuato",
+                JOptionPane.PLAIN_MESSAGE,
+                iconChecked
+        );
+        frameHome(false);
+        showHomePage(selectedBankAccount);
+    }
+
+    /**
+     * Metodo che permette di effetuare il downgrade della carta Da credito a Debito.
+     * @param pan riferimento per la carta da aggiornare.*/
+    public void downgradeCard(String pan){
+        cardDAO.downgradeCard(pan);
+        ImageIcon iconChecked = new ImageIcon(Controller.class.getResource("/IMG/checked.png")); //Inserisce l'immagine sul JOptionPane.
+        JOptionPane.showMessageDialog(
+                null,
+                "La tua carta è stata aggiornata a carta di debito!",
+                "Aggiornamento effettuato",
+                JOptionPane.PLAIN_MESSAGE,
+                iconChecked
+        );
+        frameHome(false);
+        showHomePage(selectedBankAccount);
+    }
+
 
     /**
      * Metodo che gestisce la visibilità della pagina di Login.
@@ -153,4 +209,71 @@ public class Controller {
     public void framePick(Boolean isVisibile){
         framePick.setVisible(isVisibile);
     }
+
+    /**
+     * Metodo che gestisce la visibilità della pagina Home.
+     * @param isVisibile setta la visibilità della pagina
+     * */
+    public void frameHome(Boolean isVisible){
+        frameHome.setVisible(isVisible);
+    }
+
+    //Getter e Setter
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
+    public ArrayList<BankAccount> getBankAccounts() {
+        return bankAccounts;
+    }
+
+    public void setBankAccounts(ArrayList<BankAccount> bankAccounts) {
+        this.bankAccounts = bankAccounts;
+    }
+
+    public BankAccount getSelectedBankAccount() {
+        return selectedBankAccount;
+    }
+
+    public void setSelectedBankAccount(BankAccount selectedBankAccount) {
+        this.selectedBankAccount = selectedBankAccount;
+    }
+
+    public ArrayList<PiggyBank> getPiggyBanks() {
+        return piggyBanks;
+    }
+
+    public void setPiggyBanks(ArrayList<PiggyBank> piggyBanks) {
+        this.piggyBanks = piggyBanks;
+    }
+
+    public ArrayList<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(ArrayList<Transaction> transactions) {
+        this.transactions = transactions;
+    }
+
+    public Card getCard() {
+        return card;
+    }
+
+    public void setCard(Card card) {
+        this.card = card;
+    }
 }
+
