@@ -50,7 +50,7 @@ public class BankAccountPickViewGUI extends JFrame {
         JPanel panelSignIn3 = new JPanel(new GridBagLayout());
         panelSignIn3.setBackground(new Color(37, 89, 87)); // Scegli il colore che preferisci
         panelSignIn3.setOpaque(true);
-        JLabel titoloFrame = new JLabel("Benvenuto " +controller.account.getUsername());
+        JLabel titoloFrame = new JLabel("Benvenuto " +controller.getAccount().getName());
         if (fontExtraBold != null)
             titoloFrame.setFont(fontExtraBold);
         titoloFrame.setForeground(new Color(246, 248, 255));
@@ -154,7 +154,7 @@ public class BankAccountPickViewGUI extends JFrame {
         panelSignIn.setBackground(new Color(246, 248, 255)); // Scegli il colore che preferisci
         panelSignIn.setOpaque(true);
 
-        controller.selectBankAccountByAccount(controller.account);
+        controller.selectBankAccountByAccount(controller.getAccount());
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
@@ -187,7 +187,7 @@ public class BankAccountPickViewGUI extends JFrame {
 
     public void showBankAccount(){
 
-        ArrayList<BankAccount> conti = controller.selectBankAccountByAccount(controller.account);
+        ArrayList<BankAccount> conti = controller.selectBankAccountByAccount(controller.getAccount());
         if (!conti.isEmpty()){
             int y = 2;
             int x = 0;
@@ -296,10 +296,10 @@ public class BankAccountPickViewGUI extends JFrame {
                     creaContoLabel.addMouseListener(new MouseAdapter() {
                         @Override
                         public void mouseClicked(MouseEvent e){
-                            if(controller.insertBankAccount(controller.account.getEmail())) {
+                            if(controller.insertBankAccount(controller.getAccount().getEmail())) {
                                 try {
                                     setVisible(false);
-                                    controller.checkCredentials(controller.account.getEmail(), controller.account.getPassword());
+                                    controller.checkCredentials(controller.getAccount().getEmail(), controller.getAccount().getPassword());
                                 } catch (SQLException ex) {
                                     throw new RuntimeException(ex);
                                 }
@@ -358,10 +358,10 @@ public class BankAccountPickViewGUI extends JFrame {
             creaContoLabel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e){
-                    if(controller.insertBankAccount(controller.account.getEmail())) {
+                    if(controller.insertBankAccount(controller.getAccount().getEmail())) {
                         try {
                             setVisible(false);
-                            controller.checkCredentials(controller.account.getEmail(), controller.account.getPassword());
+                            controller.checkCredentials(controller.getAccount().getEmail(), controller.getAccount().getPassword());
                         } catch (SQLException ex) {
                             throw new RuntimeException(ex);
                         }

@@ -163,11 +163,10 @@ public class HomePageGUI extends JFrame {
                 ImageIcon iconInformation = new ImageIcon(HomePageGUI.class.getResource("/IMG/information.png"));
                 JOptionPane.showMessageDialog(
                         null,
-                        "<html><b>Nome: </b>" +controller.getPerson().getName() +"</html>"+
-                                "\n<html><b>Cognome: </b>: " +controller.getPerson().getSurname() +"</html>"+
-                                "\n<html><b>Data di Nascita: </b>: " +controller.getPerson().getDateOfBirth() + "</html>"+
-                                "\n<html><b>Codice Fiscale: </b>: " +controller.getPerson().getFiscalCode() + "</html>" +
-                                "\n<html><b>Numero Telefono: </b>: " +controller.getPerson().getPhoneNumber() + "</html>",
+                        "<html><b>Nome: </b> " +controller.getAccount().getName() +"</html>"+
+                                "\n<html><b>Cognome: </b> " +controller.getAccount().getSurname() +"</html>"+
+                                "\n<html><b>E-mail: </b> " +controller.getAccount().getEmail() + "</html>" +
+                                "\n<html><b>Iban: </b> " +controller.getSelectedBankAccount().getIban() + "</html>",
                         "Informazioni profilo",
                         JOptionPane.PLAIN_MESSAGE,
                         iconInformation
@@ -300,7 +299,7 @@ public class HomePageGUI extends JFrame {
                         options[1] // Opzione di default
                 );
                 if (scelta == JOptionPane.YES_OPTION)
-                    controller.deleteBankAccount(controller.contoScelto.getIban());
+                    controller.deleteBankAccount(controller.getSelectedBankAccount().getIban());
             }
         });
 
@@ -421,7 +420,7 @@ public class HomePageGUI extends JFrame {
         saldoPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                controller.showCardPage();
+                //controller.showCardPage();
             }
         });
 
@@ -431,7 +430,7 @@ public class HomePageGUI extends JFrame {
         spesePanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                controller.showTransazioniPage();
+                //controller.showTransazioniPage();
             }
         });
 
@@ -441,7 +440,7 @@ public class HomePageGUI extends JFrame {
         salvadanaioPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                controller.showSalvadanaioPage();
+                //controller.showSalvadanaioPage();
             }
         });
 
@@ -490,7 +489,7 @@ public class HomePageGUI extends JFrame {
         buttonSaldo.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                controller.showCardPage();
+                //controller.showCardPage();
             }
         });
 
@@ -510,7 +509,7 @@ public class HomePageGUI extends JFrame {
         buttonSpese.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                controller.showTransazioniPage();
+                //controller.showTransazioniPage();
             }
         });
 

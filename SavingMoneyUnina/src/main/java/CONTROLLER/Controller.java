@@ -3,6 +3,7 @@ package CONTROLLER;
 import DAO.*;
 import DAOIMPL.*;
 import ENTITY.*;
+import EXCEPTIONS.MyExc;
 import GUI.*;
 
 import javax.swing.*;
@@ -13,7 +14,6 @@ public class Controller {
 
     //Dichiarazione delle variabili
     private Account account = null;
-    private Person person = null;
     private ArrayList<BankAccount> bankAccounts = null;
     private BankAccount selectedBankAccount = null;
     private ArrayList<PiggyBank> piggyBanks = null;
@@ -24,10 +24,11 @@ public class Controller {
     private LoginViewGUI frameLogin;
     private BankAccountPickViewGUI framePick;
     private HomePageGUI frameHome;
+    private SignUpPageGUI frameSignUp;
 
     //Dichiarazioni delle Dao
     private AccountDAO accountDao;
-    private PersonDAO personDAO;
+
     private BankAccountDAO bankAccountDAO;
     private CardDAO cardDAO;
 
@@ -37,7 +38,7 @@ public class Controller {
 
         //DAO
         this.accountDao = new AccountDAOImpl();
-        this.personDAO = new PersonDAOImpl();
+
         this.bankAccountDAO = new BankAccountDAOImpl();
         this.cardDAO = new CardDAOImpl();
 
@@ -54,8 +55,7 @@ public class Controller {
         if((!email.isEmpty()) && (!password.isEmpty())){
             account = accountDao.checkCredentials(email.toLowerCase(), password);
             if (account != null){
-                person = personDAO.selectPersonaFromEmail(email.toLowerCase());
-                account.setPerson(person);
+
                 frameLogin(false);
                 showPickFrame();
             }
@@ -77,6 +77,44 @@ public class Controller {
                     "Errore",
                     JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    /**
+     *Metodo che permette di gestire la viusalizzazione della pagina di SignUp.*/
+    public void showFrameSignUp(){
+        frameLogin(false);
+        frameSignUp = new SignUpPageGUI(this);
+        frameSignUp(true);
+    }
+
+    public void insertAccount(String email, String password, String name, String surname){
+        try{
+            account = new Account(email, password, name, surname);
+            if (!email.isEmpty() && !password.isEmpty() && !name.isEmpty() && !surname.isEmpty()) {
+                accountDao.insertAccount(email, password, name, surname);
+                JOptionPane.showMessageDialog(
+                        frameSignUp,
+                        "Dati dell'account inseriti!",
+                        "Benvenuta/o",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+            else{
+                JOptionPane.showMessageDialog(
+                        frameSignUp,
+                        "Inserisci delle credenziali valide!",
+                        "Errore",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        catch (MyExc exc){
+            JOptionPane.showMessageDialog(
+                    frameSignUp,
+                    "L'email deve contenere una '@'!",
+                    "Errore",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+
+
     }
 
    /* *//**
@@ -135,8 +173,12 @@ public class Controller {
         if (bankAccounts!= null)
             bankAccounts = null;
 
-        framePick(false);
-        //frameHome(false);
+        if(framePick != null)
+            framePick(false);
+        if(frameHome != null)
+            frameHome(false);
+        if(frameSignUp!=null)
+            frameSignUp(false);
         frameLogin(true);
     }
 
@@ -157,6 +199,27 @@ public class Controller {
         frameHome(true);
     }
 
+
+    /**
+     * Metodo che elimina un determinato Conto Corrente.
+     *@param iban riferimento per l'eliminazione del conto.*/
+    public void deleteBankAccount(String iban){
+        bankAccountDAO.deleteBankAccount(iban);
+        frameHome(false);
+
+        //Viene aggiornata la pagina con i conti corretti.
+        try {
+            checkCredentials(account.getEmail(), account.getPassword());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        JOptionPane.showMessageDialog(
+                framePick,
+                "Conto Corrente con Iban: " +iban+ ", eliminato con successo!",
+                "Conto Corrente eliminato",
+                JOptionPane.INFORMATION_MESSAGE
+        );
+    }
 
     /**
      * Metodo che permette di effettuare l'upgrade della carta da Debito (default) a Credito.
@@ -218,6 +281,14 @@ public class Controller {
         frameHome.setVisible(isVisible);
     }
 
+    /**
+     * Metodo che gestisce la visibilità della pagina di registrazione.
+     * @param isVisibile setta la visibilità della pagina
+     * */
+    public void frameSignUp(Boolean isVisible){
+        frameSignUp.setVisible(isVisible);
+    }
+
     //Getter e Setter
 
     public Account getAccount() {
@@ -226,14 +297,6 @@ public class Controller {
 
     public void setAccount(Account account) {
         this.account = account;
-    }
-
-    public Person getPerson() {
-        return person;
-    }
-
-    public void setPerson(Person person) {
-        this.person = person;
     }
 
     public ArrayList<BankAccount> getBankAccounts() {

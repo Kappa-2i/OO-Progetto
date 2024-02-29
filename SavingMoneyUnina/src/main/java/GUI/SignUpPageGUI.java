@@ -9,11 +9,10 @@ import java.awt.event.*;
 import java.io.InputStream;
 import java.sql.SQLException;
 
-public class LoginViewGUI extends JFrame{
+public class SignUpPageGUI extends JFrame{
 
     //Dichiarazione del controller
     private Controller controller;
-
     //Dichiarazioni Variabili per i Font
     private Font fontRegular;
     private Font fontBold;
@@ -21,11 +20,10 @@ public class LoginViewGUI extends JFrame{
     private Font fontRegularSmall;
     private Font fontRegularBold;
 
-    public LoginViewGUI(Controller controller){
+    public SignUpPageGUI(Controller controller){
         this.controller = controller;
-        setTitle("Login Page");
-        setSize(1400, 800);
-        setMinimumSize(new Dimension(600, 600));
+        setTitle("SignUp Page");
+        setSize(1000, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -61,7 +59,7 @@ public class LoginViewGUI extends JFrame{
 
         //Creazione di un JPanel 'PanelLoginRed' con BoxLayout
         JPanel panelLoginGreen = new JPanel(new BorderLayout());
-        panelLoginGreen.setBackground(new Color(37, 89, 87));
+        panelLoginGreen.setBackground(new Color(0, 50, 73));
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.BOTH;
@@ -74,7 +72,7 @@ public class LoginViewGUI extends JFrame{
 
         // Creazione e aggiunta dei componenti sul pannello 'PanelLoginWhite'
         //Creazione della label 'Login'
-        JLabel loginLabel = new JLabel("Login");
+        JLabel loginLabel = new JLabel("Registrazione");
         if (fontExtraBold != null)
             loginLabel.setFont(fontExtraBold);
         gbc.gridwidth = 0;
@@ -84,8 +82,61 @@ public class LoginViewGUI extends JFrame{
         gbc.gridy = 0;
         gbc.gridx = 0;
         gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(50, 5, 100, 5);
+        gbc.insets = new Insets(20, 5, 20, 5);
         panelLoginWhite.add(loginLabel, gbc); //aggiunge la loginLabel al panelLoginWhite
+
+        //Creazione della label 'Email' e della textfield per il campo email.
+        JLabel nameLabel = new JLabel("Nome:");
+        JTextField nameField = new JTextField(20);
+        nameField.setBackground(new Color(246, 248, 255));
+        if (fontRegularBold != null)
+            nameLabel.setFont(fontRegularBold);
+        if (fontRegular != null){
+            nameField.setFont(fontRegular);
+        }
+        nameField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
+        nameField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                nameField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(37, 89, 87)));
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+                nameField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
+            }
+        });
+        gbc.gridy = 1;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        panelLoginWhite.add(nameLabel, gbc); //Aggiunge la emailLabel al panelLoginWhite
+        gbc.gridy = 2;
+        panelLoginWhite.add(nameField, gbc); //Aggiunge la emailfield al panelLoginWhite
+
+
+        //Creazione della label 'Email' e della textfield per il campo email.
+        JLabel surnameLabel = new JLabel("Cognome:");
+        JTextField surnameField = new JTextField(20);
+        surnameField.setBackground(new Color(246, 248, 255));
+        if (fontRegularBold != null)
+            surnameLabel.setFont(fontRegularBold);
+        if (fontRegular != null){
+            surnameField.setFont(fontRegular);
+        }
+        surnameField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
+        surnameField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                surnameField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(37, 89, 87)));
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+                surnameField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
+            }
+        });
+        gbc.gridy = 3;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        panelLoginWhite.add(surnameLabel, gbc); //Aggiunge la emailLabel al panelLoginWhite
+        gbc.gridy = 4;
+        panelLoginWhite.add(surnameField, gbc); //Aggiunge la emailfield al panelLoginWhite
 
 
         //Creazione della label 'Email' e della textfield per il campo email.
@@ -98,7 +149,7 @@ public class LoginViewGUI extends JFrame{
             emailField.setFont(fontRegular);
         }
 
-        //emailField.setMaximumSize(new Dimension(Integer.MAX_VALUE, emailField.getPreferredSize().height));
+        emailField.setMaximumSize(new Dimension(Integer.MAX_VALUE, emailField.getPreferredSize().height));
         emailField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
         emailField.addFocusListener(new FocusAdapter() {
             @Override
@@ -110,10 +161,10 @@ public class LoginViewGUI extends JFrame{
                 emailField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
             }
         });
-        gbc.gridy = 2;
+        gbc.gridy = 5;
         gbc.insets = new Insets(5, 5, 5, 5);
         panelLoginWhite.add(emailLabel, gbc); //Aggiunge la emailLabel al panelLoginWhite
-        gbc.gridy = 3;
+        gbc.gridy = 6;
         panelLoginWhite.add(emailField, gbc); //Aggiunge la emailfield al panelLoginWhite
 
 
@@ -139,134 +190,101 @@ public class LoginViewGUI extends JFrame{
         });
         passwordField.setEchoChar('*');
         gbc.gridx = 0;
-        gbc.gridy = 4;
+        gbc.gridy = 7;
         gbc.gridwidth = 1; // Occupa una colonna
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panelLoginWhite.add(passwordLabel, gbc);
-
-        gbc.gridy = 5;
+        gbc.gridy = 8;
         panelLoginWhite.add(passwordField, gbc);
 
-
-        // Inizializza il JCheckBox per mostrare/nascondere la password
-        JCheckBox showPasswordCheckBox = new JCheckBox("");
-        if (fontRegularSmall != null)
-            showPasswordCheckBox.setFont(fontRegularSmall);
-        showPasswordCheckBox.addActionListener(new ActionListener() {
+        //Creaione della label 'Password' e della textfield per il campo password.
+        JLabel confirmPasswordLabel = new JLabel("Conferma Password:");
+        JPasswordField confirmPasswordField = new JPasswordField(20);
+        confirmPasswordField.setBackground(new Color(246, 248, 255));
+        confirmPasswordField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
+        if (fontRegularBold != null)
+            confirmPasswordLabel.setFont(fontRegularBold);
+        if (fontRegular != null){
+            confirmPasswordField.setFont(fontRegular);
+        }
+        confirmPasswordField.addFocusListener(new FocusAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                if (showPasswordCheckBox.isSelected()) {
-                    passwordField.setEchoChar((char) 0); // Mostra la password
-                } else {
-                    passwordField.setEchoChar('*'); // Nasconde la password
-                }
+            public void focusGained(FocusEvent e) {
+                confirmPasswordField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(37, 89, 87)));
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+                confirmPasswordField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
             }
         });
-
-        ImageIcon iconHiddenPassword = new ImageIcon(LoginViewGUI.class.getResource("/IMG/hiddenpassword.png"));
-        ImageIcon iconShowedPassword = new ImageIcon(LoginViewGUI.class.getResource("/IMG/showedpassword.png"));
-
-        showPasswordCheckBox.setIcon(iconHiddenPassword);
-        showPasswordCheckBox.setSelectedIcon(iconShowedPassword);
-        showPasswordCheckBox.setPressedIcon(iconShowedPassword);
-        showPasswordCheckBox.setFocusPainted(false);
-        gbc.gridx = 1; // Posiziona il checkbox nella colonna successiva
-        gbc.gridy = 5; // Stessa riga del campo password
-        gbc.gridwidth = GridBagConstraints.REMAINDER; // Occupa il resto della riga
-        gbc.fill = GridBagConstraints.NONE; // Non allargare il componente
-        gbc.anchor = GridBagConstraints.WEST; // Allinea a sinistra nella cella
-        panelLoginWhite.add(showPasswordCheckBox, gbc);
-
-
-        // Crazione della label 'CreaUtenteLabel'
-        JLabel newUserLabel = new JLabel("Crea Utente");
-        if (fontRegularSmall != null)
-            newUserLabel.setFont(fontRegularSmall);
-        newUserLabel.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cambia il cursore per indicare che è cliccabile
-
-        //Aggiungi un MouseListener alla label 'creaUtenteLabel'
-        newUserLabel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                // Quando il mouse entra nella JLabel, applica la sottolineatura
-                newUserLabel.setText("<html><u>Crea Utente</u></html>");
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                // Quando il mouse esce dalla JLabel, rimuovi la sottolineatura
-                newUserLabel.setText("Crea Utente");
-            }
-
-            @Override
-            public void mouseClicked(MouseEvent e){
-                controller.showFrameSignUp();
-            }
-        });
-
-        gbc.gridwidth = 0;
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.weightx = 0;
-        gbc.weighty = 0;
-        gbc.gridy = 6;
+        confirmPasswordField.setEchoChar('*');
         gbc.gridx = 0;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(10, 5, 5, 5);
-        panelLoginWhite.add(newUserLabel, gbc); //Aggiunge la creaUtenteLabel al panelLoginWhite
+        gbc.gridy = 9;
+        gbc.gridwidth = 1; // Occupa una colonna
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panelLoginWhite.add(confirmPasswordLabel, gbc);
+        gbc.gridy = 10;
+        panelLoginWhite.add(confirmPasswordField, gbc);
 
-
-        // Crazione della label 'passwordDimenticataLabel'
-        JLabel forgottenPasswordLabel = new JLabel("Password dimenticata?");
-        if (fontRegularSmall != null)
-            forgottenPasswordLabel.setFont(fontRegularSmall);
-        forgottenPasswordLabel.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cambia il cursore per indicare che è cliccabile
-
-
-        // Aggiungi un MouseListener alla JLabel
-        forgottenPasswordLabel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                // Quando il mouse entra nella JLabel, applica la sottolineatura
-                forgottenPasswordLabel.setText("<html><u>Password dimenticata?</u></html>");
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                // Quando il mouse esce dalla JLabel, rimuovi la sottolineatura
-                forgottenPasswordLabel.setText("Password dimenticata?");
-            }
-        });
-        gbc.gridx = 0;
-        gbc.gridy = 8;
-        panelLoginWhite.add(forgottenPasswordLabel, gbc); //Aggiunge la passwordDimenticatalabel al panelLoginWhite
 
 
         // Creazione del button 'loginButton'
-        JButton loginButton = new JButton("Accedi");
+        JButton backButton = new JButton("Indietro");
         if (fontBold != null)
-            loginButton.setFont(fontBold);
-        loginButton.setOpaque(true);
-        loginButton.setBackground(new Color(0, 0, 0, 255));
-        loginButton.setForeground(new Color(246, 248, 255));
-        loginButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cambia il cursore per indicare che è cliccabile
-        loginButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-        loginButton.addActionListener(new ActionListener() {
+            backButton.setFont(fontBold);
+        backButton.setOpaque(true);
+        backButton.setBackground(new Color(0, 0, 0, 255));
+        backButton.setForeground(new Color(246, 248, 255));
+        backButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cambia il cursore per indicare che è cliccabile
+        backButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //Chiamiamo la funzione checkCredentials dal controller passandogli i dati inseriti
-                try {
-                    controller.checkCredentials(emailField.getText(), passwordField.getText());
+                controller.backLoginPage();
+            }
+        });
+        gbc.gridy = 11;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = 0;
+        panelLoginWhite.add(backButton, gbc); //Aggiunge il loginButton al panelLoginWhit
+
+        // Creazione del button 'loginButton'
+        JButton signButton = new JButton("Registrati");
+        if (fontBold != null)
+            signButton.setFont(fontBold);
+        signButton.setOpaque(true);
+        signButton.setBackground(new Color(0, 0, 0, 255));
+        signButton.setForeground(new Color(246, 248, 255));
+        signButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cambia il cursore per indicare che è cliccabile
+        signButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        signButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Chiamiamo la funzione checkCredentials dal controller passandogli i dati inseriti
+                if(controller.confirmedPassword(passwordField.getText(), confirmPasswordField.getText())){
+                    controller.insertAccount(emailField.getText(), passwordField.getText(), nameField.getText(), surnameField.getText());
                     emailField.setText("");
                     passwordField.setText("");
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
+                    confirmPasswordField.setText("");
+                    nameField.setText("");
+                    surnameField.setText("");
+                    controller.backLoginPage();
+                }
+                else {
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Le password non corrispondono",
+                            "Errore",
+                            JOptionPane.ERROR_MESSAGE
+                    );
                 }
             }
         });
-        gbc.gridy = 9;
+        gbc.gridy = 11;
         gbc.anchor = GridBagConstraints.EAST;
         gbc.fill = 0;
-        panelLoginWhite.add(loginButton, gbc); //Aggiunge il loginButton al panelLoginWhit
+        panelLoginWhite.add(signButton, gbc); //Aggiunge il loginButton al panelLoginWhit
 
         setContentPane(contentPane);
     }

@@ -11,16 +11,16 @@ public class AccountDAOImpl implements AccountDAO {
 
 
     @Override
-    public void insertAccount(String email, String nomeUtente, String password, String codiceFiscale){
-        String insert = "INSERT INTO test.account(email, nomeutente, password, persona_codicefiscale) VALUES (?, ?, ?, ?)";
+    public void insertAccount(String email, String password, String name, String surname){
+        String insert = "INSERT INTO test.account(email, password, nome, cognome) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = DBConnection.getDBConnection().getConnection();  // Ottenimento della connessione al database
              PreparedStatement statement = conn.prepareStatement(insert)) {  // Creazione di un PreparedStatement
 
             statement.setString(1, email);
-            statement.setString(2, nomeUtente);
-            statement.setString(3, password);
-            statement.setString(4, codiceFiscale);
+            statement.setString(2, password);
+            statement.setString(3, name);
+            statement.setString(4, surname);
 
             // Esecuzione dell'insert
             statement.execute();
@@ -37,7 +37,7 @@ public class AccountDAOImpl implements AccountDAO {
     @Override
     public Account checkCredentials(String email, String password){
         // Query SQL per ottenere i dettagli dell'utente
-        String query = "SELECT a.email, a.password, a.nomeutente " +
+        String query = "SELECT a.email, a.password, a.nome, a.cognome " +
                 "FROM test.account a " +
                 " WHERE a.email = '" + email + "' AND a.password = '" + password + "'";
 
@@ -55,7 +55,7 @@ public class AccountDAOImpl implements AccountDAO {
             if (resultSet != null){
                 while (resultSet.next()) {
                     // Ritorno dei dati dell'utente sotto forma di stringhe
-                    Account account = new Account(resultSet.getString("Email"), resultSet.getString("Password"), resultSet.getString("NomeUtente"));
+                    Account account = new Account(resultSet.getString("Email"), resultSet.getString("Password"), resultSet.getString("Nome"), resultSet.getString("Cognome"));
                     return account;
                 }
             }
