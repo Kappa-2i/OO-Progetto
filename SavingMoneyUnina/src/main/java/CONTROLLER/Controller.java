@@ -25,6 +25,7 @@ public class Controller {
     private BankAccountPickViewGUI framePick;
     private HomePageGUI frameHome;
     private SignUpPageGUI frameSignUp;
+    private CardViewGUI frameCard;
 
     //Dichiarazioni delle Dao
     private AccountDAO accountDao;
@@ -255,6 +256,15 @@ public class Controller {
         showHomePage(selectedBankAccount);
     }
 
+    /**
+     * Metodo che permette gestire la visualizzazione della pagina della carta.*/
+    public void showCardPage(){
+        if (frameCard==null) {
+            frameCard = new CardViewGUI(this);
+            frameCard(true);
+        }
+    }
+
 
     /**
      * Metodo che gestisce la visibilità della pagina di Login.
@@ -287,6 +297,14 @@ public class Controller {
      * */
     public void frameSignUp(Boolean isVisible){
         frameSignUp.setVisible(isVisible);
+    }
+
+    /**
+     * Metodo che gestisce la visibilità della pagina per visualizzare la carta.
+     * @param isVisibile setta la visibilità della pagina
+     * */
+    public void frameCard(Boolean isVisible){
+        frameCard.setVisible(isVisible);
     }
 
     //Getter e Setter

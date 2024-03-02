@@ -47,7 +47,7 @@ public class HomePageGUI extends JFrame {
 
         // Dichiarazione del pannello superiore con aggiunta dei constraints per posizionarlo
         JPanel panelTop = new JPanel(new GridBagLayout());
-        panelTop.setBackground(new Color(37, 89, 87));
+        panelTop.setBackground(new Color(0, 84, 122));
         gbc.gridwidth = 4;
         gbc.weighty = 0.1;
         gbc.weightx = 1;
@@ -57,7 +57,7 @@ public class HomePageGUI extends JFrame {
         contentPane.add(panelTop, gbc);
 
         // Dichiarazione del pannello laterale sinistro con aggiunta dei constraints per posizionarlo
-        RoundedPanel panelLeft = new RoundedPanel(50, new Color(37, 89, 87));
+        RoundedPanel panelLeft = new RoundedPanel(50, new Color(0, 84, 122));
         panelLeft.setLayout(new GridBagLayout());
         gbc.gridwidth = 1;
         gbc.weighty = 0.95;
@@ -83,7 +83,7 @@ public class HomePageGUI extends JFrame {
         JPanel userPanel = new JPanel(new GridBagLayout());
         userPanel.setVisible(false);
         userPanel.setBackground(new Color(217, 217, 217));
-        userPanel.setBorder(new MatteBorder(0, 3, 0, 0, new Color(37, 89, 87)));
+        userPanel.setBorder(new MatteBorder(0, 3, 0, 0, new Color(0, 84, 122)));
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weighty = 0;
@@ -414,7 +414,7 @@ public class HomePageGUI extends JFrame {
         /**
          * Aggiungiamo ora i componenti all'interno del panello di sinistra
          * */
-        RoundedPanel saldoPanel = new RoundedPanel(50, new Color(72, 173, 169) );
+        RoundedPanel saldoPanel = new RoundedPanel(50, new Color(69, 184, 196) );
         saldoPanel.setLayout(new GridBagLayout());
         saldoPanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
         saldoPanel.addMouseListener(new MouseAdapter() {
@@ -424,7 +424,7 @@ public class HomePageGUI extends JFrame {
             }
         });
 
-        RoundedPanel spesePanel = new RoundedPanel(50, new Color(111, 195, 192));
+        RoundedPanel spesePanel = new RoundedPanel(50, new Color(128, 206, 215));
         spesePanel.setLayout(new GridBagLayout());
         spesePanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
         spesePanel.addMouseListener(new MouseAdapter() {
@@ -434,7 +434,7 @@ public class HomePageGUI extends JFrame {
             }
         });
 
-        RoundedPanel salvadanaioPanel = new RoundedPanel(50, new Color(154, 213, 211));
+        RoundedPanel salvadanaioPanel = new RoundedPanel(50, new Color(174, 227, 230));
         salvadanaioPanel.setLayout(new GridBagLayout());
         salvadanaioPanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
         salvadanaioPanel.addMouseListener(new MouseAdapter() {
@@ -489,7 +489,7 @@ public class HomePageGUI extends JFrame {
         buttonSaldo.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                //controller.showCardPage();
+                controller.showCardPage();
             }
         });
 
