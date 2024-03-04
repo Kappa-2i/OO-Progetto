@@ -13,13 +13,15 @@ import java.util.ArrayList;
 
 
 public class BankAccountPickViewGUI extends JFrame {
+    //Dichiarazione del controller
     private Controller controller;
+
+    //Dichiarazione dei font
     private Font fontRegular;
     private Font fontRegularBold;
     private Font fontBold;
     private Font fontExtraBold;
     private Font fontRegularSmall;
-    private JButton logOutButton;
 
     private JPanel panelSignIn;
 
@@ -79,7 +81,7 @@ public class BankAccountPickViewGUI extends JFrame {
 
         //Crea componenti
         ImageIcon icon = new ImageIcon(BankAccountPickViewGUI.class.getResource("/IMG/logout.png")); // Sostituisci con il percorso del tuo file icona
-        logOutButton = new JButton();
+        JButton logOutButton = new JButton();
         logOutButton.setIcon(icon);
         logOutButton.setBackground(null);
         logOutButton.setOpaque(true);
@@ -305,12 +307,10 @@ public class BankAccountPickViewGUI extends JFrame {
                         @Override
                         public void mouseClicked(MouseEvent e){
                             if(controller.insertBankAccount(controller.getAccount().getEmail())) {
-                                try {
+
                                     setVisible(false);
                                     controller.checkCredentials(controller.getAccount().getEmail(), controller.getAccount().getPassword());
-                                } catch (SQLException ex) {
-                                    throw new RuntimeException(ex);
-                                }
+
                             }
                         }
                     });
@@ -367,12 +367,10 @@ public class BankAccountPickViewGUI extends JFrame {
                 @Override
                 public void mouseClicked(MouseEvent e){
                     if(controller.insertBankAccount(controller.getAccount().getEmail())) {
-                        try {
+
                             setVisible(false);
                             controller.checkCredentials(controller.getAccount().getEmail(), controller.getAccount().getPassword());
-                        } catch (SQLException ex) {
-                            throw new RuntimeException(ex);
-                        }
+
                     }
                 }
             });

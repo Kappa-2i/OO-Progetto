@@ -21,6 +21,10 @@ public class LoginViewGUI extends JFrame{
     private Font fontRegularSmall;
     private Font fontRegularBold;
 
+    //Dichiarazioni immagini usate
+    private ImageIcon iconHiddenPassword = new ImageIcon(LoginViewGUI.class.getResource("/IMG/hiddenpassword.png"));
+    private ImageIcon iconShowedPassword = new ImageIcon(LoginViewGUI.class.getResource("/IMG/showedpassword.png"));
+
     public LoginViewGUI(Controller controller){
         this.controller = controller;
         setTitle("Login Page");
@@ -36,20 +40,18 @@ public class LoginViewGUI extends JFrame{
         fontRegularBold();
 
         // Creazione dei pannelli
-        // Creazione del pannello di sfondo e setta il GridBagLayout
-        JPanel contentPane = new JPanel();
+        // Creazione del pannello di sfondo e set del GridBagLayout
+        JPanel contentPane = new JPanel(new GridBagLayout());
         contentPane.setBackground(new Color(246, 248, 255));
-        contentPane.setLayout(new GridBagLayout());
 
 
         //Creazione constraints per il GridBagLayout
         GridBagConstraints gbc = new GridBagConstraints();
 
 
-        //Creazione di un JPanel con BoxLayout per contenere i componenti utili per il login
+        //Creazione di un JPanel con GridBagLayout per contenere i componenti utili per il login
         JPanel panelLoginWhite = new JPanel(new GridBagLayout());
-        panelLoginWhite.setBackground(new Color(246, 248, 255)); // Scegli il colore che preferisci
-        panelLoginWhite.setOpaque(true); // Imposta come trasparente per mostrare il gradiente
+        panelLoginWhite.setBackground(new Color(246, 248, 255));
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.BOTH;
@@ -59,15 +61,15 @@ public class LoginViewGUI extends JFrame{
         contentPane.add(panelLoginWhite, gbc);//Aggiunge il panelLoginWhite al contentPane
 
 
-        //Creazione di un JPanel 'PanelLoginRed' con BoxLayout
-        JPanel panelLoginGreen = new JPanel(new BorderLayout());
-        panelLoginGreen.setBackground(new Color(0, 84, 122));
+        //Creazione di un JPanel 'PanelLoginBlue' con GridBagLayout
+        JPanel panelLoginBlue = new JPanel(new GridBagLayout());
+        panelLoginBlue.setBackground(new Color(0, 84, 122));
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 0.45;
         gbc.weighty = 1;
-        contentPane.add(panelLoginGreen, gbc);
+        contentPane.add(panelLoginBlue, gbc);//Aggiunge il panelLoginBlue al contentPane
 
 
 
@@ -98,7 +100,7 @@ public class LoginViewGUI extends JFrame{
             emailField.setFont(fontRegular);
         }
 
-        //emailField.setMaximumSize(new Dimension(Integer.MAX_VALUE, emailField.getPreferredSize().height));
+        //funzione per modificare i bordi del TextField
         emailField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
         emailField.addFocusListener(new FocusAdapter() {
             @Override
@@ -121,12 +123,14 @@ public class LoginViewGUI extends JFrame{
         JLabel passwordLabel = new JLabel("Password:");
         JPasswordField passwordField = new JPasswordField(20);
         passwordField.setBackground(new Color(246, 248, 255));
-        passwordField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
+        passwordField.setEchoChar('*');
         if (fontRegularBold != null)
             passwordLabel.setFont(fontRegularBold);
         if (fontRegular != null){
             passwordField.setFont(fontRegular);
         }
+        //funzione per modificare i bordi del TextField
+        passwordField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
         passwordField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -137,18 +141,20 @@ public class LoginViewGUI extends JFrame{
                 passwordField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
             }
         });
-        passwordField.setEchoChar('*');
+
+
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.gridwidth = 1; // Occupa una colonna
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panelLoginWhite.add(passwordLabel, gbc);
+        panelLoginWhite.add(passwordLabel, gbc); //Aggiunge la passwordLabel al panelLoginWhite
 
+        //Aggiunta di password Field
         gbc.gridy = 5;
-        panelLoginWhite.add(passwordField, gbc);
+        panelLoginWhite.add(passwordField, gbc); //Aggiunge la passwordField al panelLoginWhite
 
 
-        // Inizializza il JCheckBox per mostrare/nascondere la password
+        // Inizializzazione del JCheckBox per mostrare/nascondere la password
         JCheckBox showPasswordCheckBox = new JCheckBox("");
         if (fontRegularSmall != null)
             showPasswordCheckBox.setFont(fontRegularSmall);
@@ -163,19 +169,16 @@ public class LoginViewGUI extends JFrame{
             }
         });
 
-        ImageIcon iconHiddenPassword = new ImageIcon(LoginViewGUI.class.getResource("/IMG/hiddenpassword.png"));
-        ImageIcon iconShowedPassword = new ImageIcon(LoginViewGUI.class.getResource("/IMG/showedpassword.png"));
-
         showPasswordCheckBox.setIcon(iconHiddenPassword);
         showPasswordCheckBox.setSelectedIcon(iconShowedPassword);
         showPasswordCheckBox.setPressedIcon(iconShowedPassword);
-        showPasswordCheckBox.setFocusPainted(false);
-        gbc.gridx = 1; // Posiziona il checkbox nella colonna successiva
-        gbc.gridy = 5; // Stessa riga del campo password
-        gbc.gridwidth = GridBagConstraints.REMAINDER; // Occupa il resto della riga
-        gbc.fill = GridBagConstraints.NONE; // Non allargare il componente
-        gbc.anchor = GridBagConstraints.WEST; // Allinea a sinistra nella cella
-        panelLoginWhite.add(showPasswordCheckBox, gbc);
+        showPasswordCheckBox.setFocusPainted(false); //Nasconde il rettangolo che si crea quando il componente ha il focus
+        gbc.gridx = 1;
+        gbc.gridy = 5;
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.anchor = GridBagConstraints.WEST;
+        panelLoginWhite.add(showPasswordCheckBox, gbc); //Aggiunge la showPasswordCheckBox al panelLoginWhite
 
 
         // Crazione della label 'CreaUtenteLabel'
@@ -250,23 +253,21 @@ public class LoginViewGUI extends JFrame{
         loginButton.setForeground(new Color(246, 248, 255));
         loginButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cambia il cursore per indicare che è cliccabile
         loginButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-        loginButton.addActionListener(new ActionListener() {
+        loginButton.addMouseListener(new MouseAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void mouseClicked(MouseEvent e) {
                 //Chiamiamo la funzione checkCredentials dal controller passandogli i dati inseriti
-                try {
+
                     controller.checkCredentials(emailField.getText(), passwordField.getText());
                     emailField.setText("");
                     passwordField.setText("");
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
-                }
+
             }
         });
         gbc.gridy = 9;
         gbc.anchor = GridBagConstraints.EAST;
         gbc.fill = 0;
-        panelLoginWhite.add(loginButton, gbc); //Aggiunge il loginButton al panelLoginWhit
+        panelLoginWhite.add(loginButton, gbc); //Aggiunge il loginButton al panelLoginWhite
 
         setContentPane(contentPane);
     }

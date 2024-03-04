@@ -41,12 +41,8 @@ public class AccountDAOImpl implements AccountDAO {
                 "FROM test.account a " +
                 " WHERE a.email = '" + email + "' AND a.password = '" + password + "'";
 
-
         try (Connection conn = DBConnection.getDBConnection().getConnection();  // Ottenimento della connessione al database
              Statement statement = conn.createStatement()) {  // Creazione di un PreparedStatement
-
-            //statement.setString(1, email);  // Impostazione del primo parametro (email)
-            //statement.setString(2, password);  // Impostazione del secondo parametro (password)
 
             // Esecuzione della query e gestione del ResultSet
             ResultSet resultSet = statement.executeQuery(query);

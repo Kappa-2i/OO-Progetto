@@ -52,11 +52,10 @@ public class Controller {
      * @param email per controllare che l'email sia corretta.
      * @param password per controllare che la password sia corretta.
      * */
-    public void checkCredentials(String email, String password) throws SQLException {
+    public void checkCredentials(String email, String password) {
         if((!email.isEmpty()) && (!password.isEmpty())){
             account = accountDao.checkCredentials(email.toLowerCase(), password);
             if (account != null){
-
                 frameLogin(false);
                 showPickFrame();
             }
@@ -88,6 +87,13 @@ public class Controller {
         frameSignUp(true);
     }
 
+    /**
+     *Metodo che permette di registrare l'account appena inserito
+     * @param email email inserita
+     * @param password password inserita
+     * @param name nome inserito
+     * @param surname cognome inserito
+     */
     public void insertAccount(String email, String password, String name, String surname){
         try{
             account = new Account(email, password, name, surname);
@@ -118,15 +124,13 @@ public class Controller {
 
     }
 
-   /* *//**
-     *Metodo che permette di gestire la viusalizzazione della pagina di SignIn.*//*
-    public void showFrameSignIn(){
-        frameLogin(false);
-        frameSignIn = new SignInViewGUI(this);
-        frameSignIn(true);
-    }*/
 
 
+    /**
+     * Metodo che confronta le password inserite.
+     * @param password password inserita
+     * @param confirmedPassword password re-inserita
+     * @return true se le password corrispondono, false altrimenti. */
     public boolean confirmedPassword(String password, String confirmedPassword){
         if (password.equals(confirmedPassword))
             return true;
@@ -209,11 +213,9 @@ public class Controller {
         frameHome(false);
 
         //Viene aggiornata la pagina con i conti corretti.
-        try {
+
             checkCredentials(account.getEmail(), account.getPassword());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+
         JOptionPane.showMessageDialog(
                 framePick,
                 "Conto Corrente con Iban: " +iban+ ", eliminato con successo!",

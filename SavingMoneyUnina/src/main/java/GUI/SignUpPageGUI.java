@@ -13,6 +13,7 @@ public class SignUpPageGUI extends JFrame{
 
     //Dichiarazione del controller
     private Controller controller;
+
     //Dichiarazioni Variabili per i Font
     private Font fontRegular;
     private Font fontBold;
@@ -35,46 +36,43 @@ public class SignUpPageGUI extends JFrame{
 
         // Creazione dei pannelli
         // Creazione del pannello di sfondo e setta il GridBagLayout
-        JPanel contentPane = new JPanel();
+        JPanel contentPane = new JPanel(new GridBagLayout());
         contentPane.setBackground(new Color(246, 248, 255));
-        contentPane.setLayout(new GridBagLayout());
-
 
         //Creazione constraints per il GridBagLayout
         GridBagConstraints gbc = new GridBagConstraints();
 
 
-        //Creazione di un JPanel con BoxLayout per contenere i componenti utili per il login
-        JPanel panelLoginWhite = new JPanel(new GridBagLayout());
-        panelLoginWhite.setBackground(new Color(246, 248, 255)); // Scegli il colore che preferisci
-        panelLoginWhite.setOpaque(true); // Imposta come trasparente per mostrare il gradiente
+        //Creazione di un JPanel con GridBagLayout per contenere i componenti utili per il signUp
+        JPanel panelSignUpWhite = new JPanel(new GridBagLayout());
+        panelSignUpWhite.setBackground(new Color(246, 248, 255));
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(0, -200, 0, 0);
         gbc.weightx = 0.2;
         gbc.weighty = 1;
-        contentPane.add(panelLoginWhite, gbc);//Aggiunge il panelLoginWhite al contentPane
+        contentPane.add(panelSignUpWhite, gbc); //Aggiunge il panelSignUpWhite al contentPane
 
 
-        //Creazione di un JPanel 'PanelLoginRed' con BoxLayout
-        JPanel panelLoginGreen = new JPanel(new BorderLayout());
-        panelLoginGreen.setBackground(new Color(0, 50, 73));
+        //Creazione di un JPanel 'panelSignUpBlue' con GridBagLayout
+        JPanel panelSignUpBlue = new JPanel(new GridBagLayout());
+        panelSignUpBlue.setBackground(new Color(0, 50, 73));
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 0.45;
         gbc.weighty = 1;
-        contentPane.add(panelLoginGreen, gbc);
+        contentPane.add(panelSignUpBlue, gbc); //Aggiunge il panelSignUpBlue al contentPane
 
 
 
 
-        // Creazione e aggiunta dei componenti sul pannello 'PanelLoginWhite'
-        //Creazione della label 'Login'
-        JLabel loginLabel = new JLabel("Registrazione");
+        // Creazione e aggiunta dei componenti sul pannello 'panelSignUpWhite'
+        //Creazione della label 'Registrazione'
+        JLabel signUpLabel = new JLabel("Registrazione");
         if (fontExtraBold != null)
-            loginLabel.setFont(fontExtraBold);
+            signUpLabel.setFont(fontExtraBold);
         gbc.gridwidth = 0;
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 0;
@@ -83,9 +81,9 @@ public class SignUpPageGUI extends JFrame{
         gbc.gridx = 0;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(20, 5, 20, 5);
-        panelLoginWhite.add(loginLabel, gbc); //aggiunge la loginLabel al panelLoginWhite
+        panelSignUpWhite.add(signUpLabel, gbc); //aggiunge la signUpLabel al panelSignUpWhite
 
-        //Creazione della label 'Email' e della textfield per il campo email.
+        //Creazione della label 'Nome' e della textfield per il campo nome.
         JLabel nameLabel = new JLabel("Nome:");
         JTextField nameField = new JTextField(20);
         nameField.setBackground(new Color(246, 248, 255));
@@ -94,6 +92,8 @@ public class SignUpPageGUI extends JFrame{
         if (fontRegular != null){
             nameField.setFont(fontRegular);
         }
+
+        //funzione per modificare i bordi del TextField
         nameField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
         nameField.addFocusListener(new FocusAdapter() {
             @Override
@@ -105,14 +105,15 @@ public class SignUpPageGUI extends JFrame{
                 nameField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
             }
         });
+
         gbc.gridy = 1;
         gbc.insets = new Insets(5, 5, 5, 5);
-        panelLoginWhite.add(nameLabel, gbc); //Aggiunge la emailLabel al panelLoginWhite
+        panelSignUpWhite.add(nameLabel, gbc); //Aggiunge la nameLabel al panelSignUpWhite
         gbc.gridy = 2;
-        panelLoginWhite.add(nameField, gbc); //Aggiunge la emailfield al panelLoginWhite
+        panelSignUpWhite.add(nameField, gbc); //Aggiunge la nameField al panelSignUpWhite
 
 
-        //Creazione della label 'Email' e della textfield per il campo email.
+        //Creazione della label 'Cognome' e della textfield per il campo cognome.
         JLabel surnameLabel = new JLabel("Cognome:");
         JTextField surnameField = new JTextField(20);
         surnameField.setBackground(new Color(246, 248, 255));
@@ -121,6 +122,8 @@ public class SignUpPageGUI extends JFrame{
         if (fontRegular != null){
             surnameField.setFont(fontRegular);
         }
+
+        //funzione per modificare i bordi del TextField
         surnameField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
         surnameField.addFocusListener(new FocusAdapter() {
             @Override
@@ -134,9 +137,9 @@ public class SignUpPageGUI extends JFrame{
         });
         gbc.gridy = 3;
         gbc.insets = new Insets(5, 5, 5, 5);
-        panelLoginWhite.add(surnameLabel, gbc); //Aggiunge la emailLabel al panelLoginWhite
+        panelSignUpWhite.add(surnameLabel, gbc); //Aggiunge la surnameLabel al panelSignUpWhite
         gbc.gridy = 4;
-        panelLoginWhite.add(surnameField, gbc); //Aggiunge la emailfield al panelLoginWhite
+        panelSignUpWhite.add(surnameField, gbc); //Aggiunge la surnameField al panelSignUpWhite
 
 
         //Creazione della label 'Email' e della textfield per il campo email.
@@ -149,7 +152,7 @@ public class SignUpPageGUI extends JFrame{
             emailField.setFont(fontRegular);
         }
 
-        emailField.setMaximumSize(new Dimension(Integer.MAX_VALUE, emailField.getPreferredSize().height));
+        //funzione per modificare i bordi del TextField
         emailField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
         emailField.addFocusListener(new FocusAdapter() {
             @Override
@@ -163,21 +166,24 @@ public class SignUpPageGUI extends JFrame{
         });
         gbc.gridy = 5;
         gbc.insets = new Insets(5, 5, 5, 5);
-        panelLoginWhite.add(emailLabel, gbc); //Aggiunge la emailLabel al panelLoginWhite
+        panelSignUpWhite.add(emailLabel, gbc); //Aggiunge la emailLabel al panelSignUpWhite
         gbc.gridy = 6;
-        panelLoginWhite.add(emailField, gbc); //Aggiunge la emailfield al panelLoginWhite
+        panelSignUpWhite.add(emailField, gbc); //Aggiunge la emailfield al panelSignUpWhite
 
 
         //Creaione della label 'Password' e della textfield per il campo password.
         JLabel passwordLabel = new JLabel("Password:");
         JPasswordField passwordField = new JPasswordField(20);
+        passwordField.setEchoChar('*');
         passwordField.setBackground(new Color(246, 248, 255));
-        passwordField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
         if (fontRegularBold != null)
             passwordLabel.setFont(fontRegularBold);
         if (fontRegular != null){
             passwordField.setFont(fontRegular);
         }
+
+        //funzione per modificare i bordi del TextField
+        passwordField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
         passwordField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -188,25 +194,27 @@ public class SignUpPageGUI extends JFrame{
                 passwordField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
             }
         });
-        passwordField.setEchoChar('*');
         gbc.gridx = 0;
         gbc.gridy = 7;
-        gbc.gridwidth = 1; // Occupa una colonna
+        gbc.gridwidth = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panelLoginWhite.add(passwordLabel, gbc);
+        panelSignUpWhite.add(passwordLabel, gbc); //Aggiunge la passwordLabel al panelSignUpWhite
         gbc.gridy = 8;
-        panelLoginWhite.add(passwordField, gbc);
+        panelSignUpWhite.add(passwordField, gbc); //Aggiunge la passwordField al panelSignUpWhite
 
-        //Creaione della label 'Password' e della textfield per il campo password.
+        //Creaione della label 'Conferma Password' e della textfield per il campo conferma password.
         JLabel confirmPasswordLabel = new JLabel("Conferma Password:");
         JPasswordField confirmPasswordField = new JPasswordField(20);
+        confirmPasswordField.setEchoChar('*');
         confirmPasswordField.setBackground(new Color(246, 248, 255));
-        confirmPasswordField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
         if (fontRegularBold != null)
             confirmPasswordLabel.setFont(fontRegularBold);
         if (fontRegular != null){
             confirmPasswordField.setFont(fontRegular);
         }
+
+        //funzione per modificare i bordi del TextField
+        confirmPasswordField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
         confirmPasswordField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -217,18 +225,18 @@ public class SignUpPageGUI extends JFrame{
                 confirmPasswordField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
             }
         });
-        confirmPasswordField.setEchoChar('*');
+
         gbc.gridx = 0;
         gbc.gridy = 9;
-        gbc.gridwidth = 1; // Occupa una colonna
+        gbc.gridwidth = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panelLoginWhite.add(confirmPasswordLabel, gbc);
+        panelSignUpWhite.add(confirmPasswordLabel, gbc);//Aggiunge la confirmPasswordLabel al panelSignUpWhite
         gbc.gridy = 10;
-        panelLoginWhite.add(confirmPasswordField, gbc);
+        panelSignUpWhite.add(confirmPasswordField, gbc);//Aggiunge la confirmPasswordField al panelSignUpWhite
 
 
 
-        // Creazione del button 'loginButton'
+        // Creazione del button 'Indietro'
         JButton backButton = new JButton("Indietro");
         if (fontBold != null)
             backButton.setFont(fontBold);
@@ -240,14 +248,13 @@ public class SignUpPageGUI extends JFrame{
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //Chiamiamo la funzione checkCredentials dal controller passandogli i dati inseriti
                 controller.backLoginPage();
             }
         });
         gbc.gridy = 11;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = 0;
-        panelLoginWhite.add(backButton, gbc); //Aggiunge il loginButton al panelLoginWhit
+        panelSignUpWhite.add(backButton, gbc); //Aggiunge il backButton al panelLoginWhit
 
         // Creazione del button 'loginButton'
         JButton signButton = new JButton("Registrati");
@@ -261,9 +268,9 @@ public class SignUpPageGUI extends JFrame{
         signButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //Chiamiamo la funzione checkCredentials dal controller passandogli i dati inseriti
                 if(controller.confirmedPassword(passwordField.getText(), confirmPasswordField.getText())){
                     controller.insertAccount(emailField.getText(), passwordField.getText(), nameField.getText(), surnameField.getText());
+                    // Dopo aver inserito l'account svuota i campi dei field e ritorna alla login Page
                     emailField.setText("");
                     passwordField.setText("");
                     confirmPasswordField.setText("");
@@ -284,7 +291,7 @@ public class SignUpPageGUI extends JFrame{
         gbc.gridy = 11;
         gbc.anchor = GridBagConstraints.EAST;
         gbc.fill = 0;
-        panelLoginWhite.add(signButton, gbc); //Aggiunge il loginButton al panelLoginWhit
+        panelSignUpWhite.add(signButton, gbc); //Aggiunge il loginButton al panelSignUpWhite
 
         setContentPane(contentPane);
     }
