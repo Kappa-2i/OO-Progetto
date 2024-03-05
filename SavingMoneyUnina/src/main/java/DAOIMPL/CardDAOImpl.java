@@ -11,7 +11,7 @@ public class CardDAOImpl implements CardDAO {
 
     @Override
     public Card selectCard(BankAccount contoCorrente){
-        String query = "SELECT c.pan, c.pin, c.cvv, c.tipocarta, c.maxinvio, c.limitefondi, c.contocorrente_iban " +
+        String query = "SELECT c.pan, c.pin, c.cvv, c.tipocarta, c.maxinvio, c.price_upgrade, c.contocorrente_iban " +
                 "FROM test.carta c " +
                 "WHERE c.contocorrente_iban = '" + contoCorrente.getIban() + "'";
         try(Connection conn = DBConnection.getDBConnection().getConnection();
@@ -27,12 +27,12 @@ public class CardDAOImpl implements CardDAO {
 
                     if (resultSet.getString("tipocarta").equals("CartaDiDebito")) {
                         Card debitCard = new DebitCard(resultSet.getString("pan"), resultSet.getString("pin"), resultSet.getString("cvv"), resultSet.getString("tipocarta"),
-                                contoCorrente, resultSet.getDouble("limitefondi"));
+                                contoCorrente, resultSet.getDouble("maxinvio"));
                         return debitCard;
                     }
                     else {
                         Card creditCard = new CreditCard(resultSet.getString("pan"), resultSet.getString("pin"), resultSet.getString("cvv"), resultSet.getString("tipocarta"),
-                                contoCorrente, resultSet.getDouble("maxinvio"));
+                                contoCorrente, resultSet.getDouble("price_upgrade"));
                         return creditCard;
                     }
 

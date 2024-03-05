@@ -24,12 +24,13 @@ public class LoginViewGUI extends JFrame{
     //Dichiarazioni immagini usate
     private ImageIcon iconHiddenPassword = new ImageIcon(LoginViewGUI.class.getResource("/IMG/hiddenpassword.png"));
     private ImageIcon iconShowedPassword = new ImageIcon(LoginViewGUI.class.getResource("/IMG/showedpassword.png"));
+    private ImageIcon iconApp = new ImageIcon(LoginViewGUI.class.getResource("/IMG/digital-money.png"));
+
 
     public LoginViewGUI(Controller controller){
         this.controller = controller;
         setTitle("Login Page");
-        setSize(1400, 800);
-        setMinimumSize(new Dimension(600, 600));
+        setSize(1000, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -55,21 +56,33 @@ public class LoginViewGUI extends JFrame{
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.BOTH;
-        gbc.insets = new Insets(0, -200, 0, 0);
-        gbc.weightx = 0.2;
+        gbc.insets = new Insets(0, 0, 0, 0);
+        gbc.weightx = 0.5;
         gbc.weighty = 1;
         contentPane.add(panelLoginWhite, gbc);//Aggiunge il panelLoginWhite al contentPane
 
 
         //Creazione di un JPanel 'PanelLoginBlue' con GridBagLayout
         JPanel panelLoginBlue = new JPanel(new GridBagLayout());
-        panelLoginBlue.setBackground(new Color(0, 84, 122));
+        panelLoginBlue.setBackground(new Color(0, 50, 73, 255));
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.BOTH;
-        gbc.weightx = 0.45;
+        gbc.weightx = 0.5;
         gbc.weighty = 1;
         contentPane.add(panelLoginBlue, gbc);//Aggiunge il panelLoginBlue al contentPane
+
+
+        gbc = new GridBagConstraints();
+        JButton buttonApp = new JButton();
+        buttonApp.setIcon(iconApp);
+        buttonApp.setBackground(null);
+        buttonApp.setOpaque(true);
+        buttonApp.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cambia il cursore per indicare che è cliccabile
+        buttonApp.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panelLoginBlue.add(buttonApp, gbc);
 
 
 

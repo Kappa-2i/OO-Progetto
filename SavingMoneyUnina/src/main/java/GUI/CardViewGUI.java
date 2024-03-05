@@ -24,7 +24,7 @@ public class CardViewGUI extends JFrame {
         setVisible(true);
         setDefaultCloseOperation(HIDE_ON_CLOSE);
         setResizable(false);
-        setSize(420, 250);
+        setSize(450, 250);
         setLocationRelativeTo(null);
         fontBold();
         fontRegular();

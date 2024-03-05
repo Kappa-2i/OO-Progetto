@@ -50,7 +50,7 @@ public class BankAccountPickViewGUI extends JFrame {
 
         // Panel 3 in alto a tutto
         JPanel panelSignIn3 = new JPanel(new GridBagLayout());
-        panelSignIn3.setBackground(new Color(0, 84, 122)); // Scegli il colore che preferisci
+        panelSignIn3.setBackground(new Color(0, 50, 73, 255)); // Scegli il colore che preferisci
         panelSignIn3.setOpaque(true);
         JLabel titoloFrame = new JLabel("Benvenuto " +controller.getAccount().getName());
         if (fontExtraBold != null)

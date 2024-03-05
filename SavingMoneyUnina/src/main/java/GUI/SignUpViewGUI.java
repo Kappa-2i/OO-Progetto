@@ -7,9 +7,8 @@ import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.InputStream;
-import java.sql.SQLException;
 
-public class SignUpPageGUI extends JFrame{
+public class SignUpViewGUI extends JFrame{
 
     //Dichiarazione del controller
     private Controller controller;
@@ -21,7 +20,9 @@ public class SignUpPageGUI extends JFrame{
     private Font fontRegularSmall;
     private Font fontRegularBold;
 
-    public SignUpPageGUI(Controller controller){
+    private ImageIcon iconApp = new ImageIcon(LoginViewGUI.class.getResource("/IMG/digital-money.png"));
+
+    public SignUpViewGUI(Controller controller){
         this.controller = controller;
         setTitle("SignUp Page");
         setSize(1000, 600);
@@ -49,8 +50,8 @@ public class SignUpPageGUI extends JFrame{
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.BOTH;
-        gbc.insets = new Insets(0, -200, 0, 0);
-        gbc.weightx = 0.2;
+        gbc.insets = new Insets(0, 0, 0, 0);
+        gbc.weightx = 0.5;
         gbc.weighty = 1;
         contentPane.add(panelSignUpWhite, gbc); //Aggiunge il panelSignUpWhite al contentPane
 
@@ -61,9 +62,19 @@ public class SignUpPageGUI extends JFrame{
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.BOTH;
-        gbc.weightx = 0.45;
+        gbc.weightx = 0.5;
         gbc.weighty = 1;
         contentPane.add(panelSignUpBlue, gbc); //Aggiunge il panelSignUpBlue al contentPane
+
+        gbc = new GridBagConstraints();
+        JButton iconAppButton = new JButton();
+        iconAppButton.setIcon(iconApp);
+        iconAppButton.setBackground(null);
+        iconAppButton.setOpaque(true);
+        iconAppButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panelSignUpBlue.add(iconAppButton, gbc);
 
 
 
@@ -254,6 +265,7 @@ public class SignUpPageGUI extends JFrame{
         gbc.gridy = 11;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = 0;
+        gbc.insets = new Insets(20, 5, 5, 5);
         panelSignUpWhite.add(backButton, gbc); //Aggiunge il backButton al panelLoginWhit
 
         // Creazione del button 'loginButton'
@@ -291,6 +303,7 @@ public class SignUpPageGUI extends JFrame{
         gbc.gridy = 11;
         gbc.anchor = GridBagConstraints.EAST;
         gbc.fill = 0;
+        gbc.insets = new Insets(20, 5, 5, 5);
         panelSignUpWhite.add(signButton, gbc); //Aggiunge il loginButton al panelSignUpWhite
 
         setContentPane(contentPane);

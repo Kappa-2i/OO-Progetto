@@ -7,7 +7,6 @@ import EXCEPTIONS.MyExc;
 import GUI.*;
 
 import javax.swing.*;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Controller {
@@ -23,15 +22,21 @@ public class Controller {
     //Dichiarazioni delle Gui
     private LoginViewGUI frameLogin;
     private BankAccountPickViewGUI framePick;
-    private HomePageGUI frameHome;
-    private SignUpPageGUI frameSignUp;
+    private HomeViewGUI frameHome;
+    private SignUpViewGUI frameSignUp;
     private CardViewGUI frameCard;
+    private PiggyBanksViewGUI framePiggyBank;
 
     //Dichiarazioni delle Dao
     private AccountDAO accountDao;
-
     private BankAccountDAO bankAccountDAO;
     private CardDAO cardDAO;
+    private PiggyBankDAO piggyBankDAO;
+
+    //Icone
+    ImageIcon iconAlert = new ImageIcon(Controller.class.getResource("/IMG/alert.png"));
+    ImageIcon iconCancel = new ImageIcon(Controller.class.getResource("/IMG/cancel.png"));
+    ImageIcon iconChecked = new ImageIcon(Controller.class.getResource("/IMG/checked.png"));
 
     public Controller(){
         frameLogin = new LoginViewGUI(this); //LoginView accetta ControllerLogin come parametro
@@ -39,9 +44,9 @@ public class Controller {
 
         //DAO
         this.accountDao = new AccountDAOImpl();
-
         this.bankAccountDAO = new BankAccountDAOImpl();
         this.cardDAO = new CardDAOImpl();
+        this.piggyBankDAO = new PiggyBankDAOImpl();
 
     }
 
@@ -83,7 +88,7 @@ public class Controller {
      *Metodo che permette di gestire la viusalizzazione della pagina di SignUp.*/
     public void showFrameSignUp(){
         frameLogin(false);
-        frameSignUp = new SignUpPageGUI(this);
+        frameSignUp = new SignUpViewGUI(this);
         frameSignUp(true);
     }
 
@@ -187,6 +192,10 @@ public class Controller {
         frameLogin(true);
     }
 
+    public void updateBankAccount(BankAccount bankAccount){
+        selectedBankAccount = bankAccountDAO.updateBankAccount(bankAccount);
+    }
+
     /**
      * Metodo per gesitre la visualizzaione della pagina di Home page.
      * @param conto riferimento per le informazioni da visualizzare in Home Page.*/
@@ -198,9 +207,13 @@ public class Controller {
         card = cardDAO.selectCard(selectedBankAccount);
 
         framePick(false);
-//        if(frameSalvadanaio != null)
-//            frameSalvadanaio(false);
-        frameHome = new HomePageGUI(this);
+        if(framePiggyBank != null)
+            framePiggyBank(false);
+//        if(framePickCollection != null)
+//            framePickCollection(false);
+        if(frameHome != null)
+            frameHome(false);
+        frameHome = new HomeViewGUI(this);
         frameHome(true);
     }
 
@@ -228,17 +241,27 @@ public class Controller {
      * Metodo che permette di effettuare l'upgrade della carta da Debito (default) a Credito.
      * @param pan riferimento per la carta da aggiornare.*/
     public void upgradeCard(String pan){
-        cardDAO.upgradeCard(pan);
-        ImageIcon iconChecked = new ImageIcon(Controller.class.getResource("/IMG/checked.png")); //Inserisce l'immagine sul JOptionPane.
-        JOptionPane.showMessageDialog(
-                null,
-                "La tua carta è stata aggiornata a carta di credito!",
-                "Aggiornamento effettuato",
-                JOptionPane.PLAIN_MESSAGE,
-                iconChecked
-        );
-        frameHome(false);
-        showHomePage(selectedBankAccount);
+        if(selectedBankAccount.getBalance() >= 5) {
+            cardDAO.upgradeCard(pan);
+            JOptionPane.showMessageDialog(
+                    null,
+                    "La tua carta è stata aggiornata a carta di credito!",
+                    "Aggiornamento effettuato",
+                    JOptionPane.PLAIN_MESSAGE,
+                    iconChecked
+            );
+            frameHome(false);
+            showHomePage(bankAccountDAO.updateBankAccount(selectedBankAccount));
+        }
+        else {
+            JOptionPane.showMessageDialog(
+                    frameHome,
+                    "Saldo insufficiente per effettuare l'upgrade!",
+                    "Errore",
+                    JOptionPane.PLAIN_MESSAGE,
+                    iconAlert
+            );
+        }
     }
 
     /**
@@ -261,9 +284,147 @@ public class Controller {
     /**
      * Metodo che permette gestire la visualizzazione della pagina della carta.*/
     public void showCardPage(){
-        if (frameCard==null) {
+        if (frameCard != null) {
+            frameCard(false);
             frameCard = new CardViewGUI(this);
             frameCard(true);
+        }
+        else {
+            frameCard = new CardViewGUI(this);
+            frameCard(true);
+        }
+    }
+
+
+    /**
+     * Metodo che permette di gestire la visualizzazione della pagina dei salvadanai. */
+    public void showPiggyBankView(){
+        if (framePiggyBank != null)
+            framePiggyBank(false);
+        //Vengono recuperati i salvadanai associati al conto scelto.
+        piggyBanks = piggyBankDAO.selectPiggyBank(getSelectedBankAccount());
+        selectedBankAccount.setPiggyBanks(piggyBanks);
+//        if(frameBankTransfer!=null){
+//            frameBankTransfer(false);
+//        }
+        if(frameCard!=null){
+            frameCard(false);
+        }
+        framePiggyBank = new PiggyBanksViewGUI(this);
+        frameHome(false);
+        framePiggyBank(true);
+    }
+
+    public void addPiggyBank(String name, double target, String description) throws MyExc{
+        try {
+            if(!name.isEmpty() && !description.isEmpty())
+                piggyBankDAO.addPiggyBank(selectedBankAccount, name, target, description);
+            else{
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Riempi tutti i campi!",
+                        "Errore inserimento",
+                        JOptionPane.ERROR_MESSAGE,
+                        iconAlert
+                );
+            }
+        } catch (MyExc e) {
+            JOptionPane.showMessageDialog(
+                    framePiggyBank,
+                    e.getMessage(),
+                    "Errore",
+                    JOptionPane.PLAIN_MESSAGE,
+                    iconCancel
+            );
+        }
+
+    }
+
+    public void deletePiggyBank(String name){
+        piggyBankDAO.deletePiggyBank(selectedBankAccount, name);
+    }
+
+
+    public void fillPiggyBank(String name, String sendMoney){
+        try{
+            if(!sendMoney.isEmpty()) {
+                if(Math.round((Double.parseDouble(sendMoney)*100.00)/100.00) > 0) {
+                    if (selectedBankAccount.getBalance() >= Math.round((Double.parseDouble(sendMoney) * 100.00) / 100.00)) {
+                        piggyBankDAO.fillPiggyBank(selectedBankAccount, name, Math.round((Double.parseDouble(sendMoney) * 100.00) / 100.00));
+                    } else {
+                        JOptionPane.showMessageDialog(
+                                framePiggyBank,
+                                "Saldo conto corrente insufficiente!",
+                                "Errore",
+                                JOptionPane.PLAIN_MESSAGE,
+                                iconCancel
+
+                        );
+                    }
+                }
+                else {
+                    JOptionPane.showMessageDialog(
+                            framePiggyBank,
+                            "Inserisci una cifra valida!",
+                            "Errore inserimento",
+                            JOptionPane.PLAIN_MESSAGE,
+                            iconAlert
+                    );
+                }
+            }
+            else {
+                JOptionPane.showMessageDialog(
+                        framePiggyBank,
+                        "Riempi tutti i campi!",
+                        "Errore inserimento",
+                        JOptionPane.PLAIN_MESSAGE,
+                        iconAlert
+                );
+            }
+        }
+        catch (NumberFormatException e){
+            JOptionPane.showMessageDialog(
+                    framePiggyBank,
+                    "Inserisci una cifra valida!",
+                    "Errore inserimento",
+                    JOptionPane.ERROR_MESSAGE,
+                    iconAlert
+            );
+        }
+    }
+
+    public void getMoneyByPiggyBank(String balancePiggyBank, String name, String moneyToWithdraw){
+        try{
+            if(!moneyToWithdraw.isEmpty()) {
+                if (Double.parseDouble(balancePiggyBank) >= Math.round((Double.parseDouble(moneyToWithdraw)*100.00)/100.00)) {
+                    piggyBankDAO.getMoneyByPiggyBank(selectedBankAccount, name, Math.round((Double.parseDouble(moneyToWithdraw)*100.00)/100.00));
+                } else {
+                    JOptionPane.showMessageDialog(
+                            framePiggyBank,
+                            "Saldo salvadanaio insufficiente!",
+                            "Errore",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                }
+            }
+            else {
+                JOptionPane.showMessageDialog(
+                        framePiggyBank,
+                        "Inserisci una cifra valida!",
+                        "Errore inserimento",
+                        JOptionPane.PLAIN_MESSAGE,
+                        iconAlert
+                );
+            }
+        }
+        catch (NumberFormatException e){
+            JOptionPane.showMessageDialog(
+                    framePiggyBank,
+                    "Inserisci una cifra valida",
+                    "Errore inserimento",
+                    JOptionPane.PLAIN_MESSAGE,
+                    iconAlert
+            );
         }
     }
 
@@ -308,6 +469,17 @@ public class Controller {
     public void frameCard(Boolean isVisible){
         frameCard.setVisible(isVisible);
     }
+
+    /**
+     * Metodo che gestisce la visibilità della pagina per visualizzare la pagina dei salvadanai.
+     * @param isVisibile setta la visibilità della pagina
+     * */
+    public void framePiggyBank(Boolean isVisible){
+        framePiggyBank.setVisible(isVisible);
+    }
+
+
+
 
     //Getter e Setter
 
