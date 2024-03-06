@@ -12,6 +12,7 @@ public class AccountDAOImpl implements AccountDAO {
 
     @Override
     public void insertAccount(String email, String password, String name, String surname){
+        // insert SQL che inserisce i dati dell'account creato
         String insert = "INSERT INTO test.account(email, password, nome, cognome) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = DBConnection.getDBConnection().getConnection();  // Ottenimento della connessione al database

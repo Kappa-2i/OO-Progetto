@@ -13,7 +13,7 @@ public class BankAccountDAOImpl implements BankAccountDAO {
     public ArrayList<BankAccount> selectBankAccountByAccount(Account account){
 
         ArrayList<BankAccount> contiCorrenti = new ArrayList<BankAccount>();
-        // Query SQL per ottenere i dettagli dell'utente
+        // Query SQL per ottenere i dettagli del conto corrente
         String query = "SELECT cc.iban, cc.saldo " +
                 "FROM test.contocorrente cc " +
                 " WHERE cc.account_email = '" + account.getEmail() + "'";
@@ -41,8 +41,8 @@ public class BankAccountDAOImpl implements BankAccountDAO {
     public BankAccount updateBankAccount(BankAccount selectedBankAccount){
 
 
-        // Query SQL per ottenere i dettagli dell'utente
-        String query = "SELECT cc.iban, cc.saldo " +
+        // Query SQL per ottenere i dettagli del conto corrente selezionato aggiornato
+        String query = "SELECT cc.saldo " +
                 "FROM test.contocorrente cc " +
                 " WHERE cc.iban = '" + selectedBankAccount.getIban() + "'";
 
@@ -53,7 +53,7 @@ public class BankAccountDAOImpl implements BankAccountDAO {
             ResultSet resultSet = statement.executeQuery(query);
             if (resultSet != null){
                 while (resultSet.next()){
-                    BankAccount contoAggiornato = new BankAccount(resultSet.getString("iban"), resultSet.getDouble("saldo"));
+                    BankAccount contoAggiornato = new BankAccount(resultSet.getDouble("saldo"));
                     return contoAggiornato;
                 }
             }

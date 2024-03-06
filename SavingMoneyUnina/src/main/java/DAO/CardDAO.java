@@ -10,11 +10,13 @@ public interface CardDAO {
     public Card selectCard(BankAccount contoCorrente);
 
     /**
-     * Metodo per eseguire l'upgrade della carta sul db.*/
+     * Metodo per eseguire l'upgrade della carta sul db.
+     * @param pan riferimento pan della carta da upgradare*/
     public void upgradeCard(String pan);
 
     /**
-     * Metodo per effettuare il downgrade della carta sul db.*/
+     * Metodo per eseguire l'upgrade della carta sul db.
+     * @param pan riferimento pan della carta da downgradare*/
     public void downgradeCard(String pan);
 
 }

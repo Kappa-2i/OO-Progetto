@@ -135,9 +135,7 @@ public class PiggyBanksViewGUI extends JFrame {
                 JLabel namePiggyLabel = new JLabel("Nome salvadanaio: ");
                 JTextField nomeField = new JTextField();
                 JLabel obiettivoLabel = new JLabel("Obiettivo: ");
-                // Crea un formato per numeri con massimo 8 cifre intere e 2 decimali
                 JTextField obiettivoField = new JTextField();
-                // Quando sei pronto per leggere il valore (ad esempio, dopo un evento come la pressione di un pulsante):
                 JLabel descrizioneLabel = new JLabel("Descrizione: ");
                 JTextField descrizionField = new JTextField();
 
@@ -177,12 +175,12 @@ public class PiggyBanksViewGUI extends JFrame {
 
                 // Mostra il JOptionPane con i JTextField inseriti
                 int result = JOptionPane.showOptionDialog(
-                        null, // Componente padre
-                        addPiggyPanel, // Messaggio
-                        "Crea Salvadanaio", // Titolo
+                        null,
+                        addPiggyPanel,
+                        "Crea Salvadanaio",
                         JOptionPane.YES_NO_CANCEL_OPTION,
-                        JOptionPane.QUESTION_MESSAGE, // Tipo di messaggio
-                        iconExit, // Icona personalizzata, usa null per l'icona di default
+                        JOptionPane.QUESTION_MESSAGE,
+                        iconExit, // Icona personalizzata
                         optionsAdd, // Array contenente le etichette dei pulsanti
                         optionsAdd[0] // Opzione di default
                 );
@@ -207,42 +205,39 @@ public class PiggyBanksViewGUI extends JFrame {
         });
 
         gbc = new GridBagConstraints();
-        // Configurazione per buttonLogo a sinistra di titoloSmu
-        gbc.gridx = 1; // Posizione immediatamente a sinistra di titoloSmu
-        gbc.weightx = 0; // Non assegna spazio extra, mantiene la posizione
+        gbc.gridx = 1;
+        gbc.weightx = 0;
         gbc.fill = GridBagConstraints.NONE;
-        gbc.insets = new Insets(0, 15, 0, 0); // Aggiusta gli insetti se necessario
+        gbc.insets = new Insets(0, 15, 0, 0);
         panelTop.add(buttonLogo, gbc);
 
         // Configurazione per il titoloSmu a sinistra di homePageLabel
-        gbc.gridx = 2; // Posiziona titoloSmu accanto a buttonLogo
+        gbc.gridx = 2;
         panelTop.add(titoloSmu, gbc);
 
         gbc = new GridBagConstraints();
-        // Infine, aggiungi spazio di espansione a destra per mantenere homePageLabel centrata
         gbc.gridx = 3;
-        gbc.weightx = 1.0; // Bilancia lo spazio extra a destra
+        gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panelTop.add(Box.createHorizontalGlue(), gbc);
 
         gbc = new GridBagConstraints();
-        // Configurazione per la homePageLabel al centro
+        // Configurazione per la piggyBankLabel al centro
         gbc.gridx = 4;
         panelTop.add(piggyBankLabel, gbc);
 
-        // Infine, aggiungi spazio di espansione a destra per mantenere homePageLabel centrata
         gbc.gridx = 5;
-        gbc.weightx = 1.0; // Bilancia lo spazio extra a destra
+        gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.EAST;
         panelTop.add(Box.createHorizontalGlue(), gbc);
 
         gbc = new GridBagConstraints();
-        // Configurazione per buttonUser e buttonLogout a destra della homePageLabel
-        gbc.gridx = 6; // Posiziona buttonUser a destra della homePageLabel
+        // Configurazione per addPiggyBank button e buttonHome a destra
+        gbc.gridx = 6;
         panelTop.add(addPiggyBankButton, gbc);
 
-        gbc.gridx = 7; // Posiziona buttonLogout a destra di buttonUser
-        gbc.insets = new Insets(0, 20, 0, 15); // Aggiusta gli insetti se necessario
+        gbc.gridx = 7;
+        gbc.insets = new Insets(0, 20, 0, 15);
         panelTop.add(buttonHome, gbc);
 
 
@@ -255,7 +250,7 @@ public class PiggyBanksViewGUI extends JFrame {
         String[] colonne = {"Nome", "Descrizione", "Obiettivo", "Saldo Risparmio", "Saldo Rimanente", "Data Creazione"};
 
         // Modello di tabella predefinito con celle non editabili
-        DefaultTableModel modello = new DefaultTableModel(colonne, 0) {
+        DefaultTableModel model = new DefaultTableModel(colonne, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false; // Rende tutte le celle non editabili
@@ -271,35 +266,35 @@ public class PiggyBanksViewGUI extends JFrame {
                     piggyBanks.getRemainingBalance() + "€",
                     piggyBanks.getCreationDate()
             };
-            modello.addRow(riga);
+            model.addRow(riga);
         }
 
         // Creare la tabella con il modello
-        JTable tabella = new JTable(modello);
-        JScrollPane scrollPane = new JScrollPane(tabella);
-        tabella.getTableHeader().setFont(fontRegularBold);
-        tabella.getTableHeader().setBackground(new Color(246, 248, 255));
-        scrollPane.getViewport().setBackground(new Color(246, 248, 255)); // Sostituisci Color.LIGHT_GRAY con il colore desiderato
+        JTable table = new JTable(model);
+        JScrollPane scrollPane = new JScrollPane(table);
+        table.getTableHeader().setFont(fontRegularBold);
+        table.getTableHeader().setBackground(new Color(246, 248, 255));
+        scrollPane.getViewport().setBackground(new Color(246, 248, 255));
         scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 
 
         // Renderer centrato per le celle
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-        tabella.setFont(fontRegular);
-        tabella.setRowHeight(70);
-        tabella.setForeground(new Color(8, 76, 97));
-        tabella.setBackground(new Color(174, 227, 230));
+        table.setFont(fontRegular);
+        table.setRowHeight(70);
+        table.setForeground(new Color(8, 76, 97));
+        table.setBackground(new Color(174, 227, 230));
 
         // Applicare il renderer a tutte le celle per centrare il testo
-        for (int i = 0; i < tabella.getColumnCount(); i++) {
-            tabella.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
 
         // Impostare la larghezza preferita per le colonne 0,1
         int smallWidth = 280;
         for (int i = 0; i <= 1; i++) {
-            TableColumn column = tabella.getColumnModel().getColumn(i);
+            TableColumn column = table.getColumnModel().getColumn(i);
             column.setPreferredWidth(smallWidth);
             column.setMaxWidth(smallWidth);
             column.setMinWidth(smallWidth);
@@ -308,7 +303,7 @@ public class PiggyBanksViewGUI extends JFrame {
         // Impostare la larghezza preferita per le colonne 2, 3, 4, 5
         smallWidth = 200;
         for (int i = 2; i <= 5; i++) {
-            TableColumn column = tabella.getColumnModel().getColumn(i);
+            TableColumn column = table.getColumnModel().getColumn(i);
             column.setPreferredWidth(smallWidth);
             column.setMaxWidth(smallWidth);
             column.setMinWidth(smallWidth);
@@ -316,39 +311,39 @@ public class PiggyBanksViewGUI extends JFrame {
 
 
 
-        tabella.addMouseListener(new MouseAdapter() {
+        table.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 Point point = e.getPoint();
-                int currentRow = tabella.rowAtPoint(point);
+                int currentRow = table.rowAtPoint(point);
                 if (currentRow >= 0) { // Verifica che il clic sia su una riga valida
                     // Costruisci il messaggio con i dati della riga cliccata
-                    StringBuilder infoSalvadanaio = new StringBuilder();
-                    infoSalvadanaio.append("Dettagli Salvadanaio:\n");
-                    for (int i = 0; i < tabella.getColumnCount(); i++) {
-                        infoSalvadanaio.append("<html><b>" +tabella.getColumnName(i) + ": </b>" + tabella.getValueAt(currentRow, i) + "\n</html>");
+                    StringBuilder infoPiggyBank = new StringBuilder();
+                    infoPiggyBank.append("Dettagli Salvadanaio:\n");
+                    for (int i = 0; i < table.getColumnCount(); i++) {
+                        infoPiggyBank.append("<html><b>" +table.getColumnName(i) + ": </b>" + table.getValueAt(currentRow, i) + "\n</html>");
                     }
 
-                    // Mostra il dialogo con le informazioni
+                    // Mostra il dialog con le informazioni
                     // Mostra il JOptionPane con i JTextField inseriti
                     int result = JOptionPane.showOptionDialog(
-                            null, // Componente padre
-                            infoSalvadanaio.toString(), // Messaggio
-                            "Informazioni Salvadanaio", // Titolo
+                            null,
+                            infoPiggyBank.toString(),
+                            "Informazioni Salvadanaio",
                             JOptionPane.DEFAULT_OPTION,
-                            JOptionPane.QUESTION_MESSAGE, // Tipo di messaggio
-                            iconInformation, // Icona personalizzata, usa null per l'icona di default
+                            JOptionPane.QUESTION_MESSAGE,
+                            iconInformation, // Icona personalizzata
                             options, // Array contenente le etichette dei pulsanti
                             options[0] // Opzione di default
                     );
 
                     switch (result){
-                        case 0: // annulla
+                        case 0: // caso annulla
                             break;
-                        case 1: // invia soldi
+                        case 1: // caso invia soldi
                             JPanel fillPiggyBankPanel = new JPanel(new GridBagLayout());
                             JLabel soldiLabel = new JLabel("Inserisci una cifra da inviare al salvadanaio: ");
-                            JTextField soldiField = new JTextField();
+                            JTextField moneyField = new JTextField();
                             GridBagConstraints gbc = new GridBagConstraints();
                             gbc.fill = GridBagConstraints.BOTH;
                             gbc.gridy = 0;
@@ -356,59 +351,59 @@ public class PiggyBanksViewGUI extends JFrame {
                             fillPiggyBankPanel.add(soldiLabel, gbc);
                             gbc.gridy = 1;
                             gbc.gridx = 0;
-                            fillPiggyBankPanel.add(soldiField, gbc);
+                            fillPiggyBankPanel.add(moneyField, gbc);
                             int resultFill = JOptionPane.showOptionDialog(
-                                    null, // Componente padre
-                                    fillPiggyBankPanel, // Messaggio
-                                    "Invia soldi al salvadanaio", // Titolo
+                                    null,
+                                    fillPiggyBankPanel,
+                                    "Invia soldi al salvadanaio",
                                     JOptionPane.DEFAULT_OPTION,
-                                    JOptionPane.QUESTION_MESSAGE, // Tipo di messaggio
-                                    iconInformation, // Icona personalizzata, usa null per l'icona di default
+                                    JOptionPane.QUESTION_MESSAGE,
+                                    iconInformation, // Icona personalizzata
                                     optionsFill, // Array contenente le etichette dei pulsanti
                                     optionsFill[0] // Opzione di default
                             );
                             if (resultFill == JOptionPane.YES_OPTION) {
-                                controller.fillPiggyBank((String) tabella.getValueAt(currentRow, 0), soldiField.getText());
+                                controller.fillPiggyBank((String) table.getValueAt(currentRow, 0), moneyField.getText());
                                 controller.updateBankAccount(controller.getSelectedBankAccount());
                                 controller.showPiggyBankView();
                             }
                             break;
-                        case 2: // prendi soldi
+                        case 2: // caso prendi soldi
                             JPanel getPiggyBankPanel = new JPanel(new GridBagLayout());
-                            JLabel getSoldiLabel = new JLabel("Inserisci una cifra da prendere dal salvadanaio: ");
-                            JTextField getSoldiField = new JTextField();
+                            JLabel getMoneyLabel = new JLabel("Inserisci una cifra da prendere dal salvadanaio: ");
+                            JTextField getMoneyField = new JTextField();
                             gbc = new GridBagConstraints();
                             gbc.fill = GridBagConstraints.BOTH;
                             gbc.gridy = 0;
                             gbc.gridx = 0;
-                            getPiggyBankPanel.add(getSoldiLabel, gbc);
+                            getPiggyBankPanel.add(getMoneyLabel, gbc);
                             gbc.gridy = 1;
                             gbc.gridx = 0;
-                            getPiggyBankPanel.add(getSoldiField, gbc);
+                            getPiggyBankPanel.add(getMoneyField, gbc);
                             int resultGet = JOptionPane.showOptionDialog(
-                                    null, // Componente padre
-                                    getPiggyBankPanel, // Messaggio
-                                    "Prendi soldi dal salvadanaio", // Titolo
+                                    null,
+                                    getPiggyBankPanel,
+                                    "Prendi soldi dal salvadanaio",
                                     JOptionPane.DEFAULT_OPTION,
-                                    JOptionPane.QUESTION_MESSAGE, // Tipo di messaggio
-                                    iconInformation, // Icona personalizzata, usa null per l'icona di default
+                                    JOptionPane.QUESTION_MESSAGE,
+                                    iconInformation, // Icona personalizzata
                                     optionsGet, // Array contenente le etichette dei pulsanti
                                     optionsGet[0] // Opzione di default
                             );
                             if (resultGet == JOptionPane.YES_OPTION){
-                                // Ottieni il valore dalla tabella e convertilo in Stringa
-                                String valueWithCurrency = (String) tabella.getValueAt(currentRow, 3);
-                                //  Rimuovi il simbolo della valuta '€' e qualsiasi altro carattere non numerico, mantenendo solo numeri e punto decimale
+                                // Ottiene il valore dalla tabella e convertilo in Stringa
+                                String valueWithCurrency = (String) table.getValueAt(currentRow, 3);
+                                //  Rimuove il simbolo della valuta '€' e qualsiasi altro carattere non numerico, mantenendo solo numeri e punto decimale
                                 String numericValue = valueWithCurrency.replaceAll("[^\\d.]", "");
-                                controller.getMoneyByPiggyBank(numericValue, (String) tabella.getValueAt(currentRow, 0), getSoldiField.getText());
+                                controller.getMoneyByPiggyBank(numericValue, (String) table.getValueAt(currentRow, 0), getMoneyField.getText());
                                 controller.updateBankAccount(controller.getSelectedBankAccount());
                                 controller.showPiggyBankView();
 
                             }
                             break;
-                        case 3: // elimina
-                            if (tabella.getValueAt(currentRow, 3).equals("0.0€")) {
-                                controller.deletePiggyBank((String) tabella.getValueAt(currentRow, 0));
+                        case 3: // caso elimina salvadanaio
+                            if (table.getValueAt(currentRow, 3).equals("0.0€")) {
+                                controller.deletePiggyBank((String) table.getValueAt(currentRow, 0));
                                 controller.showPiggyBankView();
                             }
                             else{
@@ -420,14 +415,12 @@ public class PiggyBanksViewGUI extends JFrame {
                                 );
                             }
                             break;
-
                     }
                 }
             }
         });
 
-
-
+        //posiziona lo scroll pane con la tabella al suo interno nel panel Center
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weighty = 1;
@@ -436,10 +429,6 @@ public class PiggyBanksViewGUI extends JFrame {
 
         setContentPane(contentPane);
     }
-
-
-
-
 
 
     //Creazione del fontExtraBold

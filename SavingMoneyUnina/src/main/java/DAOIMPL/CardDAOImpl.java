@@ -11,6 +11,7 @@ public class CardDAOImpl implements CardDAO {
 
     @Override
     public Card selectCard(BankAccount contoCorrente){
+        // Query SQL che prende le informazioni della Carta
         String query = "SELECT c.pan, c.pin, c.cvv, c.tipocarta, c.maxinvio, c.price_upgrade, c.contocorrente_iban " +
                 "FROM test.carta c " +
                 "WHERE c.contocorrente_iban = '" + contoCorrente.getIban() + "'";

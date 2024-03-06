@@ -13,7 +13,7 @@ public class PiggyBankDAOImpl implements PiggyBankDAO {
 
         ArrayList<PiggyBank> piggyBanks = new ArrayList<PiggyBank>();
 
-        // Query SQL per ottenere i dettagli dell'utente
+        // Query SQL per ottenere i dettagli del salvadanaio
         String query = "SELECT * " +
                 " FROM test.salvadanaio s " +
                 " WHERE s.contocorrente_iban = '" + bankAccount.getIban() + "'";
@@ -30,7 +30,7 @@ public class PiggyBankDAOImpl implements PiggyBankDAO {
                             resultSet.getDouble("obiettivo"), resultSet.getDouble("saldorisparmio"),
                             resultSet.getDouble("saldorimanente"), resultSet.getString("datacreazione")
                     );
-                    //Agginta del salvadaio all'ArrayList di salvadanai
+                    //Aggiunta del salvadanaio all'ArrayList di salvadanai
                     piggyBanks.add(piggyBank);
                 }
                 return piggyBanks;
@@ -63,7 +63,9 @@ public class PiggyBankDAOImpl implements PiggyBankDAO {
             // "23505" è il codice di stato usato da PostgreSQL per indicare un errore di unique-violation
             if("23505".equals(e.getSQLState())) {
                 throw new MyExc("Nome salvadanaio già esistente!");
-            } else if ("23514".equals(e.getSQLState())) {
+            }
+            // "23514" è il codice di stato usato da PostgreSQL per indicare un errore di check-violation
+            else if ("23514".equals(e.getSQLState())) {
                 throw new MyExc("Inserisci una cifra valida");
             } else {
                 e.printStackTrace();
