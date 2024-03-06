@@ -114,7 +114,7 @@ public class PiggyBanksViewGUI extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                controller.showHomePage(controller.getSelectedBankAccount());
+                controller.showHomePage(controller.getContoScelto());
             }
         });
 
@@ -198,7 +198,7 @@ public class PiggyBanksViewGUI extends JFrame {
                                 JOptionPane.ERROR_MESSAGE
                         );
                     }
-                    controller.showPiggyBankView();
+                    controller.showSalvadanaioPage();
                 }
 
             }
@@ -257,7 +257,7 @@ public class PiggyBanksViewGUI extends JFrame {
             }
         };
         // Aggiungere i dati del salvadanaio al modello
-        for(PiggyBank piggyBanks : controller.getPiggyBanks()){
+        for(PiggyBank piggyBanks : controller.getSalvadanai()){
             Object[] riga = {
                     piggyBanks.getNamePiggyBank(),
                     piggyBanks.getDescription(),
@@ -364,8 +364,8 @@ public class PiggyBanksViewGUI extends JFrame {
                             );
                             if (resultFill == JOptionPane.YES_OPTION) {
                                 controller.fillPiggyBank((String) table.getValueAt(currentRow, 0), moneyField.getText());
-                                controller.updateBankAccount(controller.getSelectedBankAccount());
-                                controller.showPiggyBankView();
+                                controller.updateBankAccount(controller.getContoScelto());
+                                controller.showSalvadanaioPage();
                             }
                             break;
                         case 2: // caso prendi soldi
@@ -396,15 +396,15 @@ public class PiggyBanksViewGUI extends JFrame {
                                 //  Rimuove il simbolo della valuta '€' e qualsiasi altro carattere non numerico, mantenendo solo numeri e punto decimale
                                 String numericValue = valueWithCurrency.replaceAll("[^\\d.]", "");
                                 controller.getMoneyByPiggyBank(numericValue, (String) table.getValueAt(currentRow, 0), getMoneyField.getText());
-                                controller.updateBankAccount(controller.getSelectedBankAccount());
-                                controller.showPiggyBankView();
+                                controller.updateBankAccount(controller.getContoScelto());
+                                controller.showSalvadanaioPage();
 
                             }
                             break;
                         case 3: // caso elimina salvadanaio
                             if (table.getValueAt(currentRow, 3).equals("0.0€")) {
                                 controller.deletePiggyBank((String) table.getValueAt(currentRow, 0));
-                                controller.showPiggyBankView();
+                                controller.showSalvadanaioPage();
                             }
                             else{
                                 JOptionPane.showMessageDialog(

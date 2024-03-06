@@ -1,30 +1,25 @@
 package ENTITY;
 
+// Classe del modello che rappresenta la carta di credito
+
 public class CreditCard extends Card{
 
     //Attributi
-    private double maximumMoneyTransfer;
+    private double priceUpgrade;
 
     //Costruttori
-    public CreditCard(String pan, String pin, String cvv, String typeCard,  BankAccount bankAccount, double maximumMoneyTransfer){
+    public CreditCard(String pan, String pin, String cvv, String typeCard,  BankAccount bankAccount, double priceUpgrade){
         super(pan, pin, cvv, typeCard, bankAccount);
-        setMaximumMoneyTransfer(maximumMoneyTransfer);
+        setPriceUpgrade(priceUpgrade);
     }
 
     //Getter e Setter
-    public double getMaximumMoneyTransfer() {
-        return maximumMoneyTransfer;
+    public double getPriceUpgrade() {
+        return priceUpgrade;
     }
 
-    public void setMaximumMoneyTransfer(double maximumMoneyTransfer) {
-        this.maximumMoneyTransfer = maximumMoneyTransfer;
+    public void setPriceUpgrade(double priceUpgrade) {
+        this.priceUpgrade = priceUpgrade;
     }
 
-    @Override
-    public String toString() {
-        return super.toString() +
-                "CartaDiCredito{" +
-                "maxInvio=" + maximumMoneyTransfer +
-                '}';
-    }
 }

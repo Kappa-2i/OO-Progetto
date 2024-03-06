@@ -19,21 +19,22 @@ public class HomeViewGUI extends JFrame {
     private Font fontRegularBold;
     private Font fontRegularXXL;
 
-    //Dichiarazione delle immagini
+    //Icone
     ImageIcon iconExit = new ImageIcon(HomeViewGUI.class.getResource("/IMG/door_exit.png"));
     ImageIcon iconLogOut = new ImageIcon(HomeViewGUI.class.getResource("/IMG/logout.png"));
     ImageIcon iconUnina = new ImageIcon(HomeViewGUI.class.getResource("/IMG/unina.png")); // Sostituisci con il percorso del tuo file icona
     ImageIcon iconUpgrade = new ImageIcon(HomeViewGUI.class.getResource("/IMG/upgrade.png"));
     ImageIcon iconDowngrade = new ImageIcon(HomeViewGUI.class.getResource("/IMG/downgrade.png"));
-    ImageIcon iconCollections = new ImageIcon(HomeViewGUI.class.getResource("/IMG/raccolte.png"));
-    ImageIcon iconSendMoney = new ImageIcon(HomeViewGUI.class.getResource("/IMG/sendMoney.png"));
-    ImageIcon iconPiggyBank = new ImageIcon(HomeViewGUI.class.getResource("/IMG/saving_resized.png"));
-    ImageIcon iconTransactions = new ImageIcon(HomeViewGUI.class.getResource("/IMG/time-count_resized_flipped.png"));
-    ImageIcon iconCard = new ImageIcon(HomeViewGUI.class.getResource("/IMG/credit_resized.png"));
+    ImageIcon iconRaccolte = new ImageIcon(HomeViewGUI.class.getResource("/IMG/raccolte.png"));
+    ImageIcon iconInviaSoldi = new ImageIcon(HomeViewGUI.class.getResource("/IMG/sendMoney.png"));
+    ImageIcon iconSalvadanaio = new ImageIcon(HomeViewGUI.class.getResource("/IMG/saving_resized.png"));
+    ImageIcon iconSpese = new ImageIcon(HomeViewGUI.class.getResource("/IMG/time-count_resized_flipped.png"));
+    ImageIcon iconSaldo = new ImageIcon(HomeViewGUI.class.getResource("/IMG/credit_resized.png"));
     ImageIcon iconUser = new ImageIcon(HomeViewGUI.class.getResource("/IMG/user.png")); // Sostituisci con il percorso del tuo file icona
     ImageIcon iconDelete = new ImageIcon(HomeViewGUI.class.getResource("/IMG/delete.png"));
     ImageIcon iconCancel = new ImageIcon(HomeViewGUI.class.getResource("/IMG/cancel.png"));
     ImageIcon iconInformation = new ImageIcon(HomeViewGUI.class.getResource("/IMG/information.png"));
+
 
     public HomeViewGUI(Controller controller){
         this.controller = controller;
@@ -52,7 +53,7 @@ public class HomeViewGUI extends JFrame {
         Object[] options = {"Sì", "No"};
 
 
-        // Creazione panello principale con GridBagLayout
+        // Creazione panello principale che contiene il tutto
         JPanel contentPane = new JPanel(new GridBagLayout());
         contentPane.setBackground(new Color(246, 248, 255));
 
@@ -61,7 +62,7 @@ public class HomeViewGUI extends JFrame {
 
         // Dichiarazione del pannello superiore con aggiunta dei constraints per posizionarlo
         JPanel panelTop = new JPanel(new GridBagLayout());
-        panelTop.setBackground(new Color(0, 50, 73, 255));
+        panelTop.setBackground(new Color(0, 50, 73));
         gbc.gridwidth = 4;
         gbc.weighty = 0.1;
         gbc.weightx = 1;
@@ -71,7 +72,7 @@ public class HomeViewGUI extends JFrame {
         contentPane.add(panelTop, gbc);
 
         // Dichiarazione del pannello laterale sinistro con aggiunta dei constraints per posizionarlo
-        RoundedPanel panelLeft = new RoundedPanel(50, new Color(0, 50, 73, 255));
+        RoundedPanel panelLeft = new RoundedPanel(50, new Color(0, 50, 73));
         panelLeft.setLayout(new GridBagLayout());
         gbc.gridwidth = 1;
         gbc.weighty = 0.95;
@@ -94,11 +95,10 @@ public class HomeViewGUI extends JFrame {
         gbc.insets = new Insets(0, 0, 0, 0);
         contentPane.add(panelGhost, gbc);
 
-        // Dichiarazione del pannello a comparsa laterale destro con aggiunta dei constraints per posizionarlo
         JPanel userPanel = new JPanel(new GridBagLayout());
         userPanel.setVisible(false);
         userPanel.setBackground(new Color(217, 217, 217));
-        userPanel.setBorder(new MatteBorder(0, 3, 0, 0, new Color(0, 50, 73, 255)));
+        userPanel.setBorder(new MatteBorder(0, 3, 0, 0, new Color(0, 50, 73)));
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weighty = 0;
@@ -112,11 +112,11 @@ public class HomeViewGUI extends JFrame {
         // Dichiarazione dei componenti per il pannello superiore
         JLabel homePageLabel = new JLabel("Home Page");
         homePageLabel.setForeground(new Color(246, 248, 255));
-        JLabel titleSmu = new JLabel("S.M.U.");
-        titleSmu.setForeground(Color.WHITE);
+        JLabel titoloSmu = new JLabel("S.M.U.");
+        titoloSmu.setForeground(Color.WHITE);
         if (fontExtraBold != null) {
             homePageLabel.setFont(fontExtraBold);
-            titleSmu.setFont(fontRegular);
+            titoloSmu.setFont(fontRegular);
         }
 
         JButton buttonLogo = new JButton();
@@ -141,12 +141,12 @@ public class HomeViewGUI extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int scelta = JOptionPane.showOptionDialog(
-                        null,
+                        null, // Componente padre
                         "Sei sicuro di voler uscire?", // Messaggio
                         "Conferma Logout", // Titolo
                         JOptionPane.YES_NO_CANCEL_OPTION,
                         JOptionPane.QUESTION_MESSAGE, // Tipo di messaggio
-                        iconExit, // Icona personalizzata
+                        iconExit, // Icona personalizzata, usa null per l'icona di default
                         options, // Array contenente le etichette dei pulsanti
                         options[1] // Opzione di default
                 );
@@ -177,7 +177,7 @@ public class HomeViewGUI extends JFrame {
                         "<html><b>Nome: </b> " +controller.getAccount().getName() +"</html>"+
                                 "\n<html><b>Cognome: </b> " +controller.getAccount().getSurname() +"</html>"+
                                 "\n<html><b>E-mail: </b> " +controller.getAccount().getEmail() + "</html>" +
-                                "\n<html><b>Iban: </b> " +controller.getSelectedBankAccount().getIban() + "</html>",
+                                "\n<html><b>Iban: </b> " +controller.getContoScelto().getIban() + "</html>",
                         "Informazioni profilo",
                         JOptionPane.PLAIN_MESSAGE,
                         iconInformation
@@ -205,33 +205,19 @@ public class HomeViewGUI extends JFrame {
             }
         });
 
-        JLabel notificheLabel = new JLabel("Elimina Account");
-        notificheLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        notificheLabel.addMouseListener(new MouseAdapter() {
+
+
+        JLabel settingsLabel = new JLabel("Elimina Conto Corrente");
+        settingsLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        settingsLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                notificheLabel.setText("<html><u>Elimina Account</u></html>");
+                settingsLabel.setText("<html><u>Elimina Conto Corrente</u></html>");
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                notificheLabel.setText("Elimina Account");
-            }
-        });
-
-
-
-        JLabel deleteBankAccount = new JLabel("Elimina Conto Corrente");
-        deleteBankAccount.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        deleteBankAccount.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                deleteBankAccount.setText("<html><u>Elimina Conto Corrente</u></html>");
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                deleteBankAccount.setText("Elimina Conto Corrente");
+                settingsLabel.setText("Elimina Conto Corrente");
             }
 
             @Override
@@ -247,15 +233,34 @@ public class HomeViewGUI extends JFrame {
                         options[1] // Opzione di default
                 );
                 if (scelta == JOptionPane.YES_OPTION)
-                    controller.deleteBankAccount(controller.getSelectedBankAccount().getIban());
+                    controller.deleteBankAccount(controller.getContoScelto().getIban());
             }
         });
 
+        JLabel addMoney = new JLabel("Aggiungi Fondi");
+        addMoney.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        addMoney.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                addMoney.setText("<html><u>Aggiungi Fondi</u></html>");
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                addMoney.setText("Aggiungi Fondi");
+            }
+
+//            @Override
+//            public void mouseClicked(MouseEvent e){
+//                controller.backFramePick();
+//            }
+        });
 
         if (fontRegular != null){
             accountLabel.setFont(fontRegular);
             bankAccountLabel.setFont(fontRegular);
-            deleteBankAccount.setFont(fontRegular);
+            settingsLabel.setFont(fontRegular);
+
         }
 
         gbc.gridy = 0;
@@ -264,7 +269,7 @@ public class HomeViewGUI extends JFrame {
         gbc.gridy = 1;
         userPanel.add(bankAccountLabel, gbc);
         gbc.gridy = 3;
-        userPanel.add(deleteBankAccount, gbc);
+        userPanel.add(settingsLabel, gbc);
 
 
 
@@ -281,7 +286,6 @@ public class HomeViewGUI extends JFrame {
         buttonUser.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                //Metodi per mostrare e nascondere l'user Panel
                 if (!userPanel.isVisible())
                     userPanel.setVisible(true);
                 else
@@ -301,7 +305,7 @@ public class HomeViewGUI extends JFrame {
 
         // Configurazione per il titoloSmu a sinistra di homePageLabel
         gbc.gridx = 2; // Posiziona titoloSmu accanto a buttonLogo
-        panelTop.add(titleSmu, gbc);
+        panelTop.add(titoloSmu, gbc);
 
         gbc = new GridBagConstraints();
         // Infine, aggiungi spazio di espansione a destra per mantenere homePageLabel centrata
@@ -335,33 +339,33 @@ public class HomeViewGUI extends JFrame {
         /**
          * Aggiungiamo ora i componenti all'interno del panello di sinistra
          * */
-        RoundedPanel cardPanel = new RoundedPanel(50, new Color(69, 184, 196) );
-        cardPanel.setLayout(new GridBagLayout());
-        cardPanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        cardPanel.addMouseListener(new MouseAdapter() {
+        RoundedPanel saldoPanel = new RoundedPanel(50, new Color(69, 184, 196, 255) );
+        saldoPanel.setLayout(new GridBagLayout());
+        saldoPanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        saldoPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 controller.showCardPage();
             }
         });
 
-        RoundedPanel transactionsPanel = new RoundedPanel(50, new Color(128, 206, 215));
-        transactionsPanel.setLayout(new GridBagLayout());
-        transactionsPanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        transactionsPanel.addMouseListener(new MouseAdapter() {
+        RoundedPanel spesePanel = new RoundedPanel(50, new Color(128, 206, 215));
+        spesePanel.setLayout(new GridBagLayout());
+        spesePanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        spesePanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                //controller.showTransazioniPage();
+                controller.showTransazioniPage();
             }
         });
 
-        RoundedPanel piggyBanksPanel = new RoundedPanel(50, new Color(174, 227, 230));
-        piggyBanksPanel.setLayout(new GridBagLayout());
-        piggyBanksPanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        piggyBanksPanel.addMouseListener(new MouseAdapter() {
+        RoundedPanel salvadanaioPanel = new RoundedPanel(50, new Color(174, 227, 230));
+        salvadanaioPanel.setLayout(new GridBagLayout());
+        salvadanaioPanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        salvadanaioPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                controller.showPiggyBankView();
+                controller.showSalvadanaioPage();
             }
         });
 
@@ -372,40 +376,41 @@ public class HomeViewGUI extends JFrame {
         gbc.weightx = 1;
         gbc.weighty = 0.33;
         gbc.insets = new Insets(20, 20, 20, 20);
-        panelLeft.add(cardPanel, gbc);
+        panelLeft.add(saldoPanel, gbc);
 
         gbc.gridy = 1;
         gbc.weighty = 0.33;
-        panelLeft.add(transactionsPanel, gbc);
+        panelLeft.add(spesePanel, gbc);
 
         gbc.gridy = 2;
         gbc.weighty = 0.33;
-        panelLeft.add(piggyBanksPanel, gbc);
+        panelLeft.add(salvadanaioPanel, gbc);
 
         /**
          * Aggiungiamo i componenti ad ognuno dei 3 rounded panel all'interno del panel di sx
          * */
 
-
-        JLabel cardLabel = new JLabel();
-        if (controller.getCard().getTypeCard().equals("CartaDiCredito")) {
-             cardLabel.setText("<html><b>CARTA DI<br>CREDITO</b></html>");
+        String carta;
+        if (controller.getCarta().getTypeCard().equals("CartaDiCredito")) {
+            carta = "<html><b>CARTA<br>DI CREDITO</b></html>";
         }
         else {
-            cardLabel.setText("<html><b>CARTA DI<br>DEBITO</b></html>");
+            carta = "<html><b>CARTA<br>DI DEBITO</b></html>";
         }
-        cardLabel.setForeground(new Color(8, 76, 97));
-        JLabel amountLabel = new JLabel(String.valueOf(controller.getSelectedBankAccount().getBalance())+"€");
-        amountLabel.setForeground(new Color(246, 248, 255));
-        JButton buttonCard = new JButton();
-        buttonCard.setBackground(null);
-        buttonCard.setIcon(iconCard);
-        buttonCard.setContentAreaFilled(false);
-        buttonCard.setOpaque(false);
-        buttonCard.setBorderPainted(false);
-        buttonCard.setBorder(null);
-        buttonCard.setFocusPainted(false);
-        buttonCard.addMouseListener(new MouseAdapter() {
+
+        JLabel cartaLabel = new JLabel(carta);
+        cartaLabel.setForeground(new Color(8, 76, 97));
+        JLabel saldoLabel = new JLabel(String.valueOf(controller.getContoScelto().getBalance())+"€");
+        saldoLabel.setForeground(new Color(246, 248, 255));
+        JButton buttonSaldo = new JButton();
+        buttonSaldo.setBackground(null);
+        buttonSaldo.setIcon(iconSaldo);
+        buttonSaldo.setContentAreaFilled(false);
+        buttonSaldo.setOpaque(false);
+        buttonSaldo.setBorderPainted(false);
+        buttonSaldo.setBorder(null);
+        buttonSaldo.setFocusPainted(false);
+        buttonSaldo.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 controller.showCardPage();
@@ -418,7 +423,7 @@ public class HomeViewGUI extends JFrame {
         speseLabel.setForeground(new Color(8, 76, 97));
         JButton buttonSpese = new JButton();
         buttonSpese.setBackground(null);
-        buttonSpese.setIcon(iconTransactions);
+        buttonSpese.setIcon(iconSpese);
         buttonSpese.setContentAreaFilled(false);
         buttonSpese.setOpaque(false);
         buttonSpese.setBorderPainted(false);
@@ -427,34 +432,28 @@ public class HomeViewGUI extends JFrame {
         buttonSpese.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                //controller.showTransazioniPage();
+                controller.showTransazioniPage();
             }
         });
 
 
-        JLabel biggyBankLabel = new JLabel("<html><b>PIGGY<br>BANK</b></html>");
-        biggyBankLabel.setForeground(new Color(8, 76, 97));
-        JButton buttonPiggyBank = new JButton();
-        buttonPiggyBank.setBackground(null);
-        buttonPiggyBank.setIcon(iconPiggyBank);
-        buttonPiggyBank.setContentAreaFilled(false);
-        buttonPiggyBank.setOpaque(false);
-        buttonPiggyBank.setBorderPainted(false);
-        buttonPiggyBank.setBorder(null);
-        buttonPiggyBank.setFocusPainted(false);
-        buttonPiggyBank.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                controller.showPiggyBankView();
-            }
-        });
+        JLabel salvadanaioLabel = new JLabel("<html><b>PIGGY<br>BANK</b></html>");
+        salvadanaioLabel.setForeground(new Color(8, 76, 97));
+        JButton buttonSalvadanaio = new JButton();
+        buttonSalvadanaio.setBackground(null);
+        buttonSalvadanaio.setIcon(iconSalvadanaio);
+        buttonSalvadanaio.setContentAreaFilled(false);
+        buttonSalvadanaio.setOpaque(false);
+        buttonSalvadanaio.setBorderPainted(false);
+        buttonSalvadanaio.setBorder(null);
+        buttonSalvadanaio.setFocusPainted(false);
 
 
         if (fontRegular != null){
-            amountLabel.setFont(fontRegularXXL);
-            cardLabel.setFont(fontRegularXXL);
+            saldoLabel.setFont(fontRegularXXL);
+            cartaLabel.setFont(fontRegularXXL);
             speseLabel.setFont(fontRegularXXL);
-            biggyBankLabel.setFont(fontRegularXXL);
+            salvadanaioLabel.setFont(fontRegularXXL);
         }
 
 
@@ -465,7 +464,7 @@ public class HomeViewGUI extends JFrame {
         gbc.weighty = 0.5;
         gbc.weightx = 0.5;
         gbc.insets = new Insets(-40, 0, 0, 0);
-        cardPanel.add(cardLabel, gbc);
+        saldoPanel.add(cartaLabel, gbc);
 
 
         gbc.anchor = GridBagConstraints.NORTH;
@@ -473,14 +472,14 @@ public class HomeViewGUI extends JFrame {
         gbc.gridy = 1;
         gbc.weighty = 0.5;
         gbc.insets = new Insets(-40, 0, 0, 0);
-        cardPanel.add(amountLabel, gbc);
+        saldoPanel.add(saldoLabel, gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.weighty = 1;
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.insets = new Insets(0, 0, 0, 0);
-        cardPanel.add(buttonCard, gbc);
+        saldoPanel.add(buttonSaldo, gbc);
 
         gbc = new GridBagConstraints();
 
@@ -489,13 +488,13 @@ public class HomeViewGUI extends JFrame {
         gbc.weighty = 0.5;
         gbc.weightx = 0.5;
         gbc.insets = new Insets(0, 0, 0, 0);
-        transactionsPanel.add(speseLabel, gbc);
+        spesePanel.add(speseLabel, gbc);
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.weighty = 1;
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.insets = new Insets(0, 0, 0, 0);
-        transactionsPanel.add(buttonSpese, gbc);
+        spesePanel.add(buttonSpese, gbc);
 
         gbc = new GridBagConstraints();
 
@@ -503,13 +502,13 @@ public class HomeViewGUI extends JFrame {
         gbc.gridy = 0;
         gbc.weighty = 0.5;
         gbc.insets = new Insets(0, 8, 0, 0);
-        piggyBanksPanel.add(biggyBankLabel, gbc);
+        salvadanaioPanel.add(salvadanaioLabel, gbc);
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.weighty = 1;
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.insets = new Insets(0, 50, 0, 0);
-        piggyBanksPanel.add(buttonPiggyBank, gbc);
+        salvadanaioPanel.add(buttonSalvadanaio, gbc);
 
 
         /**
@@ -546,21 +545,33 @@ public class HomeViewGUI extends JFrame {
          * */
 
 
-        JButton buttonSendMoney = new JButton();
-        buttonSendMoney.setBackground(null);
-        buttonSendMoney.setIcon(iconSendMoney);
-        buttonSendMoney.setContentAreaFilled(false);
-        buttonSendMoney.setOpaque(false);
-        buttonSendMoney.setBorderPainted(false);
-        buttonSendMoney.setBorder(null);
-        buttonSendMoney.setFocusPainted(false);
-        buttonSendMoney.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        JButton buttonInviaSoldi = new JButton();
+        buttonInviaSoldi.setBackground(null);
+        buttonInviaSoldi.setIcon(iconInviaSoldi);
+        buttonInviaSoldi.setContentAreaFilled(false);
+        buttonInviaSoldi.setOpaque(false);
+        buttonInviaSoldi.setBorderPainted(false);
+        buttonInviaSoldi.setBorder(null);
+        buttonInviaSoldi.setFocusPainted(false);
+        buttonInviaSoldi.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        buttonInviaSoldi.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                controller.showBankTransferPage();
+            }
+        });
 
-        JLabel sendMoneyLabel = new JLabel("   INVIA BONIFICO");
+        JLabel inviaSoldiLabel = new JLabel("   INVIA BONIFICO");
         if (fontRegularXXL != null)
-            sendMoneyLabel.setFont(fontRegularXXL);
-        sendMoneyLabel.setForeground(new Color(8, 76, 97));
-        sendMoneyLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            inviaSoldiLabel.setFont(fontRegularXXL);
+        inviaSoldiLabel.setForeground(new Color(8, 76, 97));
+        inviaSoldiLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        inviaSoldiLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                controller.showBankTransferPage();
+            }
+        });
 
 
         gbc = new GridBagConstraints();
@@ -574,29 +585,41 @@ public class HomeViewGUI extends JFrame {
         gbc.gridx = 1;
         gbc.weightx = 0.3;
         gbc.anchor = GridBagConstraints.WEST;
-        inviaSoldiPanel.add(buttonSendMoney, gbc);
+        inviaSoldiPanel.add(buttonInviaSoldi, gbc);
 
         gbc.gridx = 2;
         gbc.weightx = 0.7;
         gbc.anchor = GridBagConstraints.CENTER;
-        inviaSoldiPanel.add(sendMoneyLabel, gbc);
+        inviaSoldiPanel.add(inviaSoldiLabel, gbc);
 
 
         JButton buttonRaccolte = new JButton();
         buttonRaccolte.setBackground(null);
-        buttonRaccolte.setIcon(iconCollections);
+        buttonRaccolte.setIcon(iconRaccolte);
         buttonRaccolte.setContentAreaFilled(false);
         buttonRaccolte.setOpaque(false);
         buttonRaccolte.setBorderPainted(false);
         buttonRaccolte.setBorder(null);
         buttonRaccolte.setFocusPainted(false);
         buttonRaccolte.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        buttonRaccolte.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                controller.showCollectionPickView();
+            }
+        });
 
         JLabel raccolteLabel = new JLabel("          RACCOLTE");
         if (fontRegularXXL != null)
             raccolteLabel.setFont(fontRegularXXL);
         raccolteLabel.setForeground(new Color(8, 76, 97));
         raccolteLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        raccolteLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                controller.showCollectionPickView();
+            }
+        });
 
 
 
@@ -622,40 +645,40 @@ public class HomeViewGUI extends JFrame {
 
 
 
-        JButton upgradeOrDowngradeButton = new JButton();
-        upgradeOrDowngradeButton.setBackground(null);
-        upgradeOrDowngradeButton.setContentAreaFilled(false);
-        upgradeOrDowngradeButton.setOpaque(false);
-        upgradeOrDowngradeButton.setBorderPainted(false);
-        upgradeOrDowngradeButton.setBorder(null);
-        upgradeOrDowngradeButton.setFocusPainted(false);
-        upgradeOrDowngradeButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        JButton buttonNotifiche = new JButton();
+        buttonNotifiche.setBackground(null);
+        buttonNotifiche.setContentAreaFilled(false);
+        buttonNotifiche.setOpaque(false);
+        buttonNotifiche.setBorderPainted(false);
+        buttonNotifiche.setBorder(null);
+        buttonNotifiche.setFocusPainted(false);
+        buttonNotifiche.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        JLabel upgradeOrDowngradeLabel = new JLabel("");
-        if (fontRegularXXL != null)
-            upgradeOrDowngradeLabel.setFont(fontRegularXXL);
-        upgradeOrDowngradeLabel.setForeground(new Color(8, 76, 97));
-        upgradeOrDowngradeLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-
-        // In base al tipo della carta scelgo quale funzione far apparire
-        if(controller.getCard().getTypeCard().equals("CartaDiCredito")) {
-            upgradeOrDowngradeLabel.setText("<html><b>DOWNGRADE<br>CARTA</b></html>");
-            upgradeOrDowngradeButton.setIcon(iconDowngrade);
+        JLabel notificheLabel2 = new JLabel("");
+        if(controller.getCarta().getTypeCard().equals("CartaDiCredito")) {
+            notificheLabel2.setText("<html><b>DOWNGRADE<br>CARTA</b></html>");
+            buttonNotifiche.setIcon(iconDowngrade);
         }
         else {
-            upgradeOrDowngradeLabel.setText("<html><b>UPGRADE<br>CARTA</b></html>");
-            upgradeOrDowngradeButton.setIcon(iconUpgrade);
+            notificheLabel2.setText("<html><b>UPGRADE CARTA</b></html>");
+            buttonNotifiche.setIcon(iconUpgrade);
         }
-        upgradeOrDowngradeLabel.addMouseListener(new MouseAdapter() {
+
+        notificheLabel2.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(upgradeOrDowngradeLabel.getText().equals("<html><b>UPGRADE<br>CARTA</b></html>")){
-                    controller.upgradeCard(controller.getCard().getPan());
+                if(notificheLabel2.getText().equals("<html><b>UPGRADE CARTA</b></html>")){
+                    controller.upgradeCarta(controller.getCarta().getPan());
                 }
                 else
-                    controller.downgradeCard(controller.getCard().getPan());
+                    controller.downgradeCarta(controller.getCarta().getPan());
             }
         });
+
+        if (fontRegularXXL != null)
+            notificheLabel2.setFont(fontRegularXXL);
+        notificheLabel2.setForeground(new Color(8, 76, 97));
+        notificheLabel2.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         gbc = new GridBagConstraints();
 
@@ -668,12 +691,14 @@ public class HomeViewGUI extends JFrame {
         gbc.gridx = 1;
         gbc.weightx = 0.3;
         gbc.anchor = GridBagConstraints.WEST;
-        riceviSoldiPanel.add(upgradeOrDowngradeButton, gbc);
+        riceviSoldiPanel.add(buttonNotifiche, gbc);
+
 
         gbc.gridx = 2;
         gbc.weightx = 0.7;
         gbc.anchor = GridBagConstraints.CENTER;
-        riceviSoldiPanel.add(upgradeOrDowngradeLabel, gbc);
+        riceviSoldiPanel.add(notificheLabel2, gbc);
+
 
 
         setContentPane(contentPane);

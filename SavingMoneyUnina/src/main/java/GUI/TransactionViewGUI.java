@@ -171,7 +171,7 @@ public class TransactionViewGUI extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 setVisible(false);
-                controller.showHomePage(controller.getSelectedBankAccount());
+                controller.showHomePage(controller.getContoScelto());
             }
         });
 
@@ -244,7 +244,7 @@ public class TransactionViewGUI extends JFrame {
         currentYear = String.valueOf(LocalDate.now().getYear());
         // Combina l'anno e il mese nel formato YYYY-MM
         String yearMonth = currentYear + "-" + monthNumber;
-        controller.viewReport(controller.getSelectedBankAccount(), yearMonth);
+        controller.viewReport(controller.getContoScelto(), yearMonth);
 
 
 
@@ -270,8 +270,8 @@ public class TransactionViewGUI extends JFrame {
         JLabel uscitaMed = new JLabel("Uscita media: ");
         uscitaMedValue = new JLabel(String.format("%.2f", controller.getReport()[5]) + "€");
 
-        double totaleInviatoMensile = controller.totalSentMonthly(controller.getSelectedBankAccount(), yearMonth);
-        double totaleRicevutoMensile = controller.totalReceivedMonthly(controller.getSelectedBankAccount(), yearMonth);
+        double totaleInviatoMensile = controller.totaleInviatoMensile(controller.getContoScelto(), yearMonth);
+        double totaleRicevutoMensile = controller.totaleRicevutoMensile(controller.getContoScelto(), yearMonth);
         JLabel totaleInviato = new JLabel("Totale inviato: ");
         JLabel totaleRicevuto = new JLabel("Totale ricevuto: ");
         totaleInviatoValue = new JLabel(String.format("%.2f", totaleInviatoMensile) + "€");
@@ -434,7 +434,7 @@ public class TransactionViewGUI extends JFrame {
 
 
                 // Ora chiama la funzione viewReport con l'anno e il mese selezionati
-                controller.viewReport(controller.getSelectedBankAccount(), yearMonth);
+                controller.viewReport(controller.getContoScelto(), yearMonth);
 
 
 
@@ -477,8 +477,8 @@ public class TransactionViewGUI extends JFrame {
 
                 uscitaMedValue = new JLabel(String.format("%.2f", controller.getReport()[5]) + "€");
 
-                double totaleInviatoMensile = controller.totalSentMonthly(controller.getSelectedBankAccount(), yearMonth);
-                double totaleRicevutoMensile = controller.totalReceivedMonthly(controller.getSelectedBankAccount(), yearMonth);
+                double totaleInviatoMensile = controller.totaleInviatoMensile(controller.getContoScelto(), yearMonth);
+                double totaleRicevutoMensile = controller.totaleRicevutoMensile(controller.getContoScelto(), yearMonth);
 
                 totaleInviatoValue = new JLabel(String.format("%.2f", totaleInviatoMensile) + "€");
                 totaleRicevutoValue = new JLabel(String.format("%.2f", totaleRicevutoMensile) + "€");
@@ -594,9 +594,9 @@ public class TransactionViewGUI extends JFrame {
 
     public void showTable(){
 
-        if(!controller.getTransactions().isEmpty()){
+        if(!controller.getTransazioni().isEmpty()){
             int y = 0;
-            for (Transaction transaction : controller.getTransactions()) {
+            for (Transaction transaction : controller.getTransazioni()) {
                 RoundedPanel cardBank = new RoundedPanel(15, new Color(222, 226, 230));
                 cardBank.setLayout(new GridBagLayout());
 
@@ -604,7 +604,7 @@ public class TransactionViewGUI extends JFrame {
                 JLabel haiInviatoLabel = new JLabel(String.format("Hai inviato %.2f€ a", transaction.getAmount()));
                 JLabel haiRicevutoLabel = new JLabel(String.format("Hai ricevuto %.2f€ da", transaction.getAmount()));
                 controller.selectNameAndSurnameByIban(transaction.getIban());
-                JLabel ibanLabel = new JLabel(controller.getCredentialsIban());
+                JLabel ibanLabel = new JLabel(controller.getCredenzialiIbanMittDest());
                 JLabel catLabel = new JLabel("Categoria: ");
                 if(transaction.getEntryCategory()!=null)
                     catLabel.setText(catLabel.getText()+transaction.getEntryCategory());

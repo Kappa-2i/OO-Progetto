@@ -1,7 +1,5 @@
 package ENTITY;
 
-import DAO.BankAccountDAO;
-
 import java.util.ArrayList;
 
 public class Collection {

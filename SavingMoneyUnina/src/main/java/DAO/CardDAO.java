@@ -5,9 +5,9 @@ import ENTITY.*;
 public interface CardDAO {
     /**
      * Metodo per la selzione delle carte per un determinato Conto Corrente dal bd.
-     * @param contoCorrente riferimento la carta dal recuperare.
+     * @param bankAccount riferimento la carta dal recuperare.
      * @return carta recuperata dal db.*/
-    public Card selectCard(BankAccount contoCorrente);
+    public Card selectCard(BankAccount bankAccount);
 
     /**
      * Metodo per eseguire l'upgrade della carta sul db.
