@@ -7,15 +7,21 @@ public class Transaction {
     private String timeTransaction;
     private String typeTransaction;
     private String iban; //iban di chi ci manda soldi, o a chi inviamo soldi
+    private String entryCategory;
+    private String exitCategory;
+    private String nameCollection;
     private BankAccount bankAccount;
 
-    public Transaction(double amount, String causal, String dateTransaction, String timeTransaction, String typeTransaction, String iban, BankAccount bankAccount) {
+    public Transaction(double amount, String causal, String dateTransaction, String timeTransaction, String typeTransaction, String iban, String entryCategory, String exitCategory, String nameCollection, BankAccount bankAccount) {
         setAmount(amount);
         setCausal(causal);
-        setDataTransazione(dateTransaction);
+        setDateTransaction(dateTransaction);
         setTimeTransaction(timeTransaction);
         setTypeTransaction(typeTransaction);
         setIban(iban);
+        setEntryCategory(entryCategory);
+        setEntryCategory(exitCategory);
+        setNameCollection(nameCollection);
         setBankAccount(bankAccount);
     }
 
@@ -33,14 +39,6 @@ public class Transaction {
 
     public void setCausal(String causal) {
         this.causal = causal;
-    }
-
-    public String getDataTransazione() {
-        return dateTransaction;
-    }
-
-    public void setDataTransazione(String dataTransazione) {
-        this.dateTransaction = dataTransazione;
     }
 
     public String getTimeTransaction() {
@@ -73,6 +71,38 @@ public class Transaction {
 
     public void setBankAccount(BankAccount bankAccount) {
         this.bankAccount = bankAccount;
+    }
+
+    public String getDateTransaction() {
+        return dateTransaction;
+    }
+
+    public void setDateTransaction(String dateTransaction) {
+        this.dateTransaction = dateTransaction;
+    }
+
+    public String getEntryCategory() {
+        return entryCategory;
+    }
+
+    public void setEntryCategory(String entryCategory) {
+        this.entryCategory = entryCategory;
+    }
+
+    public String getExitCategory() {
+        return exitCategory;
+    }
+
+    public void setExitCategory(String exitCategory) {
+        this.exitCategory = exitCategory;
+    }
+
+    public String getNameCollection() {
+        return nameCollection;
+    }
+
+    public void setNameCollection(String nameCollection) {
+        this.nameCollection = nameCollection;
     }
 
     @Override

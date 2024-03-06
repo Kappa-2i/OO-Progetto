@@ -18,6 +18,8 @@ public class Controller {
     private ArrayList<PiggyBank> piggyBanks = null;
     private ArrayList<Transaction> transactions = null;
     private Card card = null;
+    private String credentialsIban = null;
+    private Double[] report = null;
 
     //Dichiarazioni delle Gui
     private LoginViewGUI frameLogin;
@@ -26,12 +28,14 @@ public class Controller {
     private SignUpViewGUI frameSignUp;
     private CardViewGUI frameCard;
     private PiggyBanksViewGUI framePiggyBank;
+    private TransactionViewGUI frameTransaction;
 
     //Dichiarazioni delle Dao
     private AccountDAO accountDao;
     private BankAccountDAO bankAccountDAO;
     private CardDAO cardDAO;
     private PiggyBankDAO piggyBankDAO;
+    private TransactionDAO transactionDAO;
 
     //Icone
     ImageIcon iconAlert = new ImageIcon(Controller.class.getResource("/IMG/alert.png"));
@@ -47,6 +51,7 @@ public class Controller {
         this.bankAccountDAO = new BankAccountDAOImpl();
         this.cardDAO = new CardDAOImpl();
         this.piggyBankDAO = new PiggyBankDAOImpl();
+        this.transactionDAO = new TransactionDAOImpl();
 
     }
 
@@ -429,6 +434,211 @@ public class Controller {
     }
 
 
+    public void showTransazioniPage(){
+        if (frameTransaction != null)
+            frameTransaction(false);
+        //Vengono recuperati le transazioni associati al conto scelto.
+        transactions = transactionDAO.selectTransazioniByIban(selectedBankAccount);
+        selectedBankAccount.setTransactions(transactions);
+        if(frameBankTransfer!=null){
+            frameBankTransfer(false);
+        }
+        if(frameCard!=null){
+            frameCard(false);
+        }
+        frameTransaction = new TransactionViewGUI(this);
+        frameHome(false);
+        frameTransaction(true);
+    }
+
+    public void showBankTransferPage(){
+        if(frameBankTransfer != null){
+            frameBankTransfer(false);
+        }
+        frameBankTransfer = new BankTransferPageGUI(this);
+        frameBankTransfer(true);
+    }
+
+    public void sendBankTransfer(String ibanReceiver, String amount, String name, String surname, String reason, String category, String typeBankTransfer, String nameCollection){
+        try{
+            if(typeBankTransfer.equals("Bonifico")){
+                if(!amount.isEmpty()) {
+                    if((getCard().getTypeCard().equals("CartaDiDebito") && Double.parseDouble(amount)<=3000) || (getCard().getTypeCard().equals("CartaDiCredito"))) {
+                        if (!selectedBankAccount.getIban().equals(ibanReceiver)) {
+                            if (selectedBankAccount.getBalance() >= Math.round((Double.parseDouble(amount) * 100.00) / 100.00)) {
+                                if (!ibanReceiver.isEmpty() && !name.isEmpty() && !surname.isEmpty() && !reason.isEmpty()) {
+                                    if (transactionDAO.checkIban(ibanReceiver, name, surname)) {
+                                        if (nameCollection == null)
+                                            nameCollection = "ALTRO";
+                                        transactionDAO.sendBankTransfer(selectedBankAccount, ibanReceiver, amount, reason, category, nameCollection);
+                                        JOptionPane.showMessageDialog(
+                                                frameBankTransfer,
+                                                "Bonifico inviato con successo!",
+                                                "",
+                                                JOptionPane.INFORMATION_MESSAGE
+                                        );
+                                        frameBankTransfer(false);
+                                        showHomePage(bankAccountDAO.updateBankAccount(selectedBankAccount));
+
+                                    }
+                                } else {
+                                    JOptionPane.showMessageDialog(
+                                            frameBankTransfer,
+                                            "Riempi tutti i campi.",
+                                            "Errore",
+                                            JOptionPane.PLAIN_MESSAGE,
+                                            iconAlert
+                                    );
+                                }
+                            } else {
+                                JOptionPane.showMessageDialog(
+                                        frameBankTransfer,
+                                        "Saldo conto corrente insufficiente",
+                                        "Errore",
+                                        JOptionPane.PLAIN_MESSAGE,
+                                        iconAlert
+                                );
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(
+                                    frameBankTransfer,
+                                    "Non puoi inserire il tuo stesso Iban.",
+                                    "Errore",
+                                    JOptionPane.PLAIN_MESSAGE,
+                                    iconAlert
+                            );
+                        }
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(
+                                frameBankTransfer,
+                                "<html>L'importo supera il limite di soldi che è possibile inviare con una sola transazione.<br>Se desideri puoi effettuare l'upgrade della carta!</html>",
+                                "Attenzione",
+                                JOptionPane.PLAIN_MESSAGE,
+                                iconAlert
+                        );
+                    }
+                }
+                else {
+                    JOptionPane.showMessageDialog(
+                            frameBankTransfer,
+                            "Riempi tutti i campi.",
+                            "Errore",
+                            JOptionPane.PLAIN_MESSAGE,
+                            iconAlert
+                    );
+                }
+
+            }
+            else {
+                if(!amount.isEmpty()) {
+                    if((getCard().getTypeCard().equals("CartaDiDebito") && Double.parseDouble(amount)<=3000) || (getCard().getTypeCard().equals("CartaDiCredito"))) {
+                        if (!selectedBankAccount.getIban().equals(ibanReceiver)) {
+                            if (selectedBankAccount.getBalance() >= Math.round((Double.parseDouble(amount) * 100.00) / 100.00)) {
+                                if (!ibanReceiver.isEmpty() && !name.isEmpty() && !surname.isEmpty() && !reason.isEmpty()) {
+                                    if (transactionDAO.checkIban(ibanReceiver, name, surname)) {
+                                        if (nameCollection == null)
+                                            nameCollection = "ALTRO";
+                                        transactionDAO.sendIstantBankTransfer(selectedBankAccount, ibanReceiver, amount, reason, category, nameCollection);
+                                        JOptionPane.showMessageDialog(
+                                                frameBankTransfer,
+                                                "Bonifico inviato con successo!",
+                                                "",
+                                                JOptionPane.INFORMATION_MESSAGE
+                                        );
+                                        frameBankTransfer(false);
+                                        showHomePage(bankAccountDAO.updateBankAccount(selectedBankAccount));
+                                    }
+                                } else {
+                                    JOptionPane.showMessageDialog(
+                                            frameBankTransfer,
+                                            "Riempi tutti i campi.",
+                                            "Errore",
+                                            JOptionPane.PLAIN_MESSAGE,
+                                            iconAlert
+                                    );
+                                }
+                            } else {
+                                JOptionPane.showMessageDialog(
+                                        frameBankTransfer,
+                                        "Saldo conto corrente insufficiente",
+                                        "Errore",
+                                        JOptionPane.PLAIN_MESSAGE,
+                                        iconAlert
+                                );
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(
+                                    frameBankTransfer,
+                                    "Non puoi inserire il tuo stesso Iban.",
+                                    "Errore",
+                                    JOptionPane.PLAIN_MESSAGE,
+                                    iconAlert
+                            );
+                        }
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(
+                                frameBankTransfer,
+                                "<html>L'importo supera il limite di soldi che è possibile inviare con una sola transazione.<br>Se desideri puoi effettuare l'upgrade della carta!</html>",
+                                "Attenzione",
+                                JOptionPane.PLAIN_MESSAGE,
+                                iconAlert
+                        );
+                    }
+                }
+                else {
+                    JOptionPane.showMessageDialog(
+                            frameBankTransfer,
+                            "Riempi tutti i campi.",
+                            "Errore",
+                            JOptionPane.PLAIN_MESSAGE,
+                            iconAlert
+                    );
+                }
+            }
+        }
+        catch (MyExc e){
+            JOptionPane.showMessageDialog(
+                    frameBankTransfer,
+                    e.getMessage(),
+                    "Errore",
+                    JOptionPane.PLAIN_MESSAGE,
+                    iconAlert
+            );
+        }
+        catch (NumberFormatException e){
+            JOptionPane.showMessageDialog(
+                    frameBankTransfer,
+                    "Inserisci una cifra valida",
+                    "Errore",
+                    JOptionPane.PLAIN_MESSAGE,
+                    iconAlert
+            );
+        }
+    }
+
+    public void viewReport(BankAccount bankAccount, String yearmonth){
+        report = transactionDAO.viewReport(bankAccount, yearmonth);
+
+    }
+
+    public void selectNameAndSurnameByIban(String iban){
+        credentialsIban = transactionDAO.selectNameAndSurnameByIban(iban);
+    }
+
+    public double selectSumOfCollections(String name){
+        return transactionDAO.selectSumOfCollections(selectedBankAccount, name);
+    }
+
+    public double totalSentMonthly(BankAccount bankAccount, String yearmonth){
+        return transactionDAO.totalSentMonthly(bankAccount, yearmonth);
+    }
+
+    public double totalReceivedMonthly(BankAccount bankAccount, String yearmonth){
+        return transactionDAO.totalReceivedMonthly(bankAccount, yearmonth);
+    }
+
     /**
      * Metodo che gestisce la visibilità della pagina di Login.
      * @param isVisible setta la visibilità della pagina
@@ -482,6 +692,22 @@ public class Controller {
 
 
     //Getter e Setter
+
+    public Double[] getReport() {
+        return report;
+    }
+
+    public void setReport(Double[] report) {
+        this.report = report;
+    }
+
+    public String getCredentialsIban() {
+        return credentialsIban;
+    }
+
+    public void setCredentialsIban(String credentialsIban) {
+        this.credentialsIban = credentialsIban;
+    }
 
     public Account getAccount() {
         return account;
