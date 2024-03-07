@@ -22,7 +22,8 @@ public class BankAccount {
         setTransactions(transactions);
     }
 
-    public BankAccount(double saldo) {
+    public BankAccount(String iban, double saldo) {
+        setIban(iban);
         setBalance(saldo);
     }
 

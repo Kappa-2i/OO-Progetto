@@ -20,7 +20,7 @@ public class SignUpViewGUI extends JFrame{
     private Font fontRegularSmall;
     private Font fontRegularBold;
 
-    private ImageIcon iconApp = new ImageIcon(LoginViewGUI.class.getResource("/IMG/digital-money.png"));
+    private ImageIcon iconApp = new ImageIcon(SignUpViewGUI.class.getResource("/IMG/digital-money.png"));
 
     public SignUpViewGUI(Controller controller){
         this.controller = controller;
@@ -36,7 +36,7 @@ public class SignUpViewGUI extends JFrame{
         fontRegularBold();
 
         // Creazione dei pannelli
-        // Creazione del pannello di sfondo e setta il GridBagLayout
+        // Creazione del pannello di sfondo e setting del GridBagLayout
         JPanel contentPane = new JPanel(new GridBagLayout());
         contentPane.setBackground(new Color(246, 248, 255));
 
@@ -74,7 +74,7 @@ public class SignUpViewGUI extends JFrame{
         iconAppButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         gbc.gridx = 0;
         gbc.gridy = 0;
-        panelSignUpBlue.add(iconAppButton, gbc);
+        panelSignUpBlue.add(iconAppButton, gbc); //Aggiunge l'immagine al centro del panelSignUpBlue
 
 
 
@@ -94,7 +94,7 @@ public class SignUpViewGUI extends JFrame{
         gbc.insets = new Insets(20, 5, 20, 5);
         panelSignUpWhite.add(signUpLabel, gbc); //aggiunge la signUpLabel al panelSignUpWhite
 
-        //Creazione della label 'Nome' e della textfield per il campo nome.
+        //Creazione della label e della textfield per il campo nome.
         JLabel nameLabel = new JLabel("Nome:");
         JTextField nameField = new JTextField(20);
         nameField.setBackground(new Color(246, 248, 255));
@@ -104,7 +104,7 @@ public class SignUpViewGUI extends JFrame{
             nameField.setFont(fontRegular);
         }
 
-        //funzione per modificare i bordi del TextField
+        //Funzione per modificare i bordi del TextField
         nameField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
         nameField.addFocusListener(new FocusAdapter() {
             @Override
@@ -124,7 +124,7 @@ public class SignUpViewGUI extends JFrame{
         panelSignUpWhite.add(nameField, gbc); //Aggiunge la nameField al panelSignUpWhite
 
 
-        //Creazione della label 'Cognome' e della textfield per il campo cognome.
+        //Creazione della label e della textfield per il campo cognome.
         JLabel surnameLabel = new JLabel("Cognome:");
         JTextField surnameField = new JTextField(20);
         surnameField.setBackground(new Color(246, 248, 255));
@@ -153,7 +153,7 @@ public class SignUpViewGUI extends JFrame{
         panelSignUpWhite.add(surnameField, gbc); //Aggiunge la surnameField al panelSignUpWhite
 
 
-        //Creazione della label 'Email' e della textfield per il campo email.
+        //Creazione della label e della textfield per il campo email.
         JLabel emailLabel = new JLabel("Email:");
         JTextField emailField = new JTextField(20);
         emailField.setBackground(new Color(246, 248, 255));
@@ -163,7 +163,7 @@ public class SignUpViewGUI extends JFrame{
             emailField.setFont(fontRegular);
         }
 
-        //funzione per modificare i bordi del TextField
+        //Funzione per modificare i bordi del TextField
         emailField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
         emailField.addFocusListener(new FocusAdapter() {
             @Override
@@ -182,7 +182,7 @@ public class SignUpViewGUI extends JFrame{
         panelSignUpWhite.add(emailField, gbc); //Aggiunge la emailfield al panelSignUpWhite
 
 
-        //Creaione della label 'Password' e della textfield per il campo password.
+        //Creaione della label e della textfield per il campo password.
         JLabel passwordLabel = new JLabel("Password:");
         JPasswordField passwordField = new JPasswordField(20);
         passwordField.setEchoChar('*');
@@ -213,7 +213,7 @@ public class SignUpViewGUI extends JFrame{
         gbc.gridy = 8;
         panelSignUpWhite.add(passwordField, gbc); //Aggiunge la passwordField al panelSignUpWhite
 
-        //Creaione della label 'Conferma Password' e della textfield per il campo conferma password.
+        //Creaione della label e della textfield per il campo conferma password.
         JLabel confirmPasswordLabel = new JLabel("Conferma Password:");
         JPasswordField confirmPasswordField = new JPasswordField(20);
         confirmPasswordField.setEchoChar('*');

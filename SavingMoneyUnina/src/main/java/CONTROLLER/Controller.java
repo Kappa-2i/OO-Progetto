@@ -205,9 +205,11 @@ public class Controller {
      * @param conto riferimento per le informazioni da visualizzare in Home Page.*/
     public void showHomePage(BankAccount conto){
 
-        //Viene selezionato il conto dopo averlo scelto dalla pagina di selzione.
+        //Viene selezionato il conto dopo averlo scelto dalla pagina di selezione.
         contoScelto = conto;
         //Viene recuperata la carta associata al conto scelto.
+        if(carta != null)
+            carta = null;
         carta = cartaDAO.selectCard(contoScelto);
 
         framePick(false);

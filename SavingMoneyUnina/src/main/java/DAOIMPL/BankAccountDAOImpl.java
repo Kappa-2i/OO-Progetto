@@ -42,7 +42,7 @@ public class BankAccountDAOImpl implements BankAccountDAO {
 
 
         // Query SQL per ottenere i dettagli del conto corrente selezionato aggiornato
-        String query = "SELECT cc.saldo " +
+        String query = "SELECT cc.iban, cc.saldo " +
                 "FROM test.contocorrente cc " +
                 " WHERE cc.iban = '" + selectedBankAccount.getIban() + "'";
 
@@ -53,7 +53,7 @@ public class BankAccountDAOImpl implements BankAccountDAO {
             ResultSet resultSet = statement.executeQuery(query);
             if (resultSet != null){
                 while (resultSet.next()){
-                    BankAccount contoAggiornato = new BankAccount(resultSet.getDouble("saldo"));
+                    BankAccount contoAggiornato = new BankAccount(resultSet.getString("iban"), resultSet.getDouble("saldo"));
                     return contoAggiornato;
                 }
             }

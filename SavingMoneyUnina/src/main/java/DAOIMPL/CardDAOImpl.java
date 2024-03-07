@@ -3,17 +3,20 @@ package DAOIMPL;
 import CONTROLLER.Controller;
 import DAO.CardDAO;
 import DATABASE.DBConnection;
-import ENTITY.*;
+import ENTITY.Card;
+import ENTITY.CreditCard;
+import ENTITY.DebitCard;
+import ENTITY.BankAccount;
 
 import java.sql.*;
 
 public class CardDAOImpl implements CardDAO {
 
     @Override
-    public Card selectCard(BankAccount contoCorrente){
+    public Card selectCard(BankAccount bankAccount){
         String query = "SELECT c.pan, c.pin, c.cvv, c.tipocarta, c.maxinvio, c.contocorrente_iban, c.price_upgrade " +
                 "FROM test.carta c " +
-                "WHERE c.contocorrente_iban = '" + contoCorrente.getIban() + "'";
+                "WHERE c.contocorrente_iban = '" + bankAccount.getIban() + "'";
         try(Connection conn = DBConnection.getDBConnection().getConnection();
             Statement statement = conn.createStatement()){
 
@@ -26,14 +29,14 @@ public class CardDAOImpl implements CardDAO {
                      viene creata una carta di credito altrimenti.*/
 
                     if (resultSet.getString("tipocarta").equals("CartaDiDebito")) {
-                        Card debitCard = new DebitCard(resultSet.getString("pan"), resultSet.getString("pin"), resultSet.getString("cvv"), resultSet.getString("tipocarta"),
-                                contoCorrente, resultSet.getDouble("maxinvio"));
-                        return debitCard;
+                        Card cartaDiDebito = new DebitCard(resultSet.getString("pan"), resultSet.getString("pin"), resultSet.getString("cvv"), resultSet.getString("tipocarta"),
+                                bankAccount, resultSet.getDouble("maxinvio"));
+                        return cartaDiDebito;
                     }
                     else {
-                        Card creditCard = new CreditCard(resultSet.getString("pan"), resultSet.getString("pin"), resultSet.getString("cvv"), resultSet.getString("tipocarta"),
-                                contoCorrente, resultSet.getDouble("price_upgrade"));
-                        return creditCard;
+                        Card cartaDiCredito = new CreditCard(resultSet.getString("pan"), resultSet.getString("pin"), resultSet.getString("cvv"), resultSet.getString("tipocarta"),
+                                bankAccount, resultSet.getDouble("price_upgrade"));
+                        return cartaDiCredito;
                     }
 
                 }

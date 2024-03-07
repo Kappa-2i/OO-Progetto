@@ -82,7 +82,7 @@ public class LoginViewGUI extends JFrame{
         buttonApp.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         gbc.gridx = 0;
         gbc.gridy = 0;
-        panelLoginBlue.add(buttonApp, gbc);
+        panelLoginBlue.add(buttonApp, gbc); //Aggiunge l'immagine al centro del panelSignUpBlue
 
 
 
@@ -103,7 +103,7 @@ public class LoginViewGUI extends JFrame{
         panelLoginWhite.add(loginLabel, gbc); //aggiunge la loginLabel al panelLoginWhite
 
 
-        //Creazione della label 'Email' e della textfield per il campo email.
+        //Creazione della label e della textfield per il campo email.
         JLabel emailLabel = new JLabel("Email:");
         JTextField emailField = new JTextField(20);
         emailField.setBackground(new Color(246, 248, 255));
@@ -158,11 +158,10 @@ public class LoginViewGUI extends JFrame{
 
         gbc.gridx = 0;
         gbc.gridy = 4;
-        gbc.gridwidth = 1; // Occupa una colonna
+        gbc.gridwidth = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panelLoginWhite.add(passwordLabel, gbc); //Aggiunge la passwordLabel al panelLoginWhite
 
-        //Aggiunta di password Field
         gbc.gridy = 5;
         panelLoginWhite.add(passwordField, gbc); //Aggiunge la passwordField al panelLoginWhite
 
@@ -200,7 +199,7 @@ public class LoginViewGUI extends JFrame{
             newUserLabel.setFont(fontRegularSmall);
         newUserLabel.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cambia il cursore per indicare che è cliccabile
 
-        //Aggiungi un MouseListener alla label 'creaUtenteLabel'
+        //Aggiunge un MouseListener alla label 'creaUtenteLabel'
         newUserLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -237,8 +236,7 @@ public class LoginViewGUI extends JFrame{
             forgottenPasswordLabel.setFont(fontRegularSmall);
         forgottenPasswordLabel.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cambia il cursore per indicare che è cliccabile
 
-
-        // Aggiungi un MouseListener alla JLabel
+        // Aggiunge un MouseListener alla JLabel
         forgottenPasswordLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -269,12 +267,9 @@ public class LoginViewGUI extends JFrame{
         loginButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                //Chiamiamo la funzione checkCredentials dal controller passandogli i dati inseriti
-
-                    controller.checkCredentials(emailField.getText(), passwordField.getText());
-                    emailField.setText("");
-                    passwordField.setText("");
-
+                controller.checkCredentials(emailField.getText(), passwordField.getText());
+                emailField.setText("");
+                passwordField.setText("");
             }
         });
         gbc.gridy = 9;
