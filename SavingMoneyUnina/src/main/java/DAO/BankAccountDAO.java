@@ -12,7 +12,7 @@ public interface BankAccountDAO {
      * @return ArrayList di conti correnti*/
     public ArrayList<BankAccount> selectBankAccountByAccount(Account account);
 
-    public BankAccount updateBankAccount(BankAccount selectedBankAccount);
+    public Double updateBankAccount(BankAccount selectedBankAccount);
 
     /**
      * Metodo per inserire un nuovo Conto Corrente all'interno del db.

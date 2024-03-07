@@ -38,11 +38,11 @@ public class BankAccountDAOImpl implements BankAccountDAO {
     }
 
     @Override
-    public BankAccount updateBankAccount(BankAccount selectedBankAccount){
+    public Double updateBankAccount(BankAccount selectedBankAccount){
 
 
         // Query SQL per ottenere i dettagli del conto corrente selezionato aggiornato
-        String query = "SELECT cc.iban, cc.saldo " +
+        String query = "SELECT cc.saldo " +
                 "FROM test.contocorrente cc " +
                 " WHERE cc.iban = '" + selectedBankAccount.getIban() + "'";
 
@@ -53,8 +53,8 @@ public class BankAccountDAOImpl implements BankAccountDAO {
             ResultSet resultSet = statement.executeQuery(query);
             if (resultSet != null){
                 while (resultSet.next()){
-                    BankAccount contoAggiornato = new BankAccount(resultSet.getString("iban"), resultSet.getDouble("saldo"));
-                    return contoAggiornato;
+                    Double updatedBalance = resultSet.getDouble("saldo");
+                    return updatedBalance;
                 }
             }
         } catch (SQLException e) {

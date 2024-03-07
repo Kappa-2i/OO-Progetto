@@ -81,7 +81,7 @@ public class Controller {
             else{
                 //Se uno dei due campi è sbagliato viene visualizzato un messaggio di errore.
                 JOptionPane.showMessageDialog(
-                        null,
+                        frameLogin,
                         "Email o Password Errati",
                         "Errore di Login",
                         JOptionPane.PLAIN_MESSAGE,
@@ -92,7 +92,7 @@ public class Controller {
         else {
             //Se i campi non vengono compilati viene visualizzato un messaggio di errore.
             JOptionPane.showMessageDialog(
-                    null,
+                    frameLogin,
                     "Inserisci delle credenziali valide!",
                     "Errore di Login",
                     JOptionPane.PLAIN_MESSAGE,
@@ -167,7 +167,7 @@ public class Controller {
     }
 
     public void updateBankAccount(BankAccount conto){
-        contoScelto = contoCorrenteDAO.updateBankAccount(conto);
+        contoScelto.setBalance(contoCorrenteDAO.updateBankAccount(conto));
     }
 
     /**
@@ -273,14 +273,15 @@ public class Controller {
         if(contoScelto.getBalance() >= 5) {
             cartaDAO.upgradeCard(pan);
             JOptionPane.showMessageDialog(
-                    null,
+                    frameHome,
                     "La tua carta è stata aggiornata a carta di credito!",
                     "Aggiornamento effettuato",
                     JOptionPane.PLAIN_MESSAGE,
                     iconChecked
             );
             frameHome(false);
-            showHomePage(contoCorrenteDAO.updateBankAccount(contoScelto));
+            contoScelto.setBalance(contoCorrenteDAO.updateBankAccount(contoScelto));
+            showHomePage(contoScelto);
         }
         else {
             JOptionPane.showMessageDialog(
@@ -485,7 +486,8 @@ public class Controller {
                                                 JOptionPane.INFORMATION_MESSAGE
                                         );
                                         frameBankTransfer(false);
-                                        showHomePage(contoCorrenteDAO.updateBankAccount(contoScelto));
+                                        contoScelto.setBalance(contoCorrenteDAO.updateBankAccount(contoScelto));
+                                        showHomePage(contoScelto);
 
                                     }
                                 } else {
@@ -554,7 +556,8 @@ public class Controller {
                                                 JOptionPane.INFORMATION_MESSAGE
                                         );
                                         frameBankTransfer(false);
-                                        showHomePage(contoCorrenteDAO.updateBankAccount(contoScelto));
+                                        contoScelto.setBalance(contoCorrenteDAO.updateBankAccount(contoScelto));
+                                        showHomePage(contoScelto);
                                     }
                                 } else {
                                     JOptionPane.showMessageDialog(
