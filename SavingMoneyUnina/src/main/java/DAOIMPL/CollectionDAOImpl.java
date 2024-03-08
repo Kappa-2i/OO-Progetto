@@ -15,21 +15,21 @@ public class CollectionDAOImpl implements CollectionDAO {
 
         ArrayList<Collection> collections = new ArrayList<Collection>();
 
-        // Query SQL per ottenere i dettagli dell'utente
+        // Query SQL per ottenere i dettagli delle collections del BankAccount
         String query = "SELECT r.nomeraccolta, r.descrizione " +
                 "FROM test.raccolta r " +
                 "WHERE r.contocorrente_iban = '" +bankAccount.getIban()+ "'";
 
         try (Connection conn = DATABASE.DBConnection.getDBConnection().getConnection();  // Ottenimento della connessione al database
-             Statement statement = conn.createStatement()) {  // Creazione di un PreparedStatement
+             Statement statement = conn.createStatement()) {
 
             // Esecuzione della query e gestione del ResultSet
             ResultSet resultSet = statement.executeQuery(query);
             if (resultSet != null){
                 while (resultSet.next()){
-                    //Creazione degli oggetti Salvadanaio.
+                    //Creazione degli oggetti Collection.
                     Collection collection = new Collection(resultSet.getString("nomeraccolta"), resultSet.getString("descrizione"), bankAccount);
-                    //Aggiunta della collezione all'ArrayList di collezioni
+                    //Aggiunta della collection all'ArrayList di collection
                     collections.add(collection);
                 }
                 return collections;

@@ -2,9 +2,7 @@ package GUI;
 
 import CONTROLLER.Controller;
 import ENTITY.*;
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
+import org.jfree.chart.*;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.general.DefaultPieDataset;
 
@@ -12,15 +10,14 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.InputStream;
 import java.time.LocalDate;
 
 public class TransactionViewGUI extends JFrame {
+
     private Controller controller;
+
     //Dichiarazioni Variabili per i Font
     private Font fontRegular;
     private Font fontBold;
@@ -32,24 +29,27 @@ public class TransactionViewGUI extends JFrame {
 
     //Dichiarazione elementi da aggiungere dopo aver modificato la pagina, usati sia nel costruttore che nella funzione
     private String monthNumber;
-    private JPanel panelCenterSx;
-    private JPanel panelCenterDx;
+    private JPanel panelLeft;
+    private JPanel panelRight;
     private String yearMonth;
     private String currentYear;
     private ChartPanel chartPanel;
-    private JLabel entraMaxValue;
-    private JLabel entraMinValue;
-    private JLabel entraMedValue;
-    private JLabel uscitaMaxValue;
-    private JLabel uscitaMinValue;
-    private JLabel uscitaMedValue;
-    private JLabel totaleRicevutoValue;
-    private JLabel totaleInviatoValue;
+    private JLabel maxEntryValue;
+    private JLabel minEntryValue;
+    private JLabel avgEntryValue;
+    private JLabel maxOutValue;
+    private JLabel minOutValue;
+    private JLabel avgOutValue;
+    private JLabel totaleReceveidValue;
+    private JLabel totalSentValue;
 
-    //Icone
+    //Dichiarazione icone
     private ImageIcon iconUnina = new ImageIcon(TransactionViewGUI.class.getResource("/IMG/unina.png"));
     private ImageIcon iconHome = new ImageIcon(TransactionViewGUI.class.getResource("/IMG/home.png"));
-    private ImageIcon iconStats = new ImageIcon(TransactionViewGUI.class.getResource("/IMG/statistics.png"));
+
+    //Dichiarazione opzioni da cliccare per il JOptionPane
+    private Object[] optionsView = {"Visualizza", "Annulla"};
+
 
     public TransactionViewGUI(Controller controller) {
         this.controller = controller;
@@ -67,9 +67,7 @@ public class TransactionViewGUI extends JFrame {
         fontRegularXXL();
         fontRegularBoldSmall();
 
-        Object[] optionsView = {"Visualizza", "Annulla"};
-
-
+        
         // Creazione del panello principale
         JPanel contentPane = new JPanel(new GridBagLayout());
         contentPane.setBackground(new Color(246, 248, 255));
@@ -87,13 +85,16 @@ public class TransactionViewGUI extends JFrame {
         contentPane.add(panelTop, gbc);
 
         // Pannello sinistro scrollabile
-        panelCenterSx = new JPanel(new GridBagLayout());
-        panelCenterSx.setBackground(new Color(246, 248, 255));
+        panelLeft = new JPanel(new GridBagLayout());
+        panelLeft.setBackground(new Color(246, 248, 255));
+        //Funzione che permette di creare le card che visualizzano le transazioni
         showTransactions();
-        JScrollPane scrollPane = new JScrollPane(panelCenterSx);
+        JScrollPane scrollPane = new JScrollPane(panelLeft);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
+        scrollPane.setBorder(new EmptyBorder(0,0,0,0));
+        //Metodo per modificare la barra per scrollare la pagina
         verticalScrollBar.setUI(new BasicScrollBarUI() {
             @Override
             protected void configureScrollBarColors() {
@@ -120,45 +121,48 @@ public class TransactionViewGUI extends JFrame {
             }
         });
 
-        scrollPane.setBorder(new EmptyBorder(0,0,0,0));
-
+        
         gbc.fill = GridBagConstraints.BOTH;
-        gbc.gridx = 0; // Prima colonna
-        gbc.gridy = 1; // Seconda riga
-        gbc.gridwidth = 1; // Resetta a una colonna
-        gbc.weightx = 0.4; // Imposta il peso orizzontale
-        gbc.weighty = 0.9; // Imposta il peso verticale
-        gbc.insets = new Insets(20, 20, 20, 10); // Imposta gli insetti
+        gbc.gridx = 0; 
+        gbc.gridy = 1; 
+        gbc.gridwidth = 1; 
+        gbc.weightx = 0.4; 
+        gbc.weighty = 0.9; 
+        gbc.insets = new Insets(20, 20, 20, 10);
         contentPane.add(scrollPane, gbc);
 
         // Pannello destro fisso
-        panelCenterDx = new JPanel(new GridBagLayout());
-        panelCenterDx.setBackground(new Color(246, 248, 255));
-        gbc.gridx = 1; // Seconda colonna
-        gbc.gridy = 1; // Seconda riga
-        gbc.weightx = 0.5; // Imposta il peso orizzontale per il pannello destro
-        gbc.insets = new Insets(20, 10, 20, 20); // Adegua gli insetti
-        contentPane.add(panelCenterDx, gbc);
+        panelRight = new JPanel(new GridBagLayout());
+        panelRight.setBackground(new Color(246, 248, 255));
+        gbc.gridx = 1; 
+        gbc.gridy = 1; 
+        gbc.weightx = 0.5; 
+        gbc.insets = new Insets(20, 10, 20, 20); 
+        contentPane.add(panelRight, gbc);
 
         // Dichiarazione dei componenti per il pannello superiore
-        JLabel speseLabel = new JLabel("Le tue spese");
-        speseLabel.setForeground(new Color(246, 248, 255));
-        JLabel titoloSmu = new JLabel("S.M.U.");
-        titoloSmu.setForeground(Color.WHITE);
+        //Creazione label 'Le tue spese'
+        JLabel shoppingLabel = new JLabel("Le tue spese");
+        shoppingLabel.setForeground(new Color(246, 248, 255));
+        //Crazione label titolo Saving Money Unina
+        JLabel titleSmu = new JLabel("S.M.U.");
+        titleSmu.setForeground(Color.WHITE);
         if (fontExtraBold != null) {
-            speseLabel.setFont(fontExtraBold);
-            titoloSmu.setFont(fontRegular);
+            shoppingLabel.setFont(fontExtraBold);
+            titleSmu.setFont(fontRegular);
         }
 
-        JButton buttonLogo = new JButton();
-        buttonLogo.setBackground(null);
-        buttonLogo.setIcon(iconUnina);
-        buttonLogo.setContentAreaFilled(false);
-        buttonLogo.setOpaque(false);
-        buttonLogo.setBorderPainted(false);
-        buttonLogo.setBorder(null);
-        buttonLogo.setFocusPainted(false);
+        //Creazione button che contiene il logo Unina
+        JButton logoButton = new JButton();
+        logoButton.setBackground(null);
+        logoButton.setIcon(iconUnina);
+        logoButton.setContentAreaFilled(false);
+        logoButton.setOpaque(false);
+        logoButton.setBorderPainted(false);
+        logoButton.setBorder(null);
+        logoButton.setFocusPainted(false);
 
+        //Creazione button che contiene il logo Home
         JButton buttonHome = new JButton();
         buttonHome.setCursor(new Cursor(Cursor.HAND_CURSOR));
         buttonHome.setBackground(null);
@@ -176,54 +180,39 @@ public class TransactionViewGUI extends JFrame {
             }
         });
 
-        JButton statsButton = new JButton();
-        statsButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        statsButton.setBackground(null);
-        statsButton.setIcon(iconStats);
-        statsButton.setContentAreaFilled(false);
-        statsButton.setOpaque(false);
-        statsButton.setBorderPainted(false);
-        statsButton.setBorder(null);
-        statsButton.setFocusPainted(false);
-
-
+        // Configurazione per logoButton a sinistra di titoloSmu
         gbc = new GridBagConstraints();
-        // Configurazione per buttonLogo a sinistra di titoloSmu
-        gbc.gridx = 1; // Posizione immediatamente a sinistra di titoloSmu
-        gbc.weightx = 0; // Non assegna spazio extra, mantiene la posizione
+        gbc.gridx = 1;
+        gbc.weightx = 0;
         gbc.fill = GridBagConstraints.NONE;
-        gbc.insets = new Insets(0, 15, 0, 0); // Aggiusta gli insetti se necessario
-        panelTop.add(buttonLogo, gbc);
+        gbc.insets = new Insets(0, 15, 0, 0);
+        panelTop.add(logoButton, gbc);
 
-        // Configurazione per il titoloSmu a sinistra di homePageLabel
-        gbc.gridx = 2; // Posiziona titoloSmu accanto a buttonLogo
-        panelTop.add(titoloSmu, gbc);
+        // Configurazione per il titleSmu a sinistra di shoppingLabel
+        gbc.gridx = 2;
+        panelTop.add(titleSmu, gbc);
 
+        // Aggiunge spazio di espansione a destra per mantenere shoppingLabel centrata
         gbc = new GridBagConstraints();
-        // Infine, aggiungi spazio di espansione a destra per mantenere homePageLabel centrata
         gbc.gridx = 3;
-        gbc.weightx = 1.0; // Bilancia lo spazio extra a destra
+        gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panelTop.add(Box.createHorizontalGlue(), gbc);
 
+        // Configurazione per la shoppingLabel al centro
         gbc = new GridBagConstraints();
-        // Configurazione per la homePageLabel al centro
         gbc.gridx = 4;
-        panelTop.add(speseLabel, gbc);
+        panelTop.add(shoppingLabel, gbc);
 
-        // Infine, aggiungi spazio di espansione a destra per mantenere homePageLabel centrata
+        // Aggiunge spazio di espansione a destra per mantenere shoppingLabel centrata
         gbc.gridx = 5;
         gbc.weightx = 1.0; // Bilancia lo spazio extra a destra
         gbc.fill = GridBagConstraints.EAST;
         panelTop.add(Box.createHorizontalGlue(), gbc);
 
-        gbc = new GridBagConstraints();
-        // Configurazione per buttonUser e buttonLogout a destra della homePageLabel
-        gbc.gridx = 6; // Posiziona buttonUser a destra della homePageLabel
-        //panelTop.add(statsButton, gbc);
-
-        gbc.gridx = 6; // Posiziona buttonLogout a destra di buttonUser
-        gbc.insets = new Insets(0, 20, 0, 15); // Aggiusta gli insetti se necessario
+        // Configurazione per buttonHome
+        gbc.gridx = 6;
+        gbc.insets = new Insets(0, 20, 0, 15);
         panelTop.add(buttonHome, gbc);
 
 
@@ -233,78 +222,74 @@ public class TransactionViewGUI extends JFrame {
                 "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"};
 
 
-        // Crea la JComboBox utilizzando l'array dei mesi
+        // Creazione della JComboBox utilizzando l'array dei mesi
         JComboBox<String> monthsComboBox = new JComboBox<>(mesi);
-
 
         // Imposta un'opzione di default
         int selectedIndex = 0;
         // Calcola il numero del mese come stringa, aggiungendo uno zero davanti se necessario
         monthNumber = String.format("%02d", selectedIndex + 1);
-        // Ottieni l'anno corrente
+        // Ottiene l'anno corrente
         currentYear = String.valueOf(LocalDate.now().getYear());
         // Combina l'anno e il mese nel formato YYYY-MM
         String yearMonth = currentYear + "-" + monthNumber;
         controller.viewReport(yearMonth);
 
 
-
-
-
-
+        //Constraints
         gbc = new GridBagConstraints();
-
         gbc.gridy = 0;
         gbc.gridx = 0;
-        panelCenterDx.add(monthsComboBox, gbc);
+        panelRight.add(monthsComboBox, gbc);
 
-        JLabel entrataMax = new JLabel("Entrata massima: ");
-        entraMaxValue = new JLabel(String.valueOf(controller.getReport()[0]) + "€");
-        JLabel entrataMin = new JLabel("Entrata minima: ");
-        entraMinValue = new JLabel(String.valueOf(controller.getReport()[1]) + "€");
-        JLabel entrataMed = new JLabel("Entrata media: ");
-        entraMedValue = new JLabel(String.format("%.2f", controller.getReport()[2]) + "€");
-        JLabel uscitaMax = new JLabel("Uscita massima: ");
-        uscitaMaxValue = new JLabel(String.valueOf(controller.getReport()[3]) + "€");
-        JLabel uscitaMin = new JLabel("Uscita minima: ");
-        uscitaMinValue = new JLabel(String.valueOf(controller.getReport()[4]) + "€");
-        JLabel uscitaMed = new JLabel("Uscita media: ");
-        uscitaMedValue = new JLabel(String.format("%.2f", controller.getReport()[5]) + "€");
-
-        double totaleInviatoMensile = controller.totalMonthlySent(controller.getSelectedBankAccount(), yearMonth);
-        double totaleRicevutoMensile = controller.totalMonthlyReceived(controller.getSelectedBankAccount(), yearMonth);
-        JLabel totaleInviato = new JLabel("Totale inviato: ");
-        JLabel totaleRicevuto = new JLabel("Totale ricevuto: ");
-        totaleInviatoValue = new JLabel(String.format("%.2f", totaleInviatoMensile) + "€");
-        totaleRicevutoValue = new JLabel(String.format("%.2f", totaleRicevutoMensile) + "€");
+        //Creazione delle label e valori per le informazioni delle transazioni mensili
+        JLabel maxEntryLabel = new JLabel("Entrata massima: ");
+        maxEntryValue = new JLabel(String.valueOf(controller.getReport()[0]) + "€");
+        JLabel minEntryLabel = new JLabel("Entrata minima: ");
+        minEntryValue = new JLabel(String.valueOf(controller.getReport()[1]) + "€");
+        JLabel avgEntryLabel = new JLabel("Entrata media: ");
+        avgEntryValue = new JLabel(String.format("%.2f", controller.getReport()[2]) + "€");
+        JLabel maxOutLabel = new JLabel("Uscita massima: ");
+        maxOutValue = new JLabel(String.valueOf(controller.getReport()[3]) + "€");
+        JLabel minOutLabel = new JLabel("Uscita minima: ");
+        minOutValue = new JLabel(String.valueOf(controller.getReport()[4]) + "€");
+        JLabel avgOutLabel = new JLabel("Uscita media: ");
+        avgOutValue = new JLabel(String.format("%.2f", controller.getReport()[5]) + "€");
+        double totalMonthlySentValue = controller.totalMonthlySent(controller.getSelectedBankAccount(), yearMonth);
+        double totalMonthlyReceivedValue = controller.totalMonthlyReceived(controller.getSelectedBankAccount(), yearMonth);
+        JLabel totalSentLabel = new JLabel("Totale inviato: ");
+        JLabel totalReceivedLabel = new JLabel("Totale ricevuto: ");
+        totalSentValue = new JLabel(String.format("%.2f", totalMonthlySentValue) + "€");
+        totaleReceveidValue = new JLabel(String.format("%.2f", totalMonthlyReceivedValue) + "€");
 
         if (fontRegularBoldSmall != null) {
-            entrataMax.setFont(fontRegularBoldSmall);
-            entrataMin.setFont(fontRegularBoldSmall);
-            entrataMed.setFont(fontRegularBoldSmall);
-            uscitaMax.setFont(fontRegularBoldSmall);
-            uscitaMin.setFont(fontRegularBoldSmall);
-            uscitaMed.setFont(fontRegularBoldSmall);
-            totaleInviato.setFont(fontRegularBoldSmall);
-            totaleRicevuto.setFont(fontRegularBoldSmall);
+            maxEntryLabel.setFont(fontRegularBoldSmall);
+            minEntryLabel.setFont(fontRegularBoldSmall);
+            avgEntryLabel.setFont(fontRegularBoldSmall);
+            maxOutLabel.setFont(fontRegularBoldSmall);
+            minOutLabel.setFont(fontRegularBoldSmall);
+            avgOutLabel.setFont(fontRegularBoldSmall);
+            totalSentLabel.setFont(fontRegularBoldSmall);
+            totalReceivedLabel.setFont(fontRegularBoldSmall);
         }
         if (fontRegularSmall != null) {
-            entraMaxValue.setFont(fontRegularSmall);
-            entraMinValue.setFont(fontRegularSmall);
-            entraMedValue.setFont(fontRegularSmall);
-            uscitaMaxValue.setFont(fontRegularSmall);
-            uscitaMinValue.setFont(fontRegularSmall);
-            uscitaMedValue.setFont(fontRegularSmall);
-            totaleInviatoValue.setFont(fontRegularSmall);
-            totaleRicevutoValue.setFont(fontRegularSmall);
+            maxEntryValue.setFont(fontRegularSmall);
+            minEntryValue.setFont(fontRegularSmall);
+            avgEntryValue.setFont(fontRegularSmall);
+            maxOutValue.setFont(fontRegularSmall);
+            minOutValue.setFont(fontRegularSmall);
+            avgOutValue.setFont(fontRegularSmall);
+            totalSentValue.setFont(fontRegularSmall);
+            totaleReceveidValue.setFont(fontRegularSmall);
         }
 
 
+        //Creazione dati per il grafico
         DefaultPieDataset dataset = new DefaultPieDataset();
 
+        dataset.setValue("Entrate", totalMonthlyReceivedValue);
+        dataset.setValue("Uscite", totalMonthlySentValue);
 
-        dataset.setValue("Entrate", totaleRicevutoMensile);
-        dataset.setValue("Uscite", totaleInviatoMensile);
 
         JFreeChart chart = ChartFactory.createPieChart(
                 "Rapporto Entrate/Uscite", // chart title
@@ -315,105 +300,105 @@ public class TransactionViewGUI extends JFrame {
         chart.setBackgroundPaint(new Color(246, 248, 255)); // Cambia il colore di sfondo dell'intero grafico
 
 
+        //Creazione PiePlot
         PiePlot plot = (PiePlot) chart.getPlot();
-        plot.setSectionPaint("Entrate", new Color(0, 50, 73)); // Colore verde
-        plot.setSectionPaint("Uscite", new Color(145, 57, 57)); // Colore rosso
+        plot.setSectionPaint("Entrate", new Color(0, 50, 73)); // Colore entrate
+        plot.setSectionPaint("Uscite", new Color(145, 57, 57)); // Colore uscite
         plot.setExplodePercent("Entrate", 0.1); // Evidenzia le entrate
         plot.setBackgroundPaint(new Color(246, 248, 255));
         plot.setOutlinePaint(new Color(246, 248, 255));
         plot.setLabelGenerator(null);//nasconde le etichette sul grafico
 
 
+        //Creazione del PanelChart
         chartPanel = new ChartPanel(chart);
         chartPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
         chartPanel.setBackground(new Color(246, 248, 255));
         chartPanel.setPreferredSize(new Dimension(350, 350));
 
+
         gbc = new GridBagConstraints();
-
-
-
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridy = 1;
         gbc.gridx = 0;
-        panelCenterDx.add(entrataMax, gbc);
+        panelRight.add(maxEntryLabel, gbc);
         gbc.anchor = GridBagConstraints.WEST;
 
         gbc.gridy = 1;
         gbc.gridx = 1;
-        panelCenterDx.add(entraMaxValue, gbc);
+        panelRight.add(maxEntryValue, gbc);
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridy = 2;
         gbc.gridx = 0;
-        panelCenterDx.add(entrataMin, gbc);
+        panelRight.add(minEntryLabel, gbc);
         gbc.anchor = GridBagConstraints.WEST;
         gbc.gridy = 2;
         gbc.gridx = 1;
-        panelCenterDx.add(entraMinValue, gbc);
+        panelRight.add(minEntryValue, gbc);
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridy = 3;
         gbc.gridx = 0;
-        panelCenterDx.add(entrataMed, gbc);
+        panelRight.add(avgEntryLabel, gbc);
         gbc.anchor = GridBagConstraints.WEST;
         gbc.gridy = 3;
         gbc.gridx = 1;
-        panelCenterDx.add(entraMedValue, gbc);
+        panelRight.add(avgEntryValue, gbc);
 
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.insets = new Insets(10, 0, 0, 0);
         gbc.gridy = 4;
         gbc.gridx = 0;
-        panelCenterDx.add(uscitaMax, gbc);
+        panelRight.add(maxOutLabel, gbc);
         gbc.anchor = GridBagConstraints.WEST;
         gbc.gridy = 4;
         gbc.gridx = 1;
-        panelCenterDx.add(uscitaMaxValue, gbc);
+        panelRight.add(maxOutValue, gbc);
 
         gbc = new GridBagConstraints();
         gbc.weightx = 0.6;
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridy = 5;
         gbc.gridx = 0;
-        panelCenterDx.add(uscitaMin, gbc);
+        panelRight.add(minOutLabel, gbc);
         gbc.anchor = GridBagConstraints.WEST;
         gbc.gridy = 5;
         gbc.gridx = 1;
-        panelCenterDx.add(uscitaMinValue, gbc);
+        panelRight.add(minOutValue, gbc);
 
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridy = 6;
         gbc.gridx = 0;
-        panelCenterDx.add(uscitaMed, gbc);
+        panelRight.add(avgOutLabel, gbc);
         gbc.anchor = GridBagConstraints.WEST;
         gbc.gridy = 6;
         gbc.gridx = 1;
-        panelCenterDx.add(uscitaMedValue, gbc);
+        panelRight.add(avgOutValue, gbc);
 
         gbc.insets = new Insets(10, 0, 0, 0);
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridy = 7;
         gbc.gridx = 0;
-        panelCenterDx.add(totaleInviato, gbc);
+        panelRight.add(totalSentLabel, gbc);
         gbc.anchor = GridBagConstraints.WEST;
         gbc.gridy = 7;
         gbc.gridx = 1;
-        panelCenterDx.add(totaleInviatoValue, gbc);
+        panelRight.add(totalSentValue, gbc);
 
         gbc = new GridBagConstraints();
         gbc.weightx = 0.6;
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridy = 8;
         gbc.gridx = 0;
-        panelCenterDx.add(totaleRicevuto, gbc);
+        panelRight.add(totalReceivedLabel, gbc);
         gbc.anchor = GridBagConstraints.WEST;
         gbc.gridy = 8;
         gbc.gridx = 1;
-        panelCenterDx.add(totaleRicevutoValue, gbc);
+        panelRight.add(totaleReceveidValue, gbc);
         gbc.insets = new Insets(10, 0, 10, 0);
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridy = 9;
         gbc.gridx = 0;
-        panelCenterDx.add(chartPanel, gbc);
+        panelRight.add(chartPanel, gbc);
 
 
         // Listener per gestire la selezione dell'utente
@@ -441,63 +426,60 @@ public class TransactionViewGUI extends JFrame {
 
 
                 GridBagConstraints gbc = new GridBagConstraints();
-
                 gbc.gridy = 0;
                 gbc.gridx = 0;
-                panelCenterDx.add(monthsComboBox, gbc);
+                panelRight.add(monthsComboBox, gbc);
 
 
-                if(entraMaxValue!=null)
-                    panelCenterDx.remove(entraMaxValue);
-                if(entraMedValue!=null)
-                    panelCenterDx.remove(entraMedValue);
-                if(entraMinValue!=null)
-                    panelCenterDx.remove(entraMinValue);
-                if(uscitaMaxValue!=null)
-                    panelCenterDx.remove(uscitaMaxValue);
-                if(uscitaMinValue!=null)
-                    panelCenterDx.remove(uscitaMinValue);
-                if(uscitaMedValue!=null)
-                    panelCenterDx.remove(uscitaMedValue);
-                if(totaleInviatoValue!=null)
-                    panelCenterDx.remove(totaleInviatoValue);
-                if(totaleRicevutoValue!=null)
-                    panelCenterDx.remove(totaleRicevutoValue);
+                //Rimuove i valori del mese precedente per aggiungere i valori aggiornati del nuovo mese
+                if(maxEntryValue !=null)
+                    panelRight.remove(maxEntryValue);
+                if(avgEntryValue !=null)
+                    panelRight.remove(avgEntryValue);
+                if(minEntryValue !=null)
+                    panelRight.remove(minEntryValue);
+                if(maxOutValue !=null)
+                    panelRight.remove(maxOutValue);
+                if(minOutValue !=null)
+                    panelRight.remove(minOutValue);
+                if(avgOutValue !=null)
+                    panelRight.remove(avgOutValue);
+                if(totalSentValue !=null)
+                    panelRight.remove(totalSentValue);
+                if(totaleReceveidValue !=null)
+                    panelRight.remove(totaleReceveidValue);
 
+                //Aggiorno i valori
+                maxEntryValue = new JLabel(String.valueOf(controller.getReport()[0]) + "€");
 
+                minEntryValue = new JLabel(String.valueOf(controller.getReport()[1]) + "€");
 
-                entraMaxValue = new JLabel(String.valueOf(controller.getReport()[0]) + "€");
+                avgEntryValue = new JLabel(String.format("%.2f", controller.getReport()[2]) + "€");
 
-                entraMinValue = new JLabel(String.valueOf(controller.getReport()[1]) + "€");
+                maxOutValue = new JLabel(String.valueOf(controller.getReport()[3]) + "€");
 
-                entraMedValue = new JLabel(String.format("%.2f", controller.getReport()[2]) + "€");
+                minOutValue = new JLabel(String.valueOf(controller.getReport()[4]) + "€");
 
-                uscitaMaxValue = new JLabel(String.valueOf(controller.getReport()[3]) + "€");
-
-                uscitaMinValue = new JLabel(String.valueOf(controller.getReport()[4]) + "€");
-
-                uscitaMedValue = new JLabel(String.format("%.2f", controller.getReport()[5]) + "€");
+                avgOutValue = new JLabel(String.format("%.2f", controller.getReport()[5]) + "€");
 
                 double totaleInviatoMensile = controller.totalMonthlySent(controller.getSelectedBankAccount(), yearMonth);
                 double totaleRicevutoMensile = controller.totalMonthlyReceived(controller.getSelectedBankAccount(), yearMonth);
 
-                totaleInviatoValue = new JLabel(String.format("%.2f", totaleInviatoMensile) + "€");
-                totaleRicevutoValue = new JLabel(String.format("%.2f", totaleRicevutoMensile) + "€");
+                totalSentValue = new JLabel(String.format("%.2f", totaleInviatoMensile) + "€");
+                totaleReceveidValue = new JLabel(String.format("%.2f", totaleRicevutoMensile) + "€");
 
                 if (fontRegularSmall != null) {
-                    entraMaxValue.setFont(fontRegularSmall);
-                    entraMinValue.setFont(fontRegularSmall);
-                    entraMedValue.setFont(fontRegularSmall);
-                    uscitaMaxValue.setFont(fontRegularSmall);
-                    uscitaMinValue.setFont(fontRegularSmall);
-                    uscitaMedValue.setFont(fontRegularSmall);
-                    totaleInviatoValue.setFont(fontRegularSmall);
-                    totaleRicevutoValue.setFont(fontRegularSmall);
+                    maxEntryValue.setFont(fontRegularSmall);
+                    minEntryValue.setFont(fontRegularSmall);
+                    avgEntryValue.setFont(fontRegularSmall);
+                    maxOutValue.setFont(fontRegularSmall);
+                    minOutValue.setFont(fontRegularSmall);
+                    avgOutValue.setFont(fontRegularSmall);
+                    totalSentValue.setFont(fontRegularSmall);
+                    totaleReceveidValue.setFont(fontRegularSmall);
                 }
 
-
-
-
+                //Aggiornamento del Chart per riposizionarlo
                 DefaultPieDataset dataset = new DefaultPieDataset();
 
 
@@ -523,7 +505,7 @@ public class TransactionViewGUI extends JFrame {
 
                 // Se 'chartPanel' esiste già, rimuovilo
                 if (chartPanel != null) {
-                    panelCenterDx.remove(chartPanel);
+                    panelRight.remove(chartPanel);
                 }
 
                 chartPanel = new ChartPanel(chart);
@@ -537,56 +519,56 @@ public class TransactionViewGUI extends JFrame {
                 gbc.anchor = GridBagConstraints.WEST;
                 gbc.gridy = 1;
                 gbc.gridx = 1;
-                panelCenterDx.add(entraMaxValue, gbc);
+                panelRight.add(maxEntryValue, gbc);
                 gbc.anchor = GridBagConstraints.WEST;
                 gbc.gridy = 2;
                 gbc.gridx = 1;
-                panelCenterDx.add(entraMinValue, gbc);
+                panelRight.add(minEntryValue, gbc);
                 gbc.anchor = GridBagConstraints.WEST;
                 gbc.gridy = 3;
                 gbc.gridx = 1;
-                panelCenterDx.add(entraMedValue, gbc);
+                panelRight.add(avgEntryValue, gbc);
 
 
                 gbc.insets = new Insets(10, 0, 0, 0);
                 gbc.anchor = GridBagConstraints.WEST;
                 gbc.gridy = 4;
                 gbc.gridx = 1;
-                panelCenterDx.add(uscitaMaxValue, gbc);
+                panelRight.add(maxOutValue, gbc);
 
                 gbc = new GridBagConstraints();
                 gbc.weightx = 0.6;
                 gbc.anchor = GridBagConstraints.WEST;
                 gbc.gridy = 5;
                 gbc.gridx = 1;
-                panelCenterDx.add(uscitaMinValue, gbc);
+                panelRight.add(minOutValue, gbc);
 
                 gbc.anchor = GridBagConstraints.WEST;
                 gbc.gridy = 6;
                 gbc.gridx = 1;
-                panelCenterDx.add(uscitaMedValue, gbc);
+                panelRight.add(avgOutValue, gbc);
 
                 gbc.insets = new Insets(10, 0, 0, 0);
                 gbc.anchor = GridBagConstraints.WEST;
                 gbc.gridy = 7;
                 gbc.gridx = 1;
-                panelCenterDx.add(totaleInviatoValue, gbc);
+                panelRight.add(totalSentValue, gbc);
 
                 gbc = new GridBagConstraints();
                 gbc.weightx = 0.6;
                 gbc.anchor = GridBagConstraints.WEST;
                 gbc.gridy = 8;
                 gbc.gridx = 1;
-                panelCenterDx.add(totaleRicevutoValue, gbc);
+                panelRight.add(totaleReceveidValue, gbc);
                 gbc.insets = new Insets(10, 0, 10, 0);
                 gbc.anchor = GridBagConstraints.CENTER;
                 gbc.gridy = 9;
                 gbc.gridx = 0;
-                panelCenterDx.add(chartPanel, gbc);
+                panelRight.add(chartPanel, gbc);
 
                 // Aggiorna il frame per mostrare il nuovo chart
-                panelCenterDx.validate();
-                panelCenterDx.repaint();
+                panelRight.validate();
+                panelRight.repaint();
 
             }});
 
@@ -598,24 +580,34 @@ public class TransactionViewGUI extends JFrame {
         if(!controller.getTransactions().isEmpty()){
             int y = 0;
             for (Transaction transaction : controller.getTransactions()) {
-                RoundedPanel cardBank = new RoundedPanel(15, new Color(222, 226, 230));
-                cardBank.setLayout(new GridBagLayout());
+                //PanelCard che contiene le informazioni della transazione
+                RoundedPanel cardTransaction = new RoundedPanel(15, new Color(222, 226, 230));
+                cardTransaction.setLayout(new GridBagLayout());
+
+                //Creazione label in base al tipo di transazione uscita/entrata
+                JLabel sentLabelValue = new JLabel(String.format("Hai inviato %.2f€ a", transaction.getAmount()));
+                JLabel receivedLabelValue = new JLabel(String.format("Hai ricevuto %.2f€ da", transaction.getAmount()));
 
 
-                JLabel haiInviatoLabel = new JLabel(String.format("Hai inviato %.2f€ a", transaction.getAmount()));
-                JLabel haiRicevutoLabel = new JLabel(String.format("Hai ricevuto %.2f€ da", transaction.getAmount()));
                 controller.selectNameAndSurnameByIban(transaction.getIban());
-                JLabel ibanLabel = new JLabel(controller.getCredentialsIban());
+                //Creazione label che contiene le credenziali dell'iban che ha ricevuto/inviato
+                JLabel credentialsLabel = new JLabel(controller.getCredentialsIban());
+
+                //Creazione label che contiene il tipo di categoria entrata/uscita
                 JLabel catLabel = new JLabel("Categoria: ");
+                //Applica la categoria in base al tipo di transazione
                 if(transaction.getEntryCategory()!=null)
                     catLabel.setText(catLabel.getText()+transaction.getEntryCategory());
                 else
                     catLabel.setText(catLabel.getText()+transaction.getExitCategory());
 
-                JLabel dataLabel = new JLabel(transaction.getDateTransaction() + ", " + transaction.getTimeTransaction());
-                JLabel dettagliLabel = new JLabel("<html><u><i>Causale</i></u></html>");
-                dettagliLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                dettagliLabel.addMouseListener(new MouseAdapter() {
+                //Creazione label che contiene la data e l'ora della transazione
+                JLabel dateTimeLabel = new JLabel(transaction.getDateTransaction() + ", " + transaction.getTimeTransaction());
+
+                //Creazione label che contiene la causale da cliccare della transazione
+                JLabel causalLabel = new JLabel("<html><u><i>Causale</i></u></html>");
+                causalLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                causalLabel.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         JOptionPane.showMessageDialog(
@@ -628,13 +620,13 @@ public class TransactionViewGUI extends JFrame {
                 });
 
                 if(fontRegularBold != null){
-                    haiInviatoLabel.setFont(fontRegularBold);
-                    haiRicevutoLabel.setFont(fontRegularBold);
-                    ibanLabel.setFont(fontRegularBoldSmall);
+                    sentLabelValue.setFont(fontRegularBold);
+                    receivedLabelValue.setFont(fontRegularBold);
+                    credentialsLabel.setFont(fontRegularBoldSmall);
                 }
                 if(fontRegularSmall != null){
-                    dataLabel.setFont(fontRegularSmall);
-                    dettagliLabel.setFont(fontRegularSmall);
+                    dateTimeLabel.setFont(fontRegularSmall);
+                    causalLabel.setFont(fontRegularSmall);
                     catLabel.setFont(fontRegularSmall);
                 }
 
@@ -642,51 +634,52 @@ public class TransactionViewGUI extends JFrame {
                 // Aggiungi le etichette al cardBank
                 GridBagConstraints gbc = new GridBagConstraints();
 
+                //Applica le informazioni in base al tipo di transazione entrata/uscita
                 if(transaction.getTypeTransaction().equals("Invia a")) {
-                    haiInviatoLabel.setForeground(new Color(145, 57, 57));
+                    sentLabelValue.setForeground(new Color(145, 57, 57));
                     gbc.insets = new Insets(5, 5, 5, 5);
                     gbc.weightx = 1.0;
                     gbc.anchor = GridBagConstraints.NORTHWEST;
-                    cardBank.add(haiInviatoLabel, gbc);
+                    cardTransaction.add(sentLabelValue, gbc);
 
                     gbc.insets = new Insets(5, 5, 5, 5);
                     gbc.anchor = GridBagConstraints.NORTHWEST;
                     gbc.gridy = 1;
-                    cardBank.add(ibanLabel,gbc);
+                    cardTransaction.add(credentialsLabel,gbc);
                 }
                 else {
-                    haiRicevutoLabel.setForeground(new Color(37, 89, 87));
+                    receivedLabelValue.setForeground(new Color(37, 89, 87));
                     gbc.insets = new Insets(5, 5, 5, 5);
                     gbc.weightx = 1.0;
                     gbc.anchor = GridBagConstraints.NORTHWEST;
-                    cardBank.add(haiRicevutoLabel, gbc);
+                    cardTransaction.add(receivedLabelValue, gbc);
 
                     gbc.insets = new Insets(5, 5, 5, 5);
                     gbc.anchor = GridBagConstraints.NORTHWEST;
                     gbc.gridy = 1;
-                    cardBank.add(ibanLabel,gbc);
+                    cardTransaction.add(credentialsLabel,gbc);
                 }
 
                 gbc = new GridBagConstraints();
                 gbc.insets = new Insets(20, 5, 5, 5);
                 gbc.anchor = GridBagConstraints.SOUTHWEST;
                 gbc.gridy = 2;
-                cardBank.add(catLabel, gbc);
+                cardTransaction.add(catLabel, gbc);
                 gbc = new GridBagConstraints();
                 gbc.insets = new Insets(5, 5, 5, 10);
                 gbc.anchor = GridBagConstraints.SOUTHWEST;
                 gbc.gridy = 3;
-                cardBank.add(dataLabel, gbc);
+                cardTransaction.add(dateTimeLabel, gbc);
                 gbc = new GridBagConstraints();
                 gbc.insets = new Insets(5, 5, 5, 10);
                 gbc.anchor = GridBagConstraints.SOUTHEAST;
                 gbc.gridx = 1;
                 gbc.gridy = 3;
-                cardBank.add(dettagliLabel, gbc);
+                cardTransaction.add(causalLabel, gbc);
 
 
 
-                // Aggiungi il cardBank al panelCenter
+                // Aggiungi il cardBank allo scrollPane
                 gbc = new GridBagConstraints();
                 gbc.insets = new Insets(20, 5, 0, 5);
                 gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -695,12 +688,11 @@ public class TransactionViewGUI extends JFrame {
                 gbc.gridx = 0;
                 gbc.weightx = 1.0;
                 gbc.weighty = 1.0;
-                panelCenterSx.add(cardBank, gbc);
+                panelLeft.add(cardTransaction, gbc);
 
             }
         }
     }
-
 
 
 

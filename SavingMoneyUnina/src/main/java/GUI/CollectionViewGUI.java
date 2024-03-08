@@ -27,8 +27,8 @@ public class CollectionViewGUI extends JFrame {
     private JPanel panelCenterScrollable;
 
     //Dichiarazione icone
-    ImageIcon iconUnina = new ImageIcon(PiggyBank.class.getResource("/IMG/unina.png"));
-    ImageIcon iconHome = new ImageIcon(PiggyBank.class.getResource("/IMG/home.png"));
+    private ImageIcon iconUnina = new ImageIcon(PiggyBank.class.getResource("/IMG/unina.png"));
+    private ImageIcon iconHome = new ImageIcon(PiggyBank.class.getResource("/IMG/home.png"));
 
 
     public CollectionViewGUI(Controller controller) {

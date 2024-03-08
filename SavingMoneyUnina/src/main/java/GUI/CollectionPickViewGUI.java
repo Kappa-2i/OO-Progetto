@@ -27,11 +27,11 @@ public class CollectionPickViewGUI extends JFrame {
     private JPanel panelCenter;
 
     //Dichiarazione Icone
-    ImageIcon iconAddCollection = new ImageIcon(CollectionPickViewGUI.class.getResource("/IMG/add-folder.png"));
-    ImageIcon iconHome = new ImageIcon(CollectionPickViewGUI.class.getResource("/IMG/home.png"));
-    ImageIcon iconUnina = new ImageIcon(CollectionPickViewGUI.class.getResource("/IMG/unina.png"));
-    ImageIcon iconTrash = new ImageIcon(CollectionPickViewGUI.class.getResource("/IMG/trash.png"));
-    ImageIcon iconDelete = new ImageIcon(CollectionPickViewGUI.class.getResource("/IMG/delete.png"));
+    private ImageIcon iconAddCollection = new ImageIcon(CollectionPickViewGUI.class.getResource("/IMG/add-folder.png"));
+    private ImageIcon iconHome = new ImageIcon(CollectionPickViewGUI.class.getResource("/IMG/home.png"));
+    private ImageIcon iconUnina = new ImageIcon(CollectionPickViewGUI.class.getResource("/IMG/unina.png"));
+    private ImageIcon iconTrash = new ImageIcon(CollectionPickViewGUI.class.getResource("/IMG/trash.png"));
+    private ImageIcon iconDelete = new ImageIcon(CollectionPickViewGUI.class.getResource("/IMG/delete.png"));
 
     //Dichiarazione dei pulsanti da usare nei JOptionPane
     private Object[] optionsAdd = {"Crea", "Annulla"};

@@ -19,7 +19,7 @@ public class BankAccountDAOImpl implements BankAccountDAO {
                 " WHERE cc.account_email = '" + account.getEmail() + "'";
 
         try (Connection conn = DBConnection.getDBConnection().getConnection();  // Ottenimento della connessione al database
-             Statement statement = conn.createStatement()) {  // Creazione di un PreparedStatement
+             Statement statement = conn.createStatement()) {
 
             // Esecuzione della query e gestione del ResultSet
             ResultSet resultSet = statement.executeQuery(query);
@@ -40,14 +40,13 @@ public class BankAccountDAOImpl implements BankAccountDAO {
     @Override
     public Double updateBankAccount(BankAccount selectedBankAccount){
 
-
         // Query SQL per ottenere i dettagli del conto corrente selezionato aggiornato
         String query = "SELECT cc.saldo " +
                 "FROM test.contocorrente cc " +
                 " WHERE cc.iban = '" + selectedBankAccount.getIban() + "'";
 
         try (Connection conn = DBConnection.getDBConnection().getConnection();  // Ottenimento della connessione al database
-             Statement statement = conn.createStatement()) {  // Creazione di un PreparedStatement
+             Statement statement = conn.createStatement()) {
 
             // Esecuzione della query e gestione del ResultSet
             ResultSet resultSet = statement.executeQuery(query);

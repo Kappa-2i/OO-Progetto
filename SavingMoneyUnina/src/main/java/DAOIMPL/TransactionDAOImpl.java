@@ -15,7 +15,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 
         ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 
-        // Query SQL per ottenere i dettagli dell'utente
+        // Query SQL per ottenere i dettagli delle transazioni
         String query = "SELECT t.importo, " +
                 "t.causale, " +
                 "t.datatransazione, " +
@@ -33,7 +33,7 @@ public class TransactionDAOImpl implements TransactionDAO {
                 "AND (t.datatransazione BETWEEN '2024-01-01' AND current_date - INTERVAL '1 day' OR (t.datatransazione = current_date AND t.orariotransazione <= current_time )) " +
                 "ORDER BY t.datatransazione DESC, t.orariotransazione DESC;";
         try (Connection conn = DBConnection.getDBConnection().getConnection();  // Ottenimento della connessione al database
-             Statement statement = conn.createStatement()) {  // Creazione di un PreparedStatement
+             Statement statement = conn.createStatement()) {
 
 
             // Esecuzione della query e gestione del ResultSet
@@ -41,12 +41,12 @@ public class TransactionDAOImpl implements TransactionDAO {
 
             if (resultSet != null){
                 while (resultSet.next()){
-                    //Creazione degli oggetti Salvadanaio.
+                    //Creazione degli oggetti transazione.
                     Collection collection = new Collection(resultSet.getString("nomeraccolta"), resultSet.getString("descrizione"), bankAccount);
                     Transaction transaction = new Transaction(resultSet.getDouble("importo"), resultSet.getString("causale"),
                             resultSet.getString("datatransazione"), resultSet.getString("orariotransazione").substring(0,5), resultSet.getString("tipotransazione"),
                             resultSet.getString("iban1"), resultSet.getString("categoriaentrata"), resultSet.getString("categoriauscita"), collection, bankAccount);
-                    //Agginta del salvadaio all'ArrayList di salvadanai
+                    //Agginta della transazione all'ArrayList di transazioni
                     transactions.add(transaction);
                 }
                 return transactions;
@@ -62,7 +62,6 @@ public class TransactionDAOImpl implements TransactionDAO {
     @Override
     public Double[] viewReport(BankAccount bankAccount, String yearmonth){
         try (Connection conn = DBConnection.getDBConnection().getConnection()) {
-            // Prepara la query sostituendo i valori di iban e mese
             String query = "SELECT "
                     + " CAST(MAX(CASE WHEN t.tipotransazione = 'Invia a' THEN t.importo END) AS double precision) AS uscita_massima,"
                     + " CAST(MIN(CASE WHEN t.tipotransazione = 'Invia a' THEN t.importo END) AS double precision) AS uscita_minima,"
@@ -103,7 +102,7 @@ public class TransactionDAOImpl implements TransactionDAO {
     @Override
     public double totalSentMonthly(BankAccount bankAccount, String yearmonth) {
         try (Connection conn = DBConnection.getDBConnection().getConnection()) {
-            // Prepara la query sostituendo i valori di iban e mese
+
             String query = "SELECT SUM(t.importo) AS totale_inviato " +
                     "FROM test.transazione t " +
                     "WHERE t.iban2 = ? " +
@@ -134,7 +133,7 @@ public class TransactionDAOImpl implements TransactionDAO {
     @Override
     public double totalReceivedMonthly(BankAccount bankAccount, String yearmonth) {
         try (Connection conn = DBConnection.getDBConnection().getConnection()) {
-            // Prepara la query sostituendo i valori di iban e mese
+
             String query = "SELECT SUM(t.importo) AS totale_ricevuto " +
                     "FROM test.transazione t " +
                     "WHERE t.iban2 = ? " +
@@ -165,7 +164,7 @@ public class TransactionDAOImpl implements TransactionDAO {
     @Override
     public String selectNameAndSurnameByIban(String iban) {
         try (Connection conn = DBConnection.getDBConnection().getConnection()) {
-            // Prepara la query sostituendo i valori di iban e mese
+
             String query = "SELECT test.account.nome, test.account.cognome " +
                     "FROM test.transazione " +
                     "JOIN test.contocorrente ON test.transazione.iban1 = test.contocorrente.iban " +
@@ -195,7 +194,7 @@ public class TransactionDAOImpl implements TransactionDAO {
     @Override
     public boolean checkIban(String receiver, String name, String surname) throws MyExc{
         try (Connection conn = DBConnection.getDBConnection().getConnection()) {
-            // Prepara la query sostituendo i valori di iban e mese
+
             String query = "SELECT cc.iban " +
                     "from test.contocorrente cc " +
                     "join test.account a " +
@@ -230,7 +229,6 @@ public class TransactionDAOImpl implements TransactionDAO {
     public void sendBankTransfer(BankAccount bankAccount, String receiver, String amount, String reason, String category, String nameCollection){
         CallableStatement statement = null;
         try (Connection conn = DBConnection.getDBConnection().getConnection()) {
-
 
             //Chiamata della funzione del db.
             String callFunction = "{call test.invia_bonifico(?,?,?,?,?,?)}";
@@ -280,7 +278,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 
     @Override
     public ArrayList<Transaction> selectTransactionsByCollection(Collection collection, BankAccount bankAccount){
-        // Query SQL per ottenere i dettagli dell'utente
+
         String query = "select t.importo, t.causale, t.datatransazione, t.orariotransazione, t.tipotransazione, t.iban1, t.categoriaentrata, t.categoriauscita, r.nomeraccolta " +
                 "from test.transazione t " +
                 "join test.raccolta r " +
@@ -291,18 +289,18 @@ public class TransactionDAOImpl implements TransactionDAO {
         ArrayList<Transaction> transactionsCollection = new ArrayList<Transaction>();
 
         try (Connection conn = DBConnection.getDBConnection().getConnection();  // Ottenimento della connessione al database
-             Statement statement = conn.createStatement()) {  // Creazione di un PreparedStatement
+             Statement statement = conn.createStatement()) {
 
             // Esecuzione della query e gestione del ResultSet
             ResultSet resultSet = statement.executeQuery(query);
 
             if (resultSet != null){
                 while (resultSet.next()){
-                    //Creazione degli oggetti Salvadanaio.
+                    //Creazione degli oggetti transazione.
                     Transaction transactionCollection = new Transaction(resultSet.getDouble("importo"), resultSet.getString("causale"),
                             resultSet.getString("datatransazione"), resultSet.getString("orariotransazione").substring(0,5), resultSet.getString("tipotransazione"),
                             resultSet.getString("iban1"), resultSet.getString("categoriaentrata"), resultSet.getString("categoriauscita"), collection, bankAccount);
-                    //Aggiunta della collezione all'ArrayList di collezioni
+                    //Aggiunta della transazione all'ArrayList di transazioni per la collection
                     transactionsCollection.add(transactionCollection);
                 }
                 return transactionsCollection;
@@ -325,7 +323,7 @@ public class TransactionDAOImpl implements TransactionDAO {
                 "WHERE t.iban2 = '" + bankAccount.getIban() + "' AND r.nomeraccolta = '" + name + "'";
 
         try (Connection conn = DBConnection.getDBConnection().getConnection();  // Ottenimento della connessione al database
-             Statement statement = conn.createStatement()) {  // Creazione di un PreparedStatement
+             Statement statement = conn.createStatement()) {
 
             // Esecuzione della query e gestione del ResultSet
             ResultSet resultSet = statement.executeQuery(query);

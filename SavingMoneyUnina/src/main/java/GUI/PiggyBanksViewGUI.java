@@ -24,11 +24,11 @@ public class PiggyBanksViewGUI extends JFrame {
     private Font fontRegularXXL;
 
     //Icone
-    ImageIcon iconUnina = new ImageIcon(PiggyBanksViewGUI.class.getResource("/IMG/unina.png"));
-    ImageIcon iconHome = new ImageIcon(PiggyBanksViewGUI.class.getResource("/IMG/home.png"));
-    ImageIcon iconAddPiggyBank = new ImageIcon(PiggyBanksViewGUI.class.getResource("/IMG/addPiggyBank.png"));
-    ImageIcon iconExit = new ImageIcon(PiggyBanksViewGUI.class.getResource("/IMG/door_exit.png"));
-    ImageIcon iconInformation = new ImageIcon(PiggyBanksViewGUI.class.getResource("/IMG/information.png"));
+    private ImageIcon iconUnina = new ImageIcon(PiggyBanksViewGUI.class.getResource("/IMG/unina.png"));
+    private ImageIcon iconHome = new ImageIcon(PiggyBanksViewGUI.class.getResource("/IMG/home.png"));
+    private ImageIcon iconAddPiggyBank = new ImageIcon(PiggyBanksViewGUI.class.getResource("/IMG/addPiggyBank.png"));
+    private ImageIcon iconExit = new ImageIcon(PiggyBanksViewGUI.class.getResource("/IMG/door_exit.png"));
+    private ImageIcon iconInformation = new ImageIcon(PiggyBanksViewGUI.class.getResource("/IMG/information.png"));
 
 
     public PiggyBanksViewGUI(Controller controller){
@@ -59,15 +59,15 @@ public class PiggyBanksViewGUI extends JFrame {
         GridBagConstraints gbc = new GridBagConstraints();
 
         // Dichiarazione del pannello superiore con aggiunta dei constraints per posizionarlo
-        JPanel panelTop = new JPanel(new GridBagLayout());
-        panelTop.setBackground(new Color(0, 50, 73));
+        JPanel panelHeader = new JPanel(new GridBagLayout());
+        panelHeader.setBackground(new Color(0, 50, 73));
         gbc.gridwidth = 4;
         gbc.weighty = 0.1;
         gbc.weightx = 1;
         gbc.gridy = 0;
         gbc.gridx = 0;
         gbc.fill = GridBagConstraints.BOTH;
-        contentPane.add(panelTop, gbc);
+        contentPane.add(panelHeader, gbc);
 
 
 
@@ -209,36 +209,36 @@ public class PiggyBanksViewGUI extends JFrame {
         gbc.weightx = 0;
         gbc.fill = GridBagConstraints.NONE;
         gbc.insets = new Insets(0, 15, 0, 0);
-        panelTop.add(buttonLogo, gbc);
+        panelHeader.add(buttonLogo, gbc);
 
         // Configurazione per il titoloSmu a sinistra di homePageLabel
         gbc.gridx = 2;
-        panelTop.add(titoloSmu, gbc);
+        panelHeader.add(titoloSmu, gbc);
 
         gbc = new GridBagConstraints();
         gbc.gridx = 3;
         gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panelTop.add(Box.createHorizontalGlue(), gbc);
+        panelHeader.add(Box.createHorizontalGlue(), gbc);
 
         gbc = new GridBagConstraints();
         // Configurazione per la piggyBankLabel al centro
         gbc.gridx = 4;
-        panelTop.add(piggyBankLabel, gbc);
+        panelHeader.add(piggyBankLabel, gbc);
 
         gbc.gridx = 5;
         gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.EAST;
-        panelTop.add(Box.createHorizontalGlue(), gbc);
+        panelHeader.add(Box.createHorizontalGlue(), gbc);
 
         gbc = new GridBagConstraints();
         // Configurazione per addPiggyBank button e buttonHome a destra
         gbc.gridx = 6;
-        panelTop.add(addPiggyBankButton, gbc);
+        panelHeader.add(addPiggyBankButton, gbc);
 
         gbc.gridx = 7;
         gbc.insets = new Insets(0, 20, 0, 15);
-        panelTop.add(buttonHome, gbc);
+        panelHeader.add(buttonHome, gbc);
 
 
         /**
