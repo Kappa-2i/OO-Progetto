@@ -457,7 +457,7 @@ public class CollectionPickViewGUI extends JFrame {
                             );
                             if (result == JOptionPane.YES_OPTION) {
                                 try {
-                                    controller.addCollection(controller.getContoScelto(), nameCollectionField.getText(), descriptionCollectionArea.getText());
+                                    controller.addCollection(nameCollectionField.getText(), descriptionCollectionArea.getText());
                                 } catch (MyExc ex) {
                                     throw new RuntimeException(ex);
                                 }
@@ -616,7 +616,7 @@ public class CollectionPickViewGUI extends JFrame {
                     );
                     if (result == JOptionPane.YES_OPTION) {
                         try {
-                            controller.addCollection(controller.getContoScelto(), nameCollectionField.getText(), descriptionCollectionArea.getText());
+                            controller.addCollection(nameCollectionField.getText(), descriptionCollectionArea.getText());
                         } catch (MyExc ex) {
                             throw new RuntimeException(ex);
                         }

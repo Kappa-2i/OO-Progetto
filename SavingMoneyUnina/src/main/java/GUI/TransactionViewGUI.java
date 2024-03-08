@@ -244,7 +244,7 @@ public class TransactionViewGUI extends JFrame {
         currentYear = String.valueOf(LocalDate.now().getYear());
         // Combina l'anno e il mese nel formato YYYY-MM
         String yearMonth = currentYear + "-" + monthNumber;
-        controller.viewReport(controller.getContoScelto(), yearMonth);
+        controller.viewReport(yearMonth);
 
 
 
@@ -434,7 +434,7 @@ public class TransactionViewGUI extends JFrame {
 
 
                 // Ora chiama la funzione viewReport con l'anno e il mese selezionati
-                controller.viewReport(controller.getContoScelto(), yearMonth);
+                controller.viewReport(yearMonth);
 
 
 

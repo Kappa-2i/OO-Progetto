@@ -7,7 +7,6 @@ import EXCEPTIONS.MyExc;
 import GUI.*;
 
 import javax.swing.*;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 // Classe del controller
@@ -76,7 +75,7 @@ public class Controller {
             account = accountDao.checkCredentials(email.toLowerCase(), password);
             if (account != null){
                 frameLogin(false);
-                showPickFrame();
+                showPickBankAccountFrame();
             }
             else{
                 //Se uno dei due campi è sbagliato viene visualizzato un messaggio di errore.
@@ -101,20 +100,30 @@ public class Controller {
     }
 
     /**
-     *Metodo che permette di gestire la viusalizzazione della pagina di SignIn.*/
+     *Metodo che permette di gestire la viusalizzazione della pagina di SignIn.
+     * */
     public void showFrameSignIn(){
         frameLogin(false);
         frameSignIn = new SignUpViewGUI(this);
-        frameSignIn(true);
+        frameSignUp(true);
     }
 
-    public void showPickFrame(){
+    /**
+     *Metodo che permette di gestire la viusalizzazione della pagina di scelta del conto corrente.
+     * */
+    public void showPickBankAccountFrame(){
         framePick = new BankAccountPickViewGUI(this);
-        framePick(true);
+        framePickBankAccount(true);
     }
 
 
-
+    /**
+     * Metodo per creare un nuovo account.
+     * @param email email da registrare.
+     * @param password password da registrare.
+     * @param name nome da registrare.
+     * @param surname cognome da registrare.
+     * */
     public void insertAccount(String email, String password, String name, String surname){
         try{
             account = new Account(email, password, name, surname);
@@ -149,6 +158,12 @@ public class Controller {
 
     }
 
+    
+    /**
+     * Metodo per controllare che password e conferma password inseriti al momento della registrazione sono uguali.
+     * @param password password inserita.
+     * @param confirmedPassword conferma password inserita.
+     * @return true se le password inserite sono uguali, false altrimenti.*/
     public boolean confirmedPassword(String password, String confirmedPassword){
         if (password.equals(confirmedPassword))
             return true;
@@ -166,6 +181,10 @@ public class Controller {
         return conti;
     }
 
+    /**
+     * Metodo per recuperare il saldo aggiornato del conto corrente inserito.
+     * @param conto riferimento per il conto a cui aggiornare il saldo.
+     **/
     public void updateBankAccount(BankAccount conto){
         contoScelto.setBalance(contoCorrenteDAO.updateBankAccount(conto));
     }
@@ -212,7 +231,7 @@ public class Controller {
             carta = null;
         carta = cartaDAO.selectCard(contoScelto);
 
-        framePick(false);
+        framePickBankAccount(false);
         if(frameSalvadanaio != null)
             frameSalvadanaio(false);
         if(framePickCollection != null)
@@ -238,11 +257,11 @@ public class Controller {
         if(frameCard!=null)
             frameCard(false);
         if(framePick != null)
-            framePick(false);
+            framePickBankAccount(false);
         if(frameHome != null)
             frameHome(false);
         if(frameSignIn != null)
-            frameSignIn(false);
+            frameSignUp(false);
 
         frameLogin(true);
     }
@@ -329,10 +348,16 @@ public class Controller {
         frameSalvadanaio(true);
     }
 
-    public void addPiggyBank(String nome, double obiettivo, String descrizione) throws MyExc{
+    /**
+     * Metodo per aggiungere un nuovo salvadanaio al conto corrente personale.
+     * @param name nome del salvadanaio da creare.
+     * @param target obbiettivo in denaro da raggiungere.
+     * @param description descrizione del salvadanaio.
+     * */
+    public void addPiggyBank(String name, double target, String description) throws MyExc{
         try {
-            if(!nome.isEmpty() && !descrizione.isEmpty())
-                salvadanaioDAO.addPiggyBank(contoScelto, nome, obiettivo, descrizione);
+            if(!name.isEmpty() && !description.isEmpty())
+                salvadanaioDAO.addPiggyBank(contoScelto, name, target, description);
             else{
                 JOptionPane.showMessageDialog(
                         null,
@@ -414,11 +439,17 @@ public class Controller {
         }
     }
 
-    public void getMoneyByPiggyBank(String saldoSalvadanaio, String nome, String soldiDaPrelevare){
+    /**
+     * Metodo per prendere soldi dal salvadanaio selezionato.
+     * @param piggyBankBalance saldo del salvadanaio.
+     * @param name nome del salvadanaio da cui prelevare i soldi.
+     * @param moneyToGet somma da prelevare dal salvadanaio.
+     * */
+    public void getMoneyByPiggyBank(String piggyBankBalance, String name, String moneyToGet){
         try{
-            if(!soldiDaPrelevare.isEmpty()) {
-                if (Double.parseDouble(saldoSalvadanaio) >= Math.round((Double.parseDouble(soldiDaPrelevare)*100.00)/100.00)) {
-                    salvadanaioDAO.getMoneyByPiggyBank(contoScelto, nome, Math.round((Double.parseDouble(soldiDaPrelevare)*100.00)/100.00));
+            if(!moneyToGet.isEmpty()) {
+                if (Double.parseDouble(piggyBankBalance) >= Math.round((Double.parseDouble(moneyToGet)*100.00)/100.00)) {
+                    salvadanaioDAO.getMoneyByPiggyBank(contoScelto, name, Math.round((Double.parseDouble(moneyToGet)*100.00)/100.00));
                 } else {
                     JOptionPane.showMessageDialog(
                             frameSalvadanaio,
@@ -450,6 +481,9 @@ public class Controller {
     }
 
 
+    /**
+     * Metodo per gesitre la visualizzaione della pagina de 'Le mie spese'.
+     * */
     public void showTransazioniPage(){
         if (frameTransazioni != null)
             frameTransazioni(false);
@@ -467,6 +501,8 @@ public class Controller {
         frameTransazioni(true);
     }
 
+    /** Metodo per gestire la visulizzazione della pagina Invio Bonifico.
+     * */
     public void showBankTransferPage(){
         if(frameBankTransfer != null){
             frameBankTransfer(false);
@@ -475,7 +511,18 @@ public class Controller {
         frameBankTransfer(true);
     }
 
-    public void sendBankTransfer(String ibanReceiver, String amount, String name, String surname, String reason, String cat, String typeBankTransfer, String nameCollection){
+    /**
+     * Metodo per l'invio di un bonifico bancario.
+     * @param ibanReceiver iban a cui inviare il denaro.
+     * @param amount somma da inviare.
+     * @param name nome del titolare del conto a cui inviare il bonifico.
+     * @param surname cognome del titolare del conto a cui inviare il bonifico.
+     * @param reason causale del bonifico.
+     * @param category categoria del bonifico.
+     * @param typeBankTransfer tipo di bonifico.
+     * @param nameCollection nome della collezione a cui aggiungere il bonifico.
+     * */
+    public void sendBankTransfer(String ibanReceiver, String amount, String name, String surname, String reason, String category, String typeBankTransfer, String nameCollection){
         try{
             if(typeBankTransfer.equals("Bonifico")){
                 if(!amount.isEmpty()) {
@@ -486,7 +533,7 @@ public class Controller {
                                     if (transazioneDAO.checkIban(ibanReceiver, name, surname)) {
                                         if (nameCollection == null)
                                             nameCollection = "ALTRO";
-                                        transazioneDAO.sendBankTransfer(contoScelto, ibanReceiver, amount, reason, cat, nameCollection);
+                                        transazioneDAO.sendBankTransfer(contoScelto, ibanReceiver, amount, reason, category, nameCollection);
                                         JOptionPane.showMessageDialog(
                                                 frameBankTransfer,
                                                 "Bonifico inviato con successo!",
@@ -556,7 +603,7 @@ public class Controller {
                                     if (transazioneDAO.checkIban(ibanReceiver, name, surname)) {
                                         if (nameCollection == null)
                                             nameCollection = "ALTRO";
-                                        transazioneDAO.sendIstantBankTransfer(contoScelto, ibanReceiver, amount, reason, cat, nameCollection);
+                                        transazioneDAO.sendIstantBankTransfer(contoScelto, ibanReceiver, amount, reason, category, nameCollection);
                                         JOptionPane.showMessageDialog(
                                                 frameBankTransfer,
                                                 "Bonifico inviato con successo!",
@@ -636,10 +683,17 @@ public class Controller {
         }
     }
 
+
+    /**
+     * Metodo per recuperare il nome e il cognome dell'intestatrio dell'iban.
+     * @param iban riferimento dell'iban da cui prendere nome e cognome.
+     * */
     public void selectNameAndSurnameByIban(String iban){
         credenzialiIbanMittDest = transazioneDAO.selectNameAndSurnameByIban(iban);
     }
 
+    /**
+     * Metodo per gestire la visulizzazione della pagina di selzione delle collezioni. */
     public void showCollectionPickView(){
         collections = collectionDAO.selectCollectionByIban(contoScelto);
 
@@ -660,14 +714,26 @@ public class Controller {
         framePickCollection(true);
     }
 
+
+    /**
+     * Metodo per prendere le collezioni del conto personale.*/
     public void pickCollectionByIban(){
         collections = collectionDAO.selectCollectionByIban(contoScelto);
     }
 
+
+    /**
+     * Metodo per recuperare il totale della collezione desiderata.
+     * @param name riferimento del nome della collezione per cui ottenere la somma.*/
     public double selectSumOfCollections(String name){
         return transazioneDAO.selectSumOfCollections(contoScelto, name);
     }
 
+
+    /**
+     * Metodo per gestire la visualizzazione della pagina delle collezioni.
+     * @param collection collezione da visualizzare.
+     * */
     public void showCollectionPage(Collection collection){
         selectedCollection = collection;
         transactionsCollection = transazioneDAO.selectTransactionsByCollection(selectedCollection, contoScelto);
@@ -682,7 +748,13 @@ public class Controller {
 
     }
 
-    public void addCollection(BankAccount conto, String name, String description) throws MyExc{
+
+    /**
+     * Metodo per aggiungere una nuova collezione.
+     * @param name nome della collezione da aggiungere.
+     * @param description descrizione della collezione da aggiungere.
+     * */
+    public void addCollection(String name, String description) throws MyExc{
         try {
             if(!name.isEmpty() && !description.isEmpty())
                 collectionDAO.addCollection(contoScelto, name, description);
@@ -706,6 +778,10 @@ public class Controller {
         }
     }
 
+    /**
+     * Metodo per eliminare una collezione dal conto personale.
+     * @param name nome della collezione da eliminare.
+     * */
     public void deleteCollection(String name){
         collectionDAO.deleteCollection(contoScelto, name);
         if(framePickCollection!=null)
@@ -713,17 +789,34 @@ public class Controller {
         showCollectionPickView();
     }
 
-    public void viewReport(BankAccount conto, String mese){
-        report = transazioneDAO.viewReport(contoScelto, mese);
+
+    /**
+     * Metodo per visualizzare il report mensile.
+     * @param month mese per cui effettuare il report.
+     * */
+    public void viewReport(String month){
+        report = transazioneDAO.viewReport(contoScelto, month);
 
     }
 
-    public double totaleInviatoMensile(BankAccount conto, String mese){
-        return transazioneDAO.totalSentMonthly(conto, mese);
+    /**
+     * Metodo per ottenere il totale mensile in uscita.
+     * @param bankAccount conto per cui visualizzare il totale in uscita.
+     * @param month mese per cui visualizzare il totale in uscita.
+     * @retrun double totale in uscita calcolato.
+     * */
+    public double totaleInviatoMensile(BankAccount bankAccount, String month){
+        return transazioneDAO.totalSentMonthly(bankAccount, month);
     }
 
-    public double totaleRicevutoMensile(BankAccount conto, String mese){
-        return transazioneDAO.totalReceivedMonthly(conto, mese);
+    /**
+     * Metodo per ottenere il totale mensile in entrata.
+     * @param bankAccount per cui visualizzare il totale in entrata.
+     * @param month per cui visualizzare il totale in entrata.
+     * @retrun double totale in entrata calcolato.
+     * */
+    public double totaleRicevutoMensile(BankAccount bankAccount, String month){
+        return transazioneDAO.totalReceivedMonthly(bankAccount, month);
     }
 
     /**
@@ -735,10 +828,10 @@ public class Controller {
     }
 
     /**
-     * Metodo che gestisce la visibilità della pagina di SignIn.
+     * Metodo che gestisce la visibilità della pagina di SignUp.
      * @param isVisibile setta la visibilità della pagina
      * */
-    public void frameSignIn(Boolean isVisibile){
+    public void frameSignUp(Boolean isVisibile){
         frameSignIn.setVisible(isVisibile);
     }
 
@@ -746,13 +839,13 @@ public class Controller {
      * Metodo che gestisce la visibilità della pagina di scelata del conto.
      * @param isVisibile setta la visibilità della pagina
      * */
-    public void framePick(Boolean isVisibile){
+    public void framePickBankAccount(Boolean isVisibile){
         framePick.setVisible(isVisibile);
     }
 
     /**
      * Metodo che gestisce la visibilità della pagina Home.
-     * @param isVisibile setta la visibilità della pagina
+     * @param isVisible setta la visibilità della pagina
      * */
     public void frameHome(Boolean isVisible){
         frameHome.setVisible(isVisible);
@@ -760,15 +853,15 @@ public class Controller {
 
     /**
      * Metodo che gestisce la visibilità della pagina per visualizzare la carta.
-     * @param isVisibile setta la visibilità della pagina
+     * @param isVisible setta la visibilità della pagina
      * */
     public void frameCard(Boolean isVisible){
         frameCard.setVisible(isVisible);
     }
 
     /**
-     * Metodo che gestisce la visibilità della pagina per visualizzare la carta.
-     * @param isVisibile setta la visibilità della pagina
+     * Metodo che gestisce la visibilità della pagina per visualizzare la pagina di Invia Bonifico.
+     * @param isVisible setta la visibilità della pagina
      * */
     public void frameBankTransfer(Boolean isVisible){
         frameBankTransfer.setVisible(isVisible);
@@ -776,19 +869,22 @@ public class Controller {
 
     /**
      * Metodo che gestisce la visibilità della pagina per visualizzare i salvadanai.
-     * @param isVisibile setta la visibilità della pagina
+     * @param isVisible setta la visibilità della pagina
      * */
     public void frameSalvadanaio(Boolean isVisible){
         frameSalvadanaio.setVisible(isVisible);
     }
 
+    /**
+     * Metodo che gestisce la visibilità della pagina delle spese.
+     * @param isVisibile setta la visibilità della pagina.*/
     public void frameTransazioni(Boolean isVisibile){
         frameTransazioni.setVisible(isVisibile);
     }
 
     /**
-     * Metodo che gestisce la visibilità della pagina per visualizzare le collezioni.
-     * @param isVisibile setta la visibilità della pagina
+     * Metodo che gestisce la visibilità della pagina per la selezione delle collezioni.
+     * @param isVisible setta la visibilità della pagina
      * */
     public void framePickCollection(Boolean isVisible){
         framePickCollection.setVisible(isVisible);
@@ -796,7 +892,7 @@ public class Controller {
 
     /**
      * Metodo che gestisce la visibilità della pagina per visualizzare le collezioni.
-     * @param isVisibile setta la visibilità della pagina
+     * @param isVisible setta la visibilità della pagina
      * */
     public void frameCollection(Boolean isVisible){
         frameCollection.setVisible(isVisible);
@@ -806,11 +902,7 @@ public class Controller {
 
 
 
-
-
-
-
-
+    //Getter & Setter
 
     public Account getAccount() {
         return account;
