@@ -2,7 +2,6 @@ package GUI;
 
 import CONTROLLER.Controller;
 import ENTITY.*;
-import org.jfree.chart.ChartPanel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -24,24 +23,13 @@ public class CollectionViewGUI extends JFrame {
     private Font fontRegularXXL;
     private Font fontRegularBoldSmall;
 
-    private String monthNumber;
-    private JPanel panelCenterSx;
-    private String yearMonth;
-    private String currentYear;
-    private ChartPanel chartPanel;
-    private JLabel entraMaxValue;
-    private JLabel entraMinValue;
-    private JLabel entraMedValue;
-    private JLabel uscitaMaxValue;
-    private JLabel uscitaMinValue;
-    private JLabel uscitaMedValue;
-    private JLabel totaleRicevutoValue;
-    private JLabel totaleInviatoValue;
+    //Dichiarazione del panel usato sia nel costruttore che nella funzione per mostrare le transazioni
+    private JPanel panelCenterScrollable;
 
-    //Icone
+    //Dichiarazione icone
     ImageIcon iconUnina = new ImageIcon(PiggyBank.class.getResource("/IMG/unina.png"));
     ImageIcon iconHome = new ImageIcon(PiggyBank.class.getResource("/IMG/home.png"));
-    ImageIcon iconStats = new ImageIcon(PiggyBank.class.getResource("/IMG/statistics.png"));
+
 
     public CollectionViewGUI(Controller controller) {
         this.controller = controller;
@@ -67,24 +55,27 @@ public class CollectionViewGUI extends JFrame {
         contentPane.setBackground(new Color(246, 248, 255));
         GridBagConstraints gbc = new GridBagConstraints();
 
-        // Pannello superiore
-        JPanel panelTop = new JPanel(new GridBagLayout());
-        panelTop.setBackground(new Color(0, 50, 73));
+        // Panel header
+        JPanel panelHeader = new JPanel(new GridBagLayout());
+        panelHeader.setBackground(new Color(0, 50, 73));
         gbc.fill = GridBagConstraints.BOTH;
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.gridwidth = 4; // Occupa due colonne
+        gbc.gridwidth = 4;
         gbc.weightx = 1;
         gbc.weighty = 0.1;
-        contentPane.add(panelTop, gbc);
+        contentPane.add(panelHeader, gbc);
 
-        // Pannello sinistro scrollabile
-        panelCenterSx = new JPanel(new GridBagLayout());
-        panelCenterSx.setBackground(new Color(246, 248, 255));
-        showTable();
-        JScrollPane scrollPane = new JScrollPane(panelCenterSx);
+        // Pannello centrale scrollabile
+        panelCenterScrollable = new JPanel(new GridBagLayout());
+        panelCenterScrollable.setBackground(new Color(246, 248, 255));
+        //Funzione per mostrare le transazioni della raccolta selezionata
+        showTransactionsCollection();
+        JScrollPane scrollPane = new JScrollPane(panelCenterScrollable);
+        scrollPane.setBorder(new EmptyBorder(0,0,0,0));
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        //Metodo per modificare la barra dello scrollPane
         JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
         verticalScrollBar.setUI(new BasicScrollBarUI() {
             @Override
@@ -112,30 +103,28 @@ public class CollectionViewGUI extends JFrame {
             }
         });
 
-        scrollPane.setBorder(new EmptyBorder(0,0,0,0));
-
         gbc.fill = GridBagConstraints.BOTH;
-        gbc.gridx = 0; // Prima colonna
-        gbc.gridy = 1; // Seconda riga
-        gbc.gridwidth = 1; // Resetta a una colonna
-        gbc.weightx = 0.4; // Imposta il peso orizzontale
-        gbc.weighty = 0.9; // Imposta il peso verticale
-        gbc.insets = new Insets(20, 20, 20, 10); // Imposta gli insetti
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        gbc.weightx = 0.4;
+        gbc.weighty = 0.9;
+        gbc.insets = new Insets(20, 20, 20, 10);
         contentPane.add(scrollPane, gbc);
 
 
-
-
-        // Dichiarazione dei componenti per il pannello superiore
-        JLabel speseLabel = new JLabel(controller.getSelectedCollection().getNameCollection());
-        speseLabel.setForeground(new Color(246, 248, 255));
-        JLabel titoloSmu = new JLabel("S.M.U.");
-        titoloSmu.setForeground(Color.WHITE);
+        // Dichiarazione dei componenti per il panel superiore
+        JLabel nameCollectionLabel = new JLabel(controller.getSelectedCollection().getNameCollection());
+        nameCollectionLabel.setForeground(new Color(246, 248, 255));
+        //Dichiarazione titolo SavingMoneyUnina
+        JLabel titleSmu = new JLabel("S.M.U.");
+        titleSmu.setForeground(Color.WHITE);
         if (fontExtraBold != null) {
-            speseLabel.setFont(fontExtraBold);
-            titoloSmu.setFont(fontRegular);
+            nameCollectionLabel.setFont(fontExtraBold);
+            titleSmu.setFont(fontRegular);
         }
 
+        //Dichiarazione button con icon Unina
         JButton buttonLogo = new JButton();
         buttonLogo.setBackground(null);
         buttonLogo.setIcon(iconUnina);
@@ -145,6 +134,7 @@ public class CollectionViewGUI extends JFrame {
         buttonLogo.setBorder(null);
         buttonLogo.setFocusPainted(false);
 
+        //Dichiarazione button con icon Home
         JButton buttonHome = new JButton();
         buttonHome.setCursor(new Cursor(Cursor.HAND_CURSOR));
         buttonHome.setBackground(null);
@@ -158,82 +148,76 @@ public class CollectionViewGUI extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 setVisible(false);
-                controller.showHomeView(controller.getContoScelto());
+                controller.showHomeView(controller.getSelectedBankAccount());
             }
         });
 
-        JButton statsButton = new JButton();
-        statsButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        statsButton.setBackground(null);
-        statsButton.setIcon(iconStats);
-        statsButton.setContentAreaFilled(false);
-        statsButton.setOpaque(false);
-        statsButton.setBorderPainted(false);
-        statsButton.setBorder(null);
-        statsButton.setFocusPainted(false);
-
-
-        gbc = new GridBagConstraints();
         // Configurazione per buttonLogo a sinistra di titoloSmu
-        gbc.gridx = 1; // Posizione immediatamente a sinistra di titoloSmu
-        gbc.weightx = 0; // Non assegna spazio extra, mantiene la posizione
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.weightx = 0;
         gbc.fill = GridBagConstraints.NONE;
-        gbc.insets = new Insets(0, 15, 0, 0); // Aggiusta gli insetti se necessario
-        panelTop.add(buttonLogo, gbc);
+        gbc.insets = new Insets(0, 15, 0, 0);
+        panelHeader.add(buttonLogo, gbc);
 
         // Configurazione per il titoloSmu a sinistra di homePageLabel
-        gbc.gridx = 2; // Posiziona titoloSmu accanto a buttonLogo
-        panelTop.add(titoloSmu, gbc);
+        gbc.gridx = 2;
+        panelHeader.add(titleSmu, gbc);
 
+        //Aggiunge spazio di espansione a destra per mantenere homePageLabel centrata
         gbc = new GridBagConstraints();
-        // Infine, aggiungi spazio di espansione a destra per mantenere homePageLabel centrata
         gbc.gridx = 3;
-        gbc.weightx = 1.0; // Bilancia lo spazio extra a destra
+        gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panelTop.add(Box.createHorizontalGlue(), gbc);
+        panelHeader.add(Box.createHorizontalGlue(), gbc);
 
+        // Configurazione per il nome della collection al centro
         gbc = new GridBagConstraints();
-        // Configurazione per la homePageLabel al centro
         gbc.gridx = 4;
-        panelTop.add(speseLabel, gbc);
+        panelHeader.add(nameCollectionLabel, gbc);
 
-        // Infine, aggiungi spazio di espansione a destra per mantenere homePageLabel centrata
+        //Aggiunge spazio di espansione a destra per mantenere il nome della collection centrata
         gbc.gridx = 5;
-        gbc.weightx = 1.0; // Bilancia lo spazio extra a destra
+        gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.EAST;
-        panelTop.add(Box.createHorizontalGlue(), gbc);
+        panelHeader.add(Box.createHorizontalGlue(), gbc);
 
-        gbc = new GridBagConstraints();
-        // Configurazione per buttonUser e buttonLogout a destra della homePageLabel
-        gbc.gridx = 6; // Posiziona buttonUser a destra della homePageLabel
-        //panelTop.add(statsButton, gbc);
-
-        gbc.gridx = 6; // Posiziona buttonLogout a destra di buttonUser
-        gbc.insets = new Insets(0, 20, 0, 15); // Aggiusta gli insetti se necessario
-        panelTop.add(buttonHome, gbc);
+        // Configurazione per il button Home
+        gbc.gridx = 6;
+        gbc.insets = new Insets(0, 20, 0, 15);
+        panelHeader.add(buttonHome, gbc);
 
         setContentPane(contentPane);
     }
 
-    public void showTable(){
+    public void showTransactionsCollection(){
 
+        //Controlla se ci sono transazioni nella raccolta selezionata
         if(!controller.getTransactionsCollection().isEmpty()){
+            //ordinata per posizionare una card
             int y = 0;
             for (Transaction transaction : controller.getTransactionsCollection()) {
+                //Card che contiene una transazione
                 RoundedPanel cardBank = new RoundedPanel(15, new Color(222, 226, 230));
                 cardBank.setLayout(new GridBagLayout());
 
+                //Creazione label 'Hai inviato: $$$'
+                JLabel moneySentLabel = new JLabel(String.format("Hai inviato %.2f€ a", transaction.getAmount()));
 
-                JLabel haiInviatoLabel = new JLabel(String.format("Hai inviato %.2f€ a", transaction.getAmount()));
+                //Creazione label che contiene le credenziali dell'Iban a cui è stata effettuata la transazione
                 controller.selectNameAndSurnameByIban(transaction.getIban());
-                JLabel ibanLabel = new JLabel(controller.getCredenzialiIbanMittDest());
-                JLabel catLabel = new JLabel("Categoria: "+ transaction.getExitCategory());
+                JLabel credentialByIbanLabel = new JLabel(controller.getCredentialsIban());
 
+                //Creazione label che contiene la categoria della transazione
+                JLabel categoryLabel = new JLabel("Categoria: "+ transaction.getExitCategory());
 
-                JLabel dataLabel = new JLabel(transaction.getDateTransaction() + ", " + transaction.getTimeTransaction());
-                JLabel dettagliLabel = new JLabel("<html><u><i>Causale</i></u></html>");
-                dettagliLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                dettagliLabel.addMouseListener(new MouseAdapter() {
+                //Creazione label che contiene data e orario della transazione effettuata
+                JLabel dateLabel = new JLabel(transaction.getDateTransaction() + ", " + transaction.getTimeTransaction());
+
+                //Creazione label che se cliccata mostra la causale
+                JLabel causalLabel = new JLabel("<html><u><i>Causale</i></u></html>");
+                causalLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                causalLabel.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         JOptionPane.showMessageDialog(
@@ -246,50 +230,50 @@ public class CollectionViewGUI extends JFrame {
                 });
 
                 if(fontRegularBold != null){
-                    haiInviatoLabel.setFont(fontRegularBold);
-                    ibanLabel.setFont(fontRegularBoldSmall);
+                    moneySentLabel.setFont(fontRegularBold);
+                    credentialByIbanLabel.setFont(fontRegularBoldSmall);
                 }
                 if(fontRegularSmall != null){
-                    dataLabel.setFont(fontRegularSmall);
-                    dettagliLabel.setFont(fontRegularSmall);
-                    catLabel.setFont(fontRegularSmall);
+                    dateLabel.setFont(fontRegularSmall);
+                    causalLabel.setFont(fontRegularSmall);
+                    categoryLabel.setFont(fontRegularSmall);
                 }
 
 
-                // Aggiungi le etichette al cardBank
+                //Constraints per inserire le informazioni all'interno di una card
                 GridBagConstraints gbc = new GridBagConstraints();
 
-                haiInviatoLabel.setForeground(new Color(145, 57, 57));
+                moneySentLabel.setForeground(new Color(145, 57, 57));
                 gbc.insets = new Insets(5, 5, 5, 5);
                 gbc.weightx = 1.0;
                 gbc.anchor = GridBagConstraints.NORTHWEST;
-                cardBank.add(haiInviatoLabel, gbc);
+                cardBank.add(moneySentLabel, gbc);
                 gbc.insets = new Insets(5, 5, 5, 5);
                 gbc.anchor = GridBagConstraints.NORTHWEST;
                 gbc.gridy = 1;
-                cardBank.add(ibanLabel,gbc);
+                cardBank.add(credentialByIbanLabel,gbc);
 
 
                 gbc = new GridBagConstraints();
                 gbc.insets = new Insets(20, 5, 5, 5);
                 gbc.anchor = GridBagConstraints.SOUTHWEST;
                 gbc.gridy = 2;
-                cardBank.add(catLabel, gbc);
+                cardBank.add(categoryLabel, gbc);
                 gbc = new GridBagConstraints();
                 gbc.insets = new Insets(5, 5, 5, 10);
                 gbc.anchor = GridBagConstraints.SOUTHWEST;
                 gbc.gridy = 3;
-                cardBank.add(dataLabel, gbc);
+                cardBank.add(dateLabel, gbc);
                 gbc = new GridBagConstraints();
                 gbc.insets = new Insets(5, 5, 5, 10);
                 gbc.anchor = GridBagConstraints.SOUTHEAST;
                 gbc.gridx = 1;
                 gbc.gridy = 3;
-                cardBank.add(dettagliLabel, gbc);
+                cardBank.add(causalLabel, gbc);
 
 
 
-                // Aggiungi il cardBank al panelCenter
+                // Aggiungi il cardBank allo scrollPane
                 gbc = new GridBagConstraints();
                 gbc.insets = new Insets(20, 5, 0, 5);
                 gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -298,11 +282,12 @@ public class CollectionViewGUI extends JFrame {
                 gbc.gridx = 0;
                 gbc.weightx = 1.0;
                 gbc.weighty = 1.0;
-                panelCenterSx.add(cardBank, gbc);
+                panelCenterScrollable.add(cardBank, gbc);
 
             }
         }
         else {
+            //Messaggio nel caso non sono state effettuate transazioni per la raccolta selezionata
             JOptionPane.showMessageDialog(
                     null,
                     "Non ci sono transazioni in questa raccolta",

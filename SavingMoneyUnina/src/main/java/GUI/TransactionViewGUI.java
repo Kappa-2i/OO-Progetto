@@ -30,6 +30,7 @@ public class TransactionViewGUI extends JFrame {
     private Font fontRegularXXL;
     private Font fontRegularBoldSmall;
 
+    //Dichiarazione elementi da aggiungere dopo aver modificato la pagina, usati sia nel costruttore che nella funzione
     private String monthNumber;
     private JPanel panelCenterSx;
     private JPanel panelCenterDx;
@@ -46,9 +47,9 @@ public class TransactionViewGUI extends JFrame {
     private JLabel totaleInviatoValue;
 
     //Icone
-    ImageIcon iconUnina = new ImageIcon(TransactionViewGUI.class.getResource("/IMG/unina.png"));
-    ImageIcon iconHome = new ImageIcon(TransactionViewGUI.class.getResource("/IMG/home.png"));
-    ImageIcon iconStats = new ImageIcon(TransactionViewGUI.class.getResource("/IMG/statistics.png"));
+    private ImageIcon iconUnina = new ImageIcon(TransactionViewGUI.class.getResource("/IMG/unina.png"));
+    private ImageIcon iconHome = new ImageIcon(TransactionViewGUI.class.getResource("/IMG/home.png"));
+    private ImageIcon iconStats = new ImageIcon(TransactionViewGUI.class.getResource("/IMG/statistics.png"));
 
     public TransactionViewGUI(Controller controller) {
         this.controller = controller;
@@ -88,7 +89,7 @@ public class TransactionViewGUI extends JFrame {
         // Pannello sinistro scrollabile
         panelCenterSx = new JPanel(new GridBagLayout());
         panelCenterSx.setBackground(new Color(246, 248, 255));
-        showTable();
+        showTransactions();
         JScrollPane scrollPane = new JScrollPane(panelCenterSx);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -171,7 +172,7 @@ public class TransactionViewGUI extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 setVisible(false);
-                controller.showHomeView(controller.getContoScelto());
+                controller.showHomeView(controller.getSelectedBankAccount());
             }
         });
 
@@ -270,8 +271,8 @@ public class TransactionViewGUI extends JFrame {
         JLabel uscitaMed = new JLabel("Uscita media: ");
         uscitaMedValue = new JLabel(String.format("%.2f", controller.getReport()[5]) + "€");
 
-        double totaleInviatoMensile = controller.totalMonthlySent(controller.getContoScelto(), yearMonth);
-        double totaleRicevutoMensile = controller.totalMonthlyReceived(controller.getContoScelto(), yearMonth);
+        double totaleInviatoMensile = controller.totalMonthlySent(controller.getSelectedBankAccount(), yearMonth);
+        double totaleRicevutoMensile = controller.totalMonthlyReceived(controller.getSelectedBankAccount(), yearMonth);
         JLabel totaleInviato = new JLabel("Totale inviato: ");
         JLabel totaleRicevuto = new JLabel("Totale ricevuto: ");
         totaleInviatoValue = new JLabel(String.format("%.2f", totaleInviatoMensile) + "€");
@@ -477,8 +478,8 @@ public class TransactionViewGUI extends JFrame {
 
                 uscitaMedValue = new JLabel(String.format("%.2f", controller.getReport()[5]) + "€");
 
-                double totaleInviatoMensile = controller.totalMonthlySent(controller.getContoScelto(), yearMonth);
-                double totaleRicevutoMensile = controller.totalMonthlyReceived(controller.getContoScelto(), yearMonth);
+                double totaleInviatoMensile = controller.totalMonthlySent(controller.getSelectedBankAccount(), yearMonth);
+                double totaleRicevutoMensile = controller.totalMonthlyReceived(controller.getSelectedBankAccount(), yearMonth);
 
                 totaleInviatoValue = new JLabel(String.format("%.2f", totaleInviatoMensile) + "€");
                 totaleRicevutoValue = new JLabel(String.format("%.2f", totaleRicevutoMensile) + "€");
@@ -592,11 +593,11 @@ public class TransactionViewGUI extends JFrame {
         setContentPane(contentPane);
     }
 
-    public void showTable(){
+    public void showTransactions(){
 
-        if(!controller.getTransazioni().isEmpty()){
+        if(!controller.getTransactions().isEmpty()){
             int y = 0;
-            for (Transaction transaction : controller.getTransazioni()) {
+            for (Transaction transaction : controller.getTransactions()) {
                 RoundedPanel cardBank = new RoundedPanel(15, new Color(222, 226, 230));
                 cardBank.setLayout(new GridBagLayout());
 
@@ -604,7 +605,7 @@ public class TransactionViewGUI extends JFrame {
                 JLabel haiInviatoLabel = new JLabel(String.format("Hai inviato %.2f€ a", transaction.getAmount()));
                 JLabel haiRicevutoLabel = new JLabel(String.format("Hai ricevuto %.2f€ da", transaction.getAmount()));
                 controller.selectNameAndSurnameByIban(transaction.getIban());
-                JLabel ibanLabel = new JLabel(controller.getCredenzialiIbanMittDest());
+                JLabel ibanLabel = new JLabel(controller.getCredentialsIban());
                 JLabel catLabel = new JLabel("Categoria: ");
                 if(transaction.getEntryCategory()!=null)
                     catLabel.setText(catLabel.getText()+transaction.getEntryCategory());

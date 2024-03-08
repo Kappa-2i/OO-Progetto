@@ -177,7 +177,7 @@ public class HomeViewGUI extends JFrame {
                         "<html><b>Nome: </b> " +controller.getAccount().getName() +"</html>"+
                                 "\n<html><b>Cognome: </b> " +controller.getAccount().getSurname() +"</html>"+
                                 "\n<html><b>E-mail: </b> " +controller.getAccount().getEmail() + "</html>" +
-                                "\n<html><b>Iban: </b> " +controller.getContoScelto().getIban() + "</html>",
+                                "\n<html><b>Iban: </b> " +controller.getSelectedBankAccount().getIban() + "</html>",
                         "Informazioni profilo",
                         JOptionPane.PLAIN_MESSAGE,
                         iconInformation
@@ -233,7 +233,7 @@ public class HomeViewGUI extends JFrame {
                         options[1] // Opzione di default
                 );
                 if (scelta == JOptionPane.YES_OPTION)
-                    controller.deleteBankAccount(controller.getContoScelto().getIban());
+                    controller.deleteBankAccount(controller.getSelectedBankAccount().getIban());
             }
         });
 
@@ -391,7 +391,7 @@ public class HomeViewGUI extends JFrame {
          * */
 
         String carta;
-        if (controller.getCarta().getTypeCard().equals("CartaDiCredito")) {
+        if (controller.getCard().getTypeCard().equals("CartaDiCredito")) {
             carta = "<html><b>CARTA<br>DI CREDITO</b></html>";
         }
         else {
@@ -400,7 +400,7 @@ public class HomeViewGUI extends JFrame {
 
         JLabel cartaLabel = new JLabel(carta);
         cartaLabel.setForeground(new Color(8, 76, 97));
-        JLabel saldoLabel = new JLabel(String.valueOf(controller.getContoScelto().getBalance())+"€");
+        JLabel saldoLabel = new JLabel(String.valueOf(controller.getSelectedBankAccount().getBalance())+"€");
         saldoLabel.setForeground(new Color(246, 248, 255));
         JButton buttonSaldo = new JButton();
         buttonSaldo.setBackground(null);
@@ -655,7 +655,7 @@ public class HomeViewGUI extends JFrame {
         buttonNotifiche.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         JLabel notificheLabel2 = new JLabel("");
-        if(controller.getCarta().getTypeCard().equals("CartaDiCredito")) {
+        if(controller.getCard().getTypeCard().equals("CartaDiCredito")) {
             notificheLabel2.setText("<html><b>DOWNGRADE<br>CARTA</b></html>");
             buttonNotifiche.setIcon(iconDowngrade);
         }
@@ -668,10 +668,10 @@ public class HomeViewGUI extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if(notificheLabel2.getText().equals("<html><b>UPGRADE CARTA</b></html>")){
-                    controller.upgradeCard(controller.getCarta().getPan());
+                    controller.upgradeCard(controller.getCard().getPan());
                 }
                 else
-                    controller.downgradeCard(controller.getCarta().getPan());
+                    controller.downgradeCard(controller.getCard().getPan());
             }
         });
 

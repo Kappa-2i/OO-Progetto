@@ -28,7 +28,7 @@ public class CollectionDAOImpl implements CollectionDAO {
             if (resultSet != null){
                 while (resultSet.next()){
                     //Creazione degli oggetti Salvadanaio.
-                    Collection collection = new Collection(resultSet.getString("nomeraccolta"), resultSet.getString("descrizione"));
+                    Collection collection = new Collection(resultSet.getString("nomeraccolta"), resultSet.getString("descrizione"), bankAccount);
                     //Aggiunta della collezione all'ArrayList di collezioni
                     collections.add(collection);
                 }

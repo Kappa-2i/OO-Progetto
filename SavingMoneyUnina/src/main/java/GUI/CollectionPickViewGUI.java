@@ -102,7 +102,7 @@ public class CollectionPickViewGUI extends JFrame {
         homeButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                controller.showHomeView(controller.getContoScelto());
+                controller.showHomeView(controller.getSelectedBankAccount());
             }
         });
         gbc = new GridBagConstraints();
@@ -263,43 +263,46 @@ public class CollectionPickViewGUI extends JFrame {
                     }
                 });
 
+                //Panel Card con layout GroupLayout
+                GroupLayout glCollection = new GroupLayout(cardBank);
+                cardBank.setLayout(glCollection);
 
-                GroupLayout glBankAccount = new GroupLayout(cardBank);
-                cardBank.setLayout(glBankAccount);
+                //Indica al GroupLayout di creare automaticamente spazi tra i componenti che gestisce
+                glCollection.setAutoCreateGaps(true);
+                //indica al GroupLayout di inserire automaticamente degli spazi tra i componenti e i bordi del contenitore che li ospita
+                glCollection.setAutoCreateContainerGaps(true);
 
-                glBankAccount.setAutoCreateGaps(true);
-                glBankAccount.setAutoCreateContainerGaps(true);
+                //Creazione del gruppo orizzontale di una singola card
+                GroupLayout.SequentialGroup hGroup = glCollection.createSequentialGroup();
 
-                GroupLayout.SequentialGroup hGroup = glBankAccount.createSequentialGroup();
                 // Aggiungi nameLabel e nameCollectionLabel allo stesso gruppo parallelo per averli sulla stessa riga
-                hGroup.addGroup(glBankAccount.createParallelGroup()
+                hGroup.addGroup(glCollection.createParallelGroup()
                         .addComponent(nameLabel).addComponent(totalLabel).addComponent(descriptionLabel));
-                hGroup.addGroup(glBankAccount.createParallelGroup()
+                hGroup.addGroup(glCollection.createParallelGroup()
                         .addComponent(nameCollectionLabel).addComponent(totalTransactions).addComponent(deleteButton));
-                glBankAccount.setHorizontalGroup(hGroup);
+                glCollection.setHorizontalGroup(hGroup);
 
-                GroupLayout.SequentialGroup vGroup = glBankAccount.createSequentialGroup();
+                //Creazione del gruppo verticale di una singola card
+                GroupLayout.SequentialGroup vGroup = glCollection.createSequentialGroup();
+
                 // Crea un gruppo parallelo per nameLabel e nameCollectionLabel affinché siano allineati verticalmente
-                vGroup.addGroup(glBankAccount.createParallelGroup().
+                vGroup.addGroup(glCollection.createParallelGroup().
                         addComponent(nameLabel).addComponent(nameCollectionLabel));
                 // Crea un gruppo parallelo per nameLabel e nameCollectionLabel affinché siano allineati verticalmente
-                vGroup.addGroup(glBankAccount.createParallelGroup().
+                vGroup.addGroup(glCollection.createParallelGroup().
                         addComponent(totalLabel).addComponent(totalTransactions));
                 // Aggiungi il deleteButton in un nuovo gruppo parallelo per posizionarlo sotto
-                vGroup.addGroup(glBankAccount.createParallelGroup()
+                vGroup.addGroup(glCollection.createParallelGroup()
                         .addComponent(descriptionLabel).addComponent(deleteButton));
-                glBankAccount.setVerticalGroup(vGroup);
+                glCollection.setVerticalGroup(vGroup);
 
                 //Metodo per quando viene cliccata una card di una collection per mostrarne la page
                 cardBank.setCursor(new Cursor(Cursor.HAND_CURSOR));
                 cardBank.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        System.out.println(collection.getNameCollection());
                         controller.showCollectionView(collection);
-
                     }
-
                 });
 
                 //Constraints
@@ -508,24 +511,30 @@ public class CollectionPickViewGUI extends JFrame {
                         }
                     });
 
-                    GroupLayout glAddBank = new GroupLayout(addCollection);
-                    addCollection.setLayout(glAddBank);
+                    //Card con layout GroupLayout che contiene la funzione per creare una collection
+                    GroupLayout glAddCollection = new GroupLayout(addCollection);
+                    addCollection.setLayout(glAddCollection);
 
-                    glAddBank.setAutoCreateGaps(true);
-                    glAddBank.setAutoCreateContainerGaps(true);
+                    //Indica al GroupLayout di creare automaticamente spazi tra i componenti che gestisce
+                    glAddCollection.setAutoCreateGaps(true);
+                    //indica al GroupLayout di inserire automaticamente degli spazi tra i componenti e i bordi del contenitore che li ospita
+                    glAddCollection.setAutoCreateContainerGaps(true);
 
-                    GroupLayout.SequentialGroup hGroup2 = glAddBank.createSequentialGroup();
+                    //Creazione del gruppo orizzontale di una singola card
+                    GroupLayout.SequentialGroup hGroup2 = glAddCollection.createSequentialGroup();
 
-                    hGroup2.addGroup(glAddBank.createParallelGroup().
+                    //Aggiunge orizzontalmente alla card la label 'Crea Raccolta'
+                    hGroup2.addGroup(glAddCollection.createParallelGroup().
                             addComponent(createCollection));
-                    glAddBank.setHorizontalGroup(hGroup2);
+                    glAddCollection.setHorizontalGroup(hGroup2);
 
+                    //Creazione del gruppo verticale di una singola card
+                    GroupLayout.SequentialGroup vGroup2 = glAddCollection.createSequentialGroup();
 
-                    GroupLayout.SequentialGroup vGroup2 = glAddBank.createSequentialGroup();
-
-                    vGroup2.addGroup(glAddBank.createParallelGroup(GroupLayout.Alignment.BASELINE).
+                    //Aggiunge verticalmente alla card la label 'Crea Raccolta'
+                    vGroup2.addGroup(glAddCollection.createParallelGroup(GroupLayout.Alignment.BASELINE).
                             addComponent(createCollection));
-                    glAddBank.setVerticalGroup(vGroup2);
+                    glAddCollection.setVerticalGroup(vGroup2);
 
                     //Aggiunta della Card per aggiungere una raccolta nello scrollPane
                     gbc = new GridBagConstraints();
@@ -709,26 +718,32 @@ public class CollectionPickViewGUI extends JFrame {
 
 
 
-            GroupLayout glAddBank = new GroupLayout(addCollection);
-            addCollection.setLayout(glAddBank);
+            //Card con layout GroupLayout che contiene la funzione per creare una collection
+            GroupLayout glAddCollection = new GroupLayout(addCollection);
+            addCollection.setLayout(glAddCollection);
 
-            glAddBank.setAutoCreateGaps(true);
-            glAddBank.setAutoCreateContainerGaps(true);
+            //Indica al GroupLayout di creare automaticamente spazi tra i componenti che gestisce
+            glAddCollection.setAutoCreateGaps(true);
+            //indica al GroupLayout di inserire automaticamente degli spazi tra i componenti e i bordi del contenitore che li ospita
+            glAddCollection.setAutoCreateContainerGaps(true);
 
-            GroupLayout.SequentialGroup hGroup2 = glAddBank.createSequentialGroup();
-            GroupLayout.SequentialGroup vGroup2 = glAddBank.createSequentialGroup();
+            //Creazione del gruppo orizzontale di una singola card
+            GroupLayout.SequentialGroup hGroup2 = glAddCollection.createSequentialGroup();
 
-
-
-            hGroup2.addGroup(glAddBank.createParallelGroup().
+            //Aggiunge orizzontalmente alla card la label 'Crea Raccolta'
+            hGroup2.addGroup(glAddCollection.createParallelGroup().
                     addComponent(createCollection));
-            glAddBank.setHorizontalGroup(hGroup2);
+            glAddCollection.setHorizontalGroup(hGroup2);
 
+            //Creazione del gruppo verticale di una singola card
+            GroupLayout.SequentialGroup vGroup2 = glAddCollection.createSequentialGroup();
 
-            vGroup2.addGroup(glAddBank.createParallelGroup(GroupLayout.Alignment.BASELINE).
+            //Aggiunge verticalmente alla card la label 'Crea Raccolta'
+            vGroup2.addGroup(glAddCollection.createParallelGroup(GroupLayout.Alignment.BASELINE).
                     addComponent(createCollection));
-            glAddBank.setVerticalGroup(vGroup2);
+            glAddCollection.setVerticalGroup(vGroup2);
 
+            //Constraints per aggiungere al Panel Scrollabile la card per aggiungere una raccolta
             GridBagConstraints gbc = new GridBagConstraints();
 
             gbc.insets = new Insets(40, 40, 40, 40);

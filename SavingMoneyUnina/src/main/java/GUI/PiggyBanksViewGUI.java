@@ -114,7 +114,7 @@ public class PiggyBanksViewGUI extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                controller.showHomeView(controller.getContoScelto());
+                controller.showHomeView(controller.getSelectedBankAccount());
             }
         });
 
@@ -257,7 +257,7 @@ public class PiggyBanksViewGUI extends JFrame {
             }
         };
         // Aggiungere i dati del salvadanaio al modello
-        for(PiggyBank piggyBanks : controller.getSalvadanai()){
+        for(PiggyBank piggyBanks : controller.getPiggyBanks()){
             Object[] riga = {
                     piggyBanks.getNamePiggyBank(),
                     piggyBanks.getDescription(),
@@ -364,7 +364,7 @@ public class PiggyBanksViewGUI extends JFrame {
                             );
                             if (resultFill == JOptionPane.YES_OPTION) {
                                 controller.fillPiggyBank((String) table.getValueAt(currentRow, 0), moneyField.getText());
-                                controller.updateBankAccount(controller.getContoScelto());
+                                controller.updateBankAccount(controller.getSelectedBankAccount());
                                 controller.showPiggyBankView();
                             }
                             break;
@@ -396,7 +396,7 @@ public class PiggyBanksViewGUI extends JFrame {
                                 //  Rimuove il simbolo della valuta '€' e qualsiasi altro carattere non numerico, mantenendo solo numeri e punto decimale
                                 String numericValue = valueWithCurrency.replaceAll("[^\\d.]", "");
                                 controller.getMoneyByPiggyBank(numericValue, (String) table.getValueAt(currentRow, 0), getMoneyField.getText());
-                                controller.updateBankAccount(controller.getContoScelto());
+                                controller.updateBankAccount(controller.getSelectedBankAccount());
                                 controller.showPiggyBankView();
 
                             }

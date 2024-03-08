@@ -40,13 +40,13 @@ public class Controller {
 
     //Dichiarazione delle variabili
     private Account account = null;
-    private ArrayList<BankAccount> conti = null;
-    private BankAccount contoScelto = null;
-    private Card carta = null;
-    private ArrayList<PiggyBank> salvadanai = null;
-    private ArrayList<Transaction> transazioni = null;
+    private ArrayList<BankAccount> bankAccounts = null;
+    private BankAccount selectedBankAccount = null;
+    private Card card = null;
+    private ArrayList<PiggyBank> piggyBanks = null;
+    private ArrayList<Transaction> transactions = null;
     private Double[] report = null;
-    private String credenzialiIbanMittDest = null;
+    private String credentialsIban = null;
     private ArrayList<Collection> collections = null;
     private Collection selectedCollection = null;
     private ArrayList<Transaction> transactionsCollection = null;
@@ -175,10 +175,10 @@ public class Controller {
      * @param account riferimento per i conti da selzionare
      * */
     public ArrayList<BankAccount> selectBankAccountByAccount(Account account){
-        conti = new ArrayList<BankAccount>();
-        conti = contoCorrenteDAO.selectBankAccountByAccount(account);
-        account.setBankAccounts(conti);
-        return conti;
+        bankAccounts = new ArrayList<BankAccount>();
+        bankAccounts = contoCorrenteDAO.selectBankAccountByAccount(account);
+        account.setBankAccounts(bankAccounts);
+        return bankAccounts;
     }
 
     /**
@@ -186,7 +186,7 @@ public class Controller {
      * @param conto riferimento per il conto a cui aggiornare il saldo.
      **/
     public void updateBankAccount(BankAccount conto){
-        contoScelto.setBalance(contoCorrenteDAO.updateBankAccount(conto));
+        selectedBankAccount.setBalance(contoCorrenteDAO.updateBankAccount(conto));
     }
 
     /**
@@ -225,11 +225,11 @@ public class Controller {
     public void showHomeView(BankAccount conto){
 
         //Viene selezionato il conto dopo averlo scelto dalla pagina di selezione.
-        contoScelto = conto;
+        selectedBankAccount = conto;
         //Viene recuperata la carta associata al conto scelto.
-        if(carta != null)
-            carta = null;
-        carta = cartaDAO.selectCard(contoScelto);
+        if(card != null)
+            card = null;
+        card = cartaDAO.selectCard(selectedBankAccount);
 
         framePickBankAccount(false);
         if(framePiggyBank != null)
@@ -249,8 +249,8 @@ public class Controller {
         //Quando si torna alla pagina di Login l'account viene settato a null.
         account = null;
         //Quando si torna alla pagina di Login il conto scelto viene settato a null.
-        if (contoScelto!= null)
-            contoScelto = null;
+        if (selectedBankAccount != null)
+            selectedBankAccount = null;
 
         if(frameBankTransfer!=null)
             frameBankTransfer(false);
@@ -289,7 +289,7 @@ public class Controller {
      * Metodo che permette di effettuare l'upgrade della carta da Debito (default) a Credito.
      * @param pan riferimento per la carta da aggiornare.*/
     public void upgradeCard(String pan){
-        if(contoScelto.getBalance() >= 5) {
+        if(selectedBankAccount.getBalance() >= 5) {
             cartaDAO.upgradeCard(pan);
             JOptionPane.showMessageDialog(
                     frameHome,
@@ -299,8 +299,8 @@ public class Controller {
                     iconChecked
             );
             frameHome(false);
-            contoScelto.setBalance(contoCorrenteDAO.updateBankAccount(contoScelto));
-            showHomeView(contoScelto);
+            selectedBankAccount.setBalance(contoCorrenteDAO.updateBankAccount(selectedBankAccount));
+            showHomeView(selectedBankAccount);
         }
         else {
             JOptionPane.showMessageDialog(
@@ -326,7 +326,7 @@ public class Controller {
                 iconChecked
         );
         frameHome(false);
-        showHomeView(contoScelto);
+        showHomeView(selectedBankAccount);
     }
 
     /**
@@ -335,8 +335,8 @@ public class Controller {
         if (framePiggyBank != null)
             framePiggyBank(false);
         //Vengono recuperati i salvadanai associati al conto scelto.
-        salvadanai = salvadanaioDAO.selectPiggyBank(contoScelto);
-        contoScelto.setPiggyBanks(salvadanai);
+        piggyBanks = salvadanaioDAO.selectPiggyBank(selectedBankAccount);
+        selectedBankAccount.setPiggyBanks(piggyBanks);
         if(frameBankTransfer!=null){
             frameBankTransfer(false);
         }
@@ -357,7 +357,7 @@ public class Controller {
     public void addPiggyBank(String name, double target, String description) throws MyExc{
         try {
             if(!name.isEmpty() && !description.isEmpty())
-                salvadanaioDAO.addPiggyBank(contoScelto, name, target, description);
+                salvadanaioDAO.addPiggyBank(selectedBankAccount, name, target, description);
             else{
                 JOptionPane.showMessageDialog(
                         null,
@@ -384,7 +384,7 @@ public class Controller {
      * @param name nome del salvadanaio da eliminare.
      * */
     public void deletePiggyBank(String name){
-        salvadanaioDAO.deletePiggyBank(contoScelto, name);
+        salvadanaioDAO.deletePiggyBank(selectedBankAccount, name);
     }
 
     /**
@@ -395,8 +395,8 @@ public class Controller {
         try{
             if(!moneyToSend.isEmpty()) {
                 if(Math.round((Double.parseDouble(moneyToSend)*100.00)/100.00) > 0) {
-                    if (contoScelto.getBalance() >= Math.round((Double.parseDouble(moneyToSend) * 100.00) / 100.00)) {
-                        salvadanaioDAO.fillPiggyBank(contoScelto, name, Math.round((Double.parseDouble(moneyToSend) * 100.00) / 100.00));
+                    if (selectedBankAccount.getBalance() >= Math.round((Double.parseDouble(moneyToSend) * 100.00) / 100.00)) {
+                        salvadanaioDAO.fillPiggyBank(selectedBankAccount, name, Math.round((Double.parseDouble(moneyToSend) * 100.00) / 100.00));
                     } else {
                         JOptionPane.showMessageDialog(
                                 framePiggyBank,
@@ -449,7 +449,7 @@ public class Controller {
         try{
             if(!moneyToGet.isEmpty()) {
                 if (Double.parseDouble(piggyBankBalance) >= Math.round((Double.parseDouble(moneyToGet)*100.00)/100.00)) {
-                    salvadanaioDAO.getMoneyByPiggyBank(contoScelto, name, Math.round((Double.parseDouble(moneyToGet)*100.00)/100.00));
+                    salvadanaioDAO.getMoneyByPiggyBank(selectedBankAccount, name, Math.round((Double.parseDouble(moneyToGet)*100.00)/100.00));
                 } else {
                     JOptionPane.showMessageDialog(
                             framePiggyBank,
@@ -488,8 +488,8 @@ public class Controller {
         if (frameTransaction != null)
             frameTransaction(false);
         //Vengono recuperati le transazioni associati al conto scelto.
-        transazioni = transazioneDAO.selectTransazioniByIban(contoScelto);
-        contoScelto.setTransactions(transazioni);
+        transactions = transazioneDAO.selectTransazioniByIban(selectedBankAccount);
+        selectedBankAccount.setTransactions(transactions);
         if(frameBankTransfer!=null){
             frameBankTransfer(false);
         }
@@ -526,14 +526,14 @@ public class Controller {
         try{
             if(typeBankTransfer.equals("Bonifico")){
                 if(!amount.isEmpty()) {
-                    if((getCarta().getTypeCard().equals("CartaDiDebito") && Double.parseDouble(amount)<=3000) || (getCarta().getTypeCard().equals("CartaDiCredito"))) {
-                        if (!contoScelto.getIban().equals(ibanReceiver)) {
-                            if (contoScelto.getBalance() >= Math.round((Double.parseDouble(amount) * 100.00) / 100.00)) {
+                    if((getCard().getTypeCard().equals("CartaDiDebito") && Double.parseDouble(amount)<=3000) || (getCard().getTypeCard().equals("CartaDiCredito"))) {
+                        if (!selectedBankAccount.getIban().equals(ibanReceiver)) {
+                            if (selectedBankAccount.getBalance() >= Math.round((Double.parseDouble(amount) * 100.00) / 100.00)) {
                                 if (!ibanReceiver.isEmpty() && !name.isEmpty() && !surname.isEmpty() && !reason.isEmpty()) {
                                     if (transazioneDAO.checkIban(ibanReceiver, name, surname)) {
                                         if (nameCollection == null)
                                             nameCollection = "ALTRO";
-                                        transazioneDAO.sendBankTransfer(contoScelto, ibanReceiver, amount, reason, category, nameCollection);
+                                        transazioneDAO.sendBankTransfer(selectedBankAccount, ibanReceiver, amount, reason, category, nameCollection);
                                         JOptionPane.showMessageDialog(
                                                 frameBankTransfer,
                                                 "Bonifico inviato con successo!",
@@ -541,8 +541,8 @@ public class Controller {
                                                 JOptionPane.INFORMATION_MESSAGE
                                         );
                                         frameBankTransfer(false);
-                                        contoScelto.setBalance(contoCorrenteDAO.updateBankAccount(contoScelto));
-                                        showHomeView(contoScelto);
+                                        selectedBankAccount.setBalance(contoCorrenteDAO.updateBankAccount(selectedBankAccount));
+                                        showHomeView(selectedBankAccount);
 
                                     }
                                 } else {
@@ -596,14 +596,14 @@ public class Controller {
             }
             else {
                 if(!amount.isEmpty()) {
-                    if((getCarta().getTypeCard().equals("CartaDiDebito") && Double.parseDouble(amount)<=3000) || (getCarta().getTypeCard().equals("CartaDiCredito"))) {
-                        if (!contoScelto.getIban().equals(ibanReceiver)) {
-                            if (contoScelto.getBalance() >= Math.round((Double.parseDouble(amount) * 100.00) / 100.00)) {
+                    if((getCard().getTypeCard().equals("CartaDiDebito") && Double.parseDouble(amount)<=3000) || (getCard().getTypeCard().equals("CartaDiCredito"))) {
+                        if (!selectedBankAccount.getIban().equals(ibanReceiver)) {
+                            if (selectedBankAccount.getBalance() >= Math.round((Double.parseDouble(amount) * 100.00) / 100.00)) {
                                 if (!ibanReceiver.isEmpty() && !name.isEmpty() && !surname.isEmpty() && !reason.isEmpty()) {
                                     if (transazioneDAO.checkIban(ibanReceiver, name, surname)) {
                                         if (nameCollection == null)
                                             nameCollection = "ALTRO";
-                                        transazioneDAO.sendIstantBankTransfer(contoScelto, ibanReceiver, amount, reason, category, nameCollection);
+                                        transazioneDAO.sendIstantBankTransfer(selectedBankAccount, ibanReceiver, amount, reason, category, nameCollection);
                                         JOptionPane.showMessageDialog(
                                                 frameBankTransfer,
                                                 "Bonifico inviato con successo!",
@@ -611,8 +611,8 @@ public class Controller {
                                                 JOptionPane.INFORMATION_MESSAGE
                                         );
                                         frameBankTransfer(false);
-                                        contoScelto.setBalance(contoCorrenteDAO.updateBankAccount(contoScelto));
-                                        showHomeView(contoScelto);
+                                        selectedBankAccount.setBalance(contoCorrenteDAO.updateBankAccount(selectedBankAccount));
+                                        showHomeView(selectedBankAccount);
                                     }
                                 } else {
                                     JOptionPane.showMessageDialog(
@@ -689,13 +689,13 @@ public class Controller {
      * @param iban riferimento dell'iban da cui prendere nome e cognome.
      * */
     public void selectNameAndSurnameByIban(String iban){
-        credenzialiIbanMittDest = transazioneDAO.selectNameAndSurnameByIban(iban);
+        credentialsIban = transazioneDAO.selectNameAndSurnameByIban(iban);
     }
 
     /**
      * Metodo per gestire la visulizzazione della pagina di selzione delle collezioni. */
     public void showCollectionPickView(){
-        collections = collectionDAO.selectCollectionByIban(contoScelto);
+        collections = collectionDAO.selectCollectionByIban(selectedBankAccount);
 
         if(framePickCollection!=null){
             framePickCollection(false);
@@ -718,7 +718,7 @@ public class Controller {
     /**
      * Metodo per prendere le collezioni del conto personale.*/
     public void pickCollectionByIban(){
-        collections = collectionDAO.selectCollectionByIban(contoScelto);
+        collections = collectionDAO.selectCollectionByIban(selectedBankAccount);
     }
 
 
@@ -726,7 +726,7 @@ public class Controller {
      * Metodo per recuperare il totale della collezione desiderata.
      * @param name riferimento del nome della collezione per cui ottenere la somma.*/
     public double selectSumOfCollections(String name){
-        return transazioneDAO.selectSumOfCollections(contoScelto, name);
+        return transazioneDAO.selectSumOfCollections(selectedBankAccount, name);
     }
 
 
@@ -736,7 +736,7 @@ public class Controller {
      * */
     public void showCollectionView(Collection collection){
         selectedCollection = collection;
-        transactionsCollection = transazioneDAO.selectTransactionsByCollection(selectedCollection, contoScelto);
+        transactionsCollection = transazioneDAO.selectTransactionsByCollection(selectedCollection, selectedBankAccount);
 
 
         selectedCollection.setTransactions(transactionsCollection);
@@ -757,7 +757,7 @@ public class Controller {
     public void addCollection(String name, String description) throws MyExc{
         try {
             if(!name.isEmpty() && !description.isEmpty())
-                collectionDAO.addCollection(contoScelto, name, description);
+                collectionDAO.addCollection(selectedBankAccount, name, description);
             else{
                 JOptionPane.showMessageDialog(
                         null,
@@ -783,7 +783,7 @@ public class Controller {
      * @param name nome della collezione da eliminare.
      * */
     public void deleteCollection(String name){
-        collectionDAO.deleteCollection(contoScelto, name);
+        collectionDAO.deleteCollection(selectedBankAccount, name);
         if(framePickCollection!=null)
             framePickCollection(false);
         showCollectionPickView();
@@ -795,7 +795,7 @@ public class Controller {
      * @param month mese per cui effettuare il report.
      * */
     public void viewReport(String month){
-        report = transazioneDAO.viewReport(contoScelto, month);
+        report = transazioneDAO.viewReport(selectedBankAccount, month);
 
     }
 
@@ -912,44 +912,44 @@ public class Controller {
         this.account = account;
     }
 
-    public ArrayList<BankAccount> getConti() {
-        return conti;
+    public ArrayList<BankAccount> getBankAccounts() {
+        return bankAccounts;
     }
 
-    public void setConti(ArrayList<BankAccount> conti) {
-        this.conti = conti;
+    public void setBankAccounts(ArrayList<BankAccount> bankAccounts) {
+        this.bankAccounts = bankAccounts;
     }
 
-    public BankAccount getContoScelto() {
-        return contoScelto;
+    public BankAccount getSelectedBankAccount() {
+        return selectedBankAccount;
     }
 
-    public void setContoScelto(BankAccount contoScelto) {
-        this.contoScelto = contoScelto;
+    public void setSelectedBankAccount(BankAccount selectedBankAccount) {
+        this.selectedBankAccount = selectedBankAccount;
     }
 
-    public Card getCarta() {
-        return carta;
+    public Card getCard() {
+        return card;
     }
 
-    public void setCarta(Card carta) {
-        this.carta = carta;
+    public void setCard(Card card) {
+        this.card = card;
     }
 
-    public ArrayList<PiggyBank> getSalvadanai() {
-        return salvadanai;
+    public ArrayList<PiggyBank> getPiggyBanks() {
+        return piggyBanks;
     }
 
-    public void setSalvadanai(ArrayList<PiggyBank> salvadanai) {
-        this.salvadanai = salvadanai;
+    public void setPiggyBanks(ArrayList<PiggyBank> piggyBanks) {
+        this.piggyBanks = piggyBanks;
     }
 
-    public ArrayList<Transaction> getTransazioni() {
-        return transazioni;
+    public ArrayList<Transaction> getTransactions() {
+        return transactions;
     }
 
-    public void setTransazioni(ArrayList<Transaction> transazioni) {
-        this.transazioni = transazioni;
+    public void setTransactions(ArrayList<Transaction> transactions) {
+        this.transactions = transactions;
     }
 
     public Double[] getReport() {
@@ -960,12 +960,12 @@ public class Controller {
         this.report = report;
     }
 
-    public String getCredenzialiIbanMittDest() {
-        return credenzialiIbanMittDest;
+    public String getCredentialsIban() {
+        return credentialsIban;
     }
 
-    public void setCredenzialiIbanMittDest(String credenzialiIbanMittDest) {
-        this.credenzialiIbanMittDest = credenzialiIbanMittDest;
+    public void setCredentialsIban(String credentialsIban) {
+        this.credentialsIban = credentialsIban;
     }
 
     public ArrayList<Collection> getCollections() {

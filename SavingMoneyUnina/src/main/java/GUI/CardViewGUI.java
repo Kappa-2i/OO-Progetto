@@ -68,7 +68,7 @@ public class CardViewGUI extends JFrame {
 
 
         //Creazione label che contiene il numero della carta
-        JLabel panCardLabel = new JLabel(controller.getCarta().getPan().substring(0,4) + " " +controller.getCarta().getPan().substring(4,8) + " " +controller.getCarta().getPan().substring(8,12) + " "+ controller.getCarta().getPan().substring(12,16));
+        JLabel panCardLabel = new JLabel(controller.getCard().getPan().substring(0,4) + " " +controller.getCard().getPan().substring(4,8) + " " +controller.getCard().getPan().substring(8,12) + " "+ controller.getCard().getPan().substring(12,16));
         panCardLabel.setForeground(new Color(246, 248, 255));
 
 
@@ -76,7 +76,7 @@ public class CardViewGUI extends JFrame {
         pinCardLabel.setForeground(new Color(246, 248, 255));
 
         //Creazione label che contiene il numero del pin della carta
-        JPasswordField pinNumberLabel = new JPasswordField(controller.getCarta().getPin());
+        JPasswordField pinNumberLabel = new JPasswordField(controller.getCard().getPin());
         pinNumberLabel.setBackground(null);
         pinNumberLabel.setBorder(null);
         pinNumberLabel.setEditable(false);
@@ -102,7 +102,7 @@ public class CardViewGUI extends JFrame {
         cvvCardLabel.setForeground(new Color(246, 248, 255));
 
         //Creazione label che contiene il numero del cvv della carta
-        JPasswordField cvvNumberLabel = new JPasswordField(controller.getCarta().getCvv());
+        JPasswordField cvvNumberLabel = new JPasswordField(controller.getCard().getCvv());
         cvvNumberLabel.setEchoChar('*');
         cvvNumberLabel.setForeground(new Color(246, 248, 255));
         cvvNumberLabel.setBackground(null);

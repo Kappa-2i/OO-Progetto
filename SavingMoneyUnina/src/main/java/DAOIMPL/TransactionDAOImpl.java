@@ -24,6 +24,8 @@ public class TransactionDAOImpl implements TransactionDAO {
                 "t.categoriaentrata, " +
                 "t.categoriauscita, " +
                 "r.nomeraccolta, " +
+                "r.descrizione, " +
+                "r.contocorrente_iban, " +
                 "t.iban1 " +
                 "FROM test.transazione t " +
                 "LEFT JOIN test.raccolta r ON t.raccolta_Id_Fk = r.Id_Raccolta " +
@@ -40,9 +42,10 @@ public class TransactionDAOImpl implements TransactionDAO {
             if (resultSet != null){
                 while (resultSet.next()){
                     //Creazione degli oggetti Salvadanaio.
+                    Collection collection = new Collection(resultSet.getString("nomeraccolta"), resultSet.getString("descrizione"), bankAccount);
                     Transaction transaction = new Transaction(resultSet.getDouble("importo"), resultSet.getString("causale"),
                             resultSet.getString("datatransazione"), resultSet.getString("orariotransazione").substring(0,5), resultSet.getString("tipotransazione"),
-                            resultSet.getString("iban1"), resultSet.getString("categoriaentrata"), resultSet.getString("categoriauscita"), resultSet.getString("nomeraccolta"), bankAccount);
+                            resultSet.getString("iban1"), resultSet.getString("categoriaentrata"), resultSet.getString("categoriauscita"), collection, bankAccount);
                     //Agginta del salvadaio all'ArrayList di salvadanai
                     transactions.add(transaction);
                 }
@@ -284,6 +287,7 @@ public class TransactionDAOImpl implements TransactionDAO {
                 "ON t.iban2 = r.contocorrente_iban AND t.raccolta_id_fk = r.id_raccolta "+
                 "WHERE r.nomeraccolta = '"+collection.getNameCollection()+"' AND r.contocorrente_iban = '"+bankAccount.getIban()+"' ";
 
+
         ArrayList<Transaction> transactionsCollection = new ArrayList<Transaction>();
 
         try (Connection conn = DBConnection.getDBConnection().getConnection();  // Ottenimento della connessione al database
@@ -297,7 +301,7 @@ public class TransactionDAOImpl implements TransactionDAO {
                     //Creazione degli oggetti Salvadanaio.
                     Transaction transactionCollection = new Transaction(resultSet.getDouble("importo"), resultSet.getString("causale"),
                             resultSet.getString("datatransazione"), resultSet.getString("orariotransazione").substring(0,5), resultSet.getString("tipotransazione"),
-                            resultSet.getString("iban1"), resultSet.getString("categoriaentrata"), resultSet.getString("categoriauscita"), resultSet.getString("nomeraccolta"), bankAccount);
+                            resultSet.getString("iban1"), resultSet.getString("categoriaentrata"), resultSet.getString("categoriauscita"), collection, bankAccount);
                     //Aggiunta della collezione all'ArrayList di collezioni
                     transactionsCollection.add(transactionCollection);
                 }

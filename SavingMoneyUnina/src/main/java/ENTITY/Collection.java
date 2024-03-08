@@ -8,9 +8,10 @@ public class Collection {
     private ArrayList<Transaction> transactions;
     private BankAccount bankAccount;
 
-    public Collection(String nameCollection, String description) {
+    public Collection(String nameCollection, String description, BankAccount bankAccount) {
         setNameCollection(nameCollection);
         setDescription(description);
+        setBankAccount(bankAccount);
     }
 
     public String getNameCollection() {
@@ -45,11 +46,4 @@ public class Collection {
         this.bankAccount = bankAccount;
     }
 
-    @Override
-    public String toString() {
-        return "Collection{" +
-                "nameCollection='" + nameCollection + '\'' +
-                ", description='" + description + '\'' +
-                '}';
-    }
 }
