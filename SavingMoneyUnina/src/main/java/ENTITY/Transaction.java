@@ -20,7 +20,7 @@ public class Transaction {
         setTypeTransaction(typeTransaction);
         setIban(iban);
         setEntryCategory(entryCategory);
-        setEntryCategory(exitCategory);
+        setExitCategory(exitCategory);
         setNameCollection(nameCollection);
         setBankAccount(bankAccount);
     }

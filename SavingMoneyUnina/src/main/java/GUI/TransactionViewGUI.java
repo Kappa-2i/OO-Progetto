@@ -171,7 +171,7 @@ public class TransactionViewGUI extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 setVisible(false);
-                controller.showHomePage(controller.getContoScelto());
+                controller.showHomeView(controller.getContoScelto());
             }
         });
 
@@ -270,8 +270,8 @@ public class TransactionViewGUI extends JFrame {
         JLabel uscitaMed = new JLabel("Uscita media: ");
         uscitaMedValue = new JLabel(String.format("%.2f", controller.getReport()[5]) + "€");
 
-        double totaleInviatoMensile = controller.totaleInviatoMensile(controller.getContoScelto(), yearMonth);
-        double totaleRicevutoMensile = controller.totaleRicevutoMensile(controller.getContoScelto(), yearMonth);
+        double totaleInviatoMensile = controller.totalMonthlySent(controller.getContoScelto(), yearMonth);
+        double totaleRicevutoMensile = controller.totalMonthlyReceived(controller.getContoScelto(), yearMonth);
         JLabel totaleInviato = new JLabel("Totale inviato: ");
         JLabel totaleRicevuto = new JLabel("Totale ricevuto: ");
         totaleInviatoValue = new JLabel(String.format("%.2f", totaleInviatoMensile) + "€");
@@ -477,8 +477,8 @@ public class TransactionViewGUI extends JFrame {
 
                 uscitaMedValue = new JLabel(String.format("%.2f", controller.getReport()[5]) + "€");
 
-                double totaleInviatoMensile = controller.totaleInviatoMensile(controller.getContoScelto(), yearMonth);
-                double totaleRicevutoMensile = controller.totaleRicevutoMensile(controller.getContoScelto(), yearMonth);
+                double totaleInviatoMensile = controller.totalMonthlySent(controller.getContoScelto(), yearMonth);
+                double totaleRicevutoMensile = controller.totalMonthlyReceived(controller.getContoScelto(), yearMonth);
 
                 totaleInviatoValue = new JLabel(String.format("%.2f", totaleInviatoMensile) + "€");
                 totaleRicevutoValue = new JLabel(String.format("%.2f", totaleRicevutoMensile) + "€");

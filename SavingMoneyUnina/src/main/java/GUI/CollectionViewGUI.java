@@ -158,7 +158,7 @@ public class CollectionViewGUI extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 setVisible(false);
-                controller.showHomePage(controller.getContoScelto());
+                controller.showHomeView(controller.getContoScelto());
             }
         });
 

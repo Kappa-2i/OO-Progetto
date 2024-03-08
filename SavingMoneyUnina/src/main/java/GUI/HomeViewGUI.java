@@ -151,7 +151,7 @@ public class HomeViewGUI extends JFrame {
                         options[1] // Opzione di default
                 );
                 if (scelta == JOptionPane.YES_OPTION)
-                    controller.backLoginPage();
+                    controller.backLoginView();
             }
         });
 
@@ -201,7 +201,7 @@ public class HomeViewGUI extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e){
                 setVisible(false);
-                controller.showPickBankAccountFrame();
+                controller.showPickBankAccountView();
             }
         });
 
@@ -345,7 +345,7 @@ public class HomeViewGUI extends JFrame {
         saldoPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                controller.showCardPage();
+                controller.showCardView();
             }
         });
 
@@ -355,7 +355,7 @@ public class HomeViewGUI extends JFrame {
         spesePanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                controller.showTransazioniPage();
+                controller.showTransactionView();
             }
         });
 
@@ -365,7 +365,7 @@ public class HomeViewGUI extends JFrame {
         salvadanaioPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                controller.showSalvadanaioPage();
+                controller.showPiggyBankView();
             }
         });
 
@@ -413,7 +413,7 @@ public class HomeViewGUI extends JFrame {
         buttonSaldo.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                controller.showCardPage();
+                controller.showCardView();
             }
         });
 
@@ -432,7 +432,7 @@ public class HomeViewGUI extends JFrame {
         buttonSpese.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                controller.showTransazioniPage();
+                controller.showTransactionView();
             }
         });
 
@@ -557,7 +557,7 @@ public class HomeViewGUI extends JFrame {
         buttonInviaSoldi.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                controller.showBankTransferPage();
+                controller.showBankTransferView();
             }
         });
 
@@ -569,7 +569,7 @@ public class HomeViewGUI extends JFrame {
         inviaSoldiLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                controller.showBankTransferPage();
+                controller.showBankTransferView();
             }
         });
 
@@ -668,10 +668,10 @@ public class HomeViewGUI extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if(notificheLabel2.getText().equals("<html><b>UPGRADE CARTA</b></html>")){
-                    controller.upgradeCarta(controller.getCarta().getPan());
+                    controller.upgradeCard(controller.getCarta().getPan());
                 }
                 else
-                    controller.downgradeCarta(controller.getCarta().getPan());
+                    controller.downgradeCard(controller.getCarta().getPan());
             }
         });
 

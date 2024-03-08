@@ -44,93 +44,93 @@ public class BankTransferViewGUI extends JFrame {
         JPanel contentPane = new JPanel(new GridBagLayout());
         contentPane.setBackground(new Color(246, 248, 255));
 
-        JLabel inviaBonificoLabel = new JLabel("Invia Bonifico");
-        inviaBonificoLabel.setForeground(new Color(8, 76, 97));
+        JLabel sendBankTransferLabel = new JLabel("Invia Bonifico");
+        sendBankTransferLabel.setForeground(new Color(8, 76, 97));
 
-        JLabel nomeDestinatarioLabel= new JLabel("Nome destinatario");
-        nomeDestinatarioLabel.setForeground(new Color(8, 76, 97));
-        JTextField nomeDestinatarioField = new JTextField();
-        nomeDestinatarioField.setBackground(new Color(246, 248, 255));
-        nomeDestinatarioField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
-        nomeDestinatarioField.addFocusListener(new FocusAdapter() {
+        JLabel nameReceiverLabel= new JLabel("Nome destinatario");
+        nameReceiverLabel.setForeground(new Color(8, 76, 97));
+        JTextField nameReceiverField = new JTextField();
+        nameReceiverField.setBackground(new Color(246, 248, 255));
+        nameReceiverField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
+        nameReceiverField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                nomeDestinatarioField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(0, 84, 122, 255)));
+                nameReceiverField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(0, 84, 122, 255)));
             }
             @Override
             public void focusLost(FocusEvent e) {
-                nomeDestinatarioField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
+                nameReceiverField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
             }
         });
 
 
-        JLabel cognomeDestinatarioLabel = new JLabel("Cognome destinatario");
-        cognomeDestinatarioLabel.setForeground(new Color(8, 76, 97));
-        JTextField cognomeDestinatarioField = new JTextField();
-        cognomeDestinatarioField.setBackground(new Color(246, 248, 255));
-        cognomeDestinatarioField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
-        cognomeDestinatarioField.addFocusListener(new FocusAdapter() {
+        JLabel surnameReceiverLabel = new JLabel("Cognome destinatario");
+        surnameReceiverLabel.setForeground(new Color(8, 76, 97));
+        JTextField surnameReceiverField = new JTextField();
+        surnameReceiverField.setBackground(new Color(246, 248, 255));
+        surnameReceiverField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
+        surnameReceiverField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                cognomeDestinatarioField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(0, 84, 122, 255)));
+                surnameReceiverField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(0, 84, 122, 255)));
             }
             @Override
             public void focusLost(FocusEvent e) {
-                cognomeDestinatarioField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
+                surnameReceiverField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
             }
         });
 
-        JLabel ibanDestinatarioLabel = new JLabel("Iban destinatario");
-        ibanDestinatarioLabel.setForeground(new Color(8, 76, 97));
-        JTextField ibanDestinatarioField = new JTextField();
-        ibanDestinatarioField.setBackground(new Color(246, 248, 255));
-        ibanDestinatarioField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
-        ibanDestinatarioField.addFocusListener(new FocusAdapter() {
+        JLabel ibanReceiverLabel = new JLabel("Iban destinatario");
+        ibanReceiverLabel.setForeground(new Color(8, 76, 97));
+        JTextField ibanReceiverField = new JTextField();
+        ibanReceiverField.setBackground(new Color(246, 248, 255));
+        ibanReceiverField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
+        ibanReceiverField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                ibanDestinatarioField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(0, 84, 122, 255)));
+                ibanReceiverField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(0, 84, 122, 255)));
             }
             @Override
             public void focusLost(FocusEvent e) {
-                ibanDestinatarioField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
+                ibanReceiverField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
             }
         });
 
-        JLabel importoLabel = new JLabel("Importo");
-        importoLabel.setForeground(new Color(8, 76, 97));
-        JTextField importoField = new JTextField();
-        importoField.setBackground(new Color(246, 248, 255));
-        importoField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
-        importoField.addFocusListener(new FocusAdapter() {
+        JLabel amountLabel = new JLabel("Importo");
+        amountLabel.setForeground(new Color(8, 76, 97));
+        JTextField amountField = new JTextField();
+        amountField.setBackground(new Color(246, 248, 255));
+        amountField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
+        amountField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                importoField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(0, 84, 122, 255)));
+                amountField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(0, 84, 122, 255)));
             }
             @Override
             public void focusLost(FocusEvent e) {
-                importoField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
+                amountField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
             }
         });
 
-        JLabel causaleLabel = new JLabel("Causale");
-        causaleLabel.setForeground(new Color(8, 76, 97));
-        JTextArea causaleArea = new JTextArea();
-        causaleArea.setBackground(new Color(246, 248, 255));
-        causaleArea.setBorder(new MatteBorder(2, 2, 2, 2, new Color(185, 185, 185)));
-        causaleArea.addFocusListener(new FocusAdapter() {
+        JLabel causalLabel = new JLabel("Causale");
+        causalLabel.setForeground(new Color(8, 76, 97));
+        JTextArea causalTextArea = new JTextArea();
+        causalTextArea.setBackground(new Color(246, 248, 255));
+        causalTextArea.setBorder(new MatteBorder(2, 2, 2, 2, new Color(185, 185, 185)));
+        causalTextArea.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                causaleArea.setBorder(new MatteBorder(2, 2, 2, 2, new Color(0, 84, 122, 255)));
+                causalTextArea.setBorder(new MatteBorder(2, 2, 2, 2, new Color(0, 84, 122, 255)));
             }
             @Override
             public void focusLost(FocusEvent e) {
-                causaleArea.setBorder(new MatteBorder(2, 2, 2, 2, new Color(185, 185, 185)));
+                causalTextArea.setBorder(new MatteBorder(2, 2, 2, 2, new Color(185, 185, 185)));
             }
         });
 
 
 
-        PlainDocument doc = (PlainDocument) causaleArea.getDocument();
+        PlainDocument doc = (PlainDocument) causalTextArea.getDocument();
         doc.setDocumentFilter(new DocumentFilter() {
             private int maxChars = 200;
 
@@ -160,20 +160,21 @@ public class BankTransferViewGUI extends JFrame {
         });
 
         //Funzioni che fanno andare accapo quando scrivi nella TextArea
-        causaleArea.setLineWrap(true);
-        causaleArea.setWrapStyleWord(true);
+        causalTextArea.setLineWrap(true);
+        causalTextArea.setWrapStyleWord(true);
 
-        String[] categorie = {"Altro", "Bollette", "Cinema", "Salute", "Spesa", "Spesa medica", "Sport", "Svago"};
+        String[] categories = {"Altro", "Bollette", "Cinema", "Salute", "Spesa", "Spesa medica", "Sport", "Svago"};
 
-        JLabel catLabel = new JLabel("Categoria");
-        catLabel.setForeground(new Color(8, 76, 97));
-        JComboBox<String> catComboBox = new JComboBox<>(categorie);
+        JLabel categorieLabel = new JLabel("Categoria");
+        categorieLabel.setForeground(new Color(8, 76, 97));
+        JComboBox<String> categoriesComboBox = new JComboBox<>(categories);
 
-        String[] tipoBonifico = {"Bonifico", "Bonifico Istantaneo"};
+        String[] typeBankTransfer = {"Bonifico", "Bonifico Istantaneo"};
 
-        JLabel bonLabel = new JLabel("Tipo");
-        bonLabel.setForeground(new Color(8, 76, 97));
-        JComboBox<String> bonComboBox = new JComboBox<>(tipoBonifico);
+        JLabel typeBankTransferLabel = new JLabel("Tipo");
+        typeBankTransferLabel.setForeground(new Color(8, 76, 97));
+        JComboBox<String> typeBankTransferComboBox = new JComboBox<>(typeBankTransfer);
+        typeBankTransferComboBox.setSelectedItem(0);
 
 
 
@@ -186,6 +187,7 @@ public class BankTransferViewGUI extends JFrame {
         for (Collection collection : controller.getCollections()){
             list.add(collection.getNameCollection());
         }
+        //Il metodo toArray(new String[0]) è usato per convertire l'ArrayList in un array di String, che è il formato richiesto dal costruttore di JList.
         JList<String> listCollection= new JList(list.toArray(new String[0]));
         listCollection.setBackground(new Color(246, 248, 255));
 
@@ -193,56 +195,56 @@ public class BankTransferViewGUI extends JFrame {
         JScrollPane scrollPane = new JScrollPane(listCollection);
 
 
-        JButton inviaButton = new JButton("Invia");
-        inviaButton.setOpaque(true);
-        inviaButton.setBackground(new Color(0, 0, 0, 255));
-        inviaButton.setForeground(new Color(246, 248, 255));
-        inviaButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-        inviaButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cambia il cursore per indicare che è cliccabile
-        inviaButton.addMouseListener(new MouseAdapter() {
+        JButton sendBankTransferButton = new JButton("Invia");
+        sendBankTransferButton.setOpaque(true);
+        sendBankTransferButton.setBackground(new Color(0, 0, 0, 255));
+        sendBankTransferButton.setForeground(new Color(246, 248, 255));
+        sendBankTransferButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        sendBankTransferButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cambia il cursore per indicare che è cliccabile
+        sendBankTransferButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                controller.sendBankTransfer(ibanDestinatarioField.getText(),
-                        importoField.getText(),
-                        nomeDestinatarioField.getText(),
-                        cognomeDestinatarioField.getText(),
-                        causaleArea.getText(),
-                        (String) catComboBox.getSelectedItem(),
-                        (String) bonComboBox.getSelectedItem(),
+                controller.sendBankTransfer(ibanReceiverField.getText(),
+                        amountField.getText(),
+                        nameReceiverField.getText(),
+                        surnameReceiverField.getText(),
+                        causalTextArea.getText(),
+                        (String) categoriesComboBox.getSelectedItem(),
+                        (String) typeBankTransferComboBox.getSelectedItem(),
                         listCollection.getSelectedValue());
-                ibanDestinatarioField.setText("");
-                importoField.setText("");
-                nomeDestinatarioField.setText("");
-                cognomeDestinatarioField.setText("");
-                causaleArea.setText("");
+                ibanReceiverField.setText("");
+                amountField.setText("");
+                nameReceiverField.setText("");
+                surnameReceiverField.setText("");
+                causalTextArea.setText("");
             }
         });
 
 
         if(fontBold!=null){
-            inviaButton.setFont(fontBold);
+            sendBankTransferButton.setFont(fontBold);
         }
         if(fontExtraBold!=null){
-            inviaBonificoLabel.setFont(fontExtraBold);
+            sendBankTransferLabel.setFont(fontExtraBold);
         }
         if(fontRegularBold!=null){
-            nomeDestinatarioLabel.setFont(fontRegularBold);
-            cognomeDestinatarioLabel.setFont(fontRegularBold);
-            importoLabel.setFont(fontRegularBold);
-            ibanDestinatarioLabel.setFont(fontRegularBold);
-            causaleLabel.setFont(fontRegularBold);
-            catLabel.setFont(fontRegularBold);
-            bonLabel.setFont(fontRegularBold);
+            nameReceiverLabel.setFont(fontRegularBold);
+            surnameReceiverLabel.setFont(fontRegularBold);
+            amountLabel.setFont(fontRegularBold);
+            ibanReceiverLabel.setFont(fontRegularBold);
+            causalLabel.setFont(fontRegularBold);
+            categorieLabel.setFont(fontRegularBold);
+            typeBankTransferLabel.setFont(fontRegularBold);
             collectionLabel.setFont(fontRegularBold);
         }
         if(fontRegular!=null){
-            nomeDestinatarioField.setFont(fontRegular);
-            cognomeDestinatarioField.setFont(fontRegular);
-            importoField.setFont(fontRegular);
-            ibanDestinatarioField.setFont(fontRegular);
-            causaleArea.setFont(fontRegular);
-            catComboBox.setFont(fontRegular);
-            bonComboBox.setFont(fontRegular);
+            nameReceiverField.setFont(fontRegular);
+            surnameReceiverField.setFont(fontRegular);
+            amountField.setFont(fontRegular);
+            ibanReceiverField.setFont(fontRegular);
+            causalTextArea.setFont(fontRegular);
+            categoriesComboBox.setFont(fontRegular);
+            typeBankTransferComboBox.setFont(fontRegular);
             listCollection.setFont(fontRegular);
         }
 
@@ -255,7 +257,7 @@ public class BankTransferViewGUI extends JFrame {
         gbc.gridwidth = 2;
         gbc.gridy = 0;
         gbc.gridx = 0;
-        contentPane.add(inviaBonificoLabel, gbc);
+        contentPane.add(sendBankTransferLabel, gbc);
 
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 40, 5, 20);
@@ -264,7 +266,7 @@ public class BankTransferViewGUI extends JFrame {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.gridy = 1;
         gbc.gridx = 0;
-        contentPane.add(nomeDestinatarioLabel,gbc);
+        contentPane.add(nameReceiverLabel,gbc);
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 40, 5, 20);
         gbc.weighty = 0.1;
@@ -272,7 +274,7 @@ public class BankTransferViewGUI extends JFrame {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.gridy = 2;
         gbc.gridx = 0;
-        contentPane.add(nomeDestinatarioField,gbc);
+        contentPane.add(nameReceiverField,gbc);
 
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 20, 5, 40);
@@ -281,7 +283,7 @@ public class BankTransferViewGUI extends JFrame {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.gridy = 1;
         gbc.gridx = 1;
-        contentPane.add(cognomeDestinatarioLabel,gbc);
+        contentPane.add(surnameReceiverLabel,gbc);
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 20, 5, 40);
         gbc.weighty = 0.1;
@@ -289,7 +291,7 @@ public class BankTransferViewGUI extends JFrame {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.gridy = 2;
         gbc.gridx = 1;
-        contentPane.add(cognomeDestinatarioField,gbc);
+        contentPane.add(surnameReceiverField,gbc);
 
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 40, 5, 20);
@@ -298,7 +300,7 @@ public class BankTransferViewGUI extends JFrame {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.gridy = 3;
         gbc.gridx = 0;
-        contentPane.add(ibanDestinatarioLabel,gbc);
+        contentPane.add(ibanReceiverLabel,gbc);
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 40, 5, 20);
         gbc.weighty = 0.1;
@@ -306,7 +308,7 @@ public class BankTransferViewGUI extends JFrame {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.gridy = 4;
         gbc.gridx = 0;
-        contentPane.add(ibanDestinatarioField,gbc);
+        contentPane.add(ibanReceiverField,gbc);
 
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 20, 5, 40);
@@ -315,7 +317,7 @@ public class BankTransferViewGUI extends JFrame {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.gridy = 3;
         gbc.gridx = 1;
-        contentPane.add(importoLabel,gbc);
+        contentPane.add(amountLabel,gbc);
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 20, 5, 40);
         gbc.weighty = 0.1;
@@ -323,7 +325,7 @@ public class BankTransferViewGUI extends JFrame {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.gridy = 4;
         gbc.gridx = 1;
-        contentPane.add(importoField,gbc);
+        contentPane.add(amountField,gbc);
 
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 40, 5, 20);
@@ -332,7 +334,7 @@ public class BankTransferViewGUI extends JFrame {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.gridy = 5;
         gbc.gridx = 0;
-        contentPane.add(catLabel,gbc);
+        contentPane.add(categorieLabel,gbc);
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 40, 5, 20);
         gbc.weighty = 0.1;
@@ -340,7 +342,7 @@ public class BankTransferViewGUI extends JFrame {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.gridy = 6;
         gbc.gridx = 0;
-        contentPane.add(catComboBox,gbc);
+        contentPane.add(categoriesComboBox,gbc);
 
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 20, 5, 40);
@@ -349,7 +351,7 @@ public class BankTransferViewGUI extends JFrame {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.gridy = 5;
         gbc.gridx = 1;
-        contentPane.add(bonLabel,gbc);
+        contentPane.add(typeBankTransferLabel,gbc);
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 20, 5, 40);
         gbc.weighty = 0.1;
@@ -357,7 +359,7 @@ public class BankTransferViewGUI extends JFrame {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.gridy = 6;
         gbc.gridx = 1;
-        contentPane.add(bonComboBox,gbc);
+        contentPane.add(typeBankTransferComboBox,gbc);
 
 
         gbc = new GridBagConstraints();
@@ -367,7 +369,7 @@ public class BankTransferViewGUI extends JFrame {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.gridy = 7;
         gbc.gridx = 0;
-        contentPane.add(causaleLabel,gbc);
+        contentPane.add(causalLabel,gbc);
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 40, 5, 20);
         gbc.weighty = 0.1;
@@ -375,7 +377,7 @@ public class BankTransferViewGUI extends JFrame {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.gridy = 8;
         gbc.gridx = 0;
-        contentPane.add(causaleArea,gbc);
+        contentPane.add(causalTextArea,gbc);
 
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 20, 5, 40);
@@ -401,10 +403,11 @@ public class BankTransferViewGUI extends JFrame {
         gbc.gridx = 1;
         gbc.anchor = GridBagConstraints.EAST;
         gbc.fill = 0;
-        contentPane.add(inviaButton,gbc);
+        contentPane.add(sendBankTransferButton,gbc);
 
         // Utilizza SwingUtilities.invokeLater per richiedere il focus
-        SwingUtilities.invokeLater(() -> inviaButton.requestFocusInWindow());
+        SwingUtilities.invokeLater(() -> sendBankTransferButton.requestFocusInWindow());
+
         setContentPane(contentPane);
 
     }

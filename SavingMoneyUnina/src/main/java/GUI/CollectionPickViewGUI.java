@@ -6,13 +6,9 @@ import EXCEPTIONS.MyExc;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.DocumentFilter;
-import javax.swing.text.PlainDocument;
+import javax.swing.text.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.InputStream;
 
 public class CollectionPickViewGUI extends JFrame {
@@ -26,14 +22,20 @@ public class CollectionPickViewGUI extends JFrame {
     private Font fontExtraBold;
     private Font fontRegularSmall;
     private JButton homeButton;
-    private JPanel panelSignIn;
 
-    //Icone
+    //Dichiarazione del Panel usato sia nel costruttore che nella funzione
+    private JPanel panelCenter;
+
+    //Dichiarazione Icone
     ImageIcon iconAddCollection = new ImageIcon(CollectionPickViewGUI.class.getResource("/IMG/add-folder.png"));
     ImageIcon iconHome = new ImageIcon(CollectionPickViewGUI.class.getResource("/IMG/home.png"));
     ImageIcon iconUnina = new ImageIcon(CollectionPickViewGUI.class.getResource("/IMG/unina.png"));
     ImageIcon iconTrash = new ImageIcon(CollectionPickViewGUI.class.getResource("/IMG/trash.png"));
     ImageIcon iconDelete = new ImageIcon(CollectionPickViewGUI.class.getResource("/IMG/delete.png"));
+
+    //Dichiarazione dei pulsanti da usare nei JOptionPane
+    private Object[] optionsAdd = {"Crea", "Annulla"};
+    private Object[] optionsDelete = {"Elimina", "Annulla"};
 
 
     public CollectionPickViewGUI(Controller controller){
@@ -58,37 +60,39 @@ public class CollectionPickViewGUI extends JFrame {
         GridBagConstraints gbc = new GridBagConstraints();
 
 
-        // Panel 3 in alto a tutto
-        JPanel panelSignIn3 = new JPanel(new GridBagLayout());
-        panelSignIn3.setBackground(new Color(0, 50, 73)); // Scegli il colore che preferisci
-        panelSignIn3.setOpaque(true);
-        JLabel titoloFrame = new JLabel("Seleziona raccolta");
+        //Creazione del Panel Header
+        JPanel panelTop = new JPanel(new GridBagLayout());
+        panelTop.setBackground(new Color(0, 50, 73));
+        panelTop.setOpaque(true);
+
+        JLabel titleFrame = new JLabel("Seleziona raccolta");
         if (fontExtraBold != null)
-            titoloFrame.setFont(fontExtraBold);
-        titoloFrame.setForeground(new Color(246, 248, 255));
-        //gbc.gridwidth = 2;
+            titleFrame.setFont(fontExtraBold);
+        titleFrame.setForeground(new Color(246, 248, 255));
         gbc.anchor = GridBagConstraints.CENTER;
-        gbc.gridx = 0; // Inizia dalla prima colonna
-        gbc.gridy = 0; // Prima riga
+        gbc.gridx = 0;
+        gbc.gridy = 0;
         gbc.fill = GridBagConstraints.BOTH;
-        panelSignIn3.add(titoloFrame, gbc);
+        panelTop.add(titleFrame, gbc);
 
-        JButton buttonLogo = new JButton();
-        buttonLogo.setBackground(null);
-        buttonLogo.setIcon(iconUnina);
-        buttonLogo.setContentAreaFilled(false);
-        buttonLogo.setOpaque(false);
-        buttonLogo.setBorderPainted(false);
-        buttonLogo.setBorder(null);
-        buttonLogo.setFocusPainted(false);
+        //Creazione button che contiene il logo Unina
+        JButton logoButton = new JButton();
+        logoButton.setBackground(null);
+        logoButton.setIcon(iconUnina);
+        logoButton.setContentAreaFilled(false);
+        logoButton.setOpaque(false);
+        logoButton.setBorderPainted(false);
+        logoButton.setBorder(null);
+        logoButton.setFocusPainted(false);
 
-        JLabel titoloSmu = new JLabel("S.M.U.");
-        titoloSmu.setForeground(Color.WHITE);
+        //Creazione della label SavingMoneyUnina
+        JLabel titleSmuLabel = new JLabel("S.M.U.");
+        titleSmuLabel.setForeground(Color.WHITE);
         if (fontExtraBold != null) {
-            titoloSmu.setFont(fontRegular);
+            titleSmuLabel.setFont(fontRegular);
         }
 
-        //Crea componenti
+        //Creazione button Home
         homeButton = new JButton();
         homeButton.setIcon(iconHome);
         homeButton.setBackground(null);
@@ -98,64 +102,66 @@ public class CollectionPickViewGUI extends JFrame {
         homeButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                controller.showHomePage(controller.getContoScelto());
+                controller.showHomeView(controller.getContoScelto());
             }
         });
         gbc = new GridBagConstraints();
 
 
-        // Configurazione per buttonLogo a sinistra di titoloSmu
-        gbc.gridx = 1; // Posizione immediatamente a sinistra di titoloSmu
-        gbc.weightx = 0; // Non assegna spazio extra, mantiene la posizione
+        // Configurazione per logoButton a sinistra di titleSmuLabel
+        gbc.gridx = 1;
+        gbc.weightx = 0;
         gbc.fill = GridBagConstraints.NONE;
-        gbc.insets = new Insets(0, 15, 0, 0); // Aggiusta gli insetti se necessario
-        panelSignIn3.add(buttonLogo, gbc);
+        gbc.insets = new Insets(0, 15, 0, 0);
+        panelTop.add(logoButton, gbc);
 
-        // Configurazione per il titoloSmu a sinistra di homePageLabel
-        gbc.gridx = 2; // Posiziona titoloSmu accanto a buttonLogo
-        panelSignIn3.add(titoloSmu, gbc);
+        // Configurazione per il titleSmuLabel a sinistra di titleFrame
+        gbc.gridx = 2;
+        panelTop.add(titleSmuLabel, gbc);
 
         gbc = new GridBagConstraints();
-        // Infine, aggiungi spazio di espansione a destra per mantenere homePageLabel centrata
+        // Infine, aggiungi spazio di espansione a destra per mantenere titleFrame centrata
         gbc.gridx = 3;
-        gbc.weightx = 1.0; // Bilancia lo spazio extra a destra
+        gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panelSignIn3.add(Box.createHorizontalGlue(), gbc);
+        panelTop.add(Box.createHorizontalGlue(), gbc);
 
+        // Configurazione per la titleFrame al centro
         gbc = new GridBagConstraints();
-        // Configurazione per la homePageLabel al centro
         gbc.gridx = 4;
-        panelSignIn3.add(titoloFrame, gbc);
+        panelTop.add(titleFrame, gbc);
 
-        // Infine, aggiungi spazio di espansione a destra per mantenere homePageLabel centrata
+        //Aggiunge spazio di espansione a destra per mantenere titleFrame centrata
         gbc.gridx = 5;
-        gbc.weightx = 1.0; // Bilancia lo spazio extra a destra
+        gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.EAST;
-        panelSignIn3.add(Box.createHorizontalGlue(), gbc);
+        panelTop.add(Box.createHorizontalGlue(), gbc);
+
+        // Configurazione per homeButton a destra della titleFrame
+        gbc = new GridBagConstraints();
+        gbc.gridx = 6;
+        panelTop.add(homeButton, gbc);
 
         gbc = new GridBagConstraints();
-        // Configurazione per buttonUser e buttonLogout a destra della homePageLabel
-        gbc.gridx = 6; // Posiziona buttonUser a destra della homePageLabel
-        panelSignIn3.add(homeButton, gbc);
-
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0; // Inizia dalla prima colonna
-        gbc.gridy = 0; // Prima riga
-        gbc.gridwidth = GridBagConstraints.REMAINDER; // Si estende su tutte le colonne
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0;
         gbc.weighty = 0.05;
-        contentPane.add(panelSignIn3, gbc);
+        contentPane.add(panelTop, gbc);
 
-        // Crea un JPanel a sx
-        panelSignIn = new JPanel(new GridBagLayout());
-        panelSignIn.setBackground(new Color(246, 248, 255)); // Scegli il colore che preferisci
-        panelSignIn.setOpaque(true);
+        //Creazione di un JPanel da inserire al centro della pagina
+        panelCenter = new JPanel(new GridBagLayout());
+        panelCenter.setBackground(new Color(246, 248, 255));
+        panelCenter.setOpaque(true);
 
 
+        //Funzione che mostra tutte le collections in delle Card
         showCollections();
-        // Creazione dello JScrollPane che conterrà panelSignIn
-        JScrollPane scrollPane = new JScrollPane(panelSignIn);
+
+        // Creazione dello JScrollPane che conterrà panelCenter
+        JScrollPane scrollPane = new JScrollPane(panelCenter);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
@@ -165,48 +171,57 @@ public class CollectionPickViewGUI extends JFrame {
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0;
-        gbc.weighty = 0.95; // Assegna più spazio a panelSignIn
+        gbc.weighty = 0.95; // Assegna più spazio a panelCenter
         gbc.insets = new Insets(0, 0, 0, 0);
-        // Aggiungi scrollPane a contentPane invece di panelSignIn
+        // Aggiungi scrollPane a contentPane invece di panelCenter
         contentPane.add(scrollPane, gbc);
         setContentPane(contentPane);
     }
 
     public void showCollections(){
 
-        Object[] optionsAdd = {"Crea", "Annulla"};
-        Object[] optionsDelete = {"Elimina", "Annulla"};
+        //Controllo se ci sono collezioni all'interno dell'ArrayList, se non ci sono mostra la card per crearne una
         if (!controller.getCollections().isEmpty()){
             int y = 2;
             int x = 0;
             for (Collection collection : controller.getCollections()) {
+                //If per controllare se la riga è finita, deve ricominciare accapo
                 if (x == 3)
                     x = 0;
+
+                //Card che contiene le informazioni di una collection
                 RoundedPanel cardBank = new RoundedPanel(15, new Color(222, 226, 230));
 
-
+                //Creazione label 'Nome: '
                 JLabel nameLabel = new JLabel("Nome: ");
                 if (fontRegularBold != null)
                     nameLabel.setFont(fontRegularBold);
 
+                //Creazione label che contiene il nome della collection
                 JLabel nameCollectionLabel = new JLabel(collection.getNameCollection());
                 if (fontRegular != null)
                     nameCollectionLabel.setFont(fontRegular);
 
+                //Creazione label 'Totale: '
                 JLabel totalLabel = new JLabel("Totale: ");
                 if(fontRegularBold!=null)
                     totalLabel.setFont(fontRegularBold);
 
-                double sum = controller.selectSumOfCollections(collection.getNameCollection());
-                JLabel totalTransactions = new JLabel(String.valueOf(sum)+"€");
+                //Variabile che rappresenta il totale speso per una raccolta
+                double totalCollection = controller.selectSumOfCollections(collection.getNameCollection());
+
+                //Creazione label che contiene il valore totale
+                JLabel totalTransactions = new JLabel(String.valueOf(totalCollection)+"€");
                 if(fontRegular!=null)
                     totalTransactions.setFont(fontRegular);
 
+                //Creazione label 'Descrizione' da poter cliccare per visualizzare la descrizione della raccolta
                 JLabel descriptionLabel = new JLabel("Descrizione");
 
                 if(fontRegular!=null)
                     descriptionLabel.setFont(fontRegular);
                 descriptionLabel.setForeground(Color.GRAY);
+                //Metodo per quando clicco sulla label Descrizione
                 descriptionLabel.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
@@ -219,6 +234,7 @@ public class CollectionPickViewGUI extends JFrame {
                     }
                 });
 
+                //Creazione button per eliminare una raccolta
                 JButton deleteButton = new JButton();
                 deleteButton.setBackground(null);
                 deleteButton.setIcon(iconTrash);
@@ -231,12 +247,12 @@ public class CollectionPickViewGUI extends JFrame {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         int result = JOptionPane.showOptionDialog(
-                                null, // Componente padre
+                                null,
                                 "Sei sicuro di voler eliminare la raccolta "+collection.getNameCollection() , // Messaggio
                                 "Elimina raccolta", // Titolo
                                 JOptionPane.YES_NO_CANCEL_OPTION,
                                 JOptionPane.QUESTION_MESSAGE, // Tipo di messaggio
-                                iconDelete, // Icona personalizzata, usa null per l'icona di default
+                                iconDelete, // Icona personalizzata
                                 optionsDelete, // Array contenente le etichette dei pulsanti
                                 optionsDelete[0] // Opzione di default
                         );
@@ -274,18 +290,19 @@ public class CollectionPickViewGUI extends JFrame {
                         .addComponent(descriptionLabel).addComponent(deleteButton));
                 glBankAccount.setVerticalGroup(vGroup);
 
+                //Metodo per quando viene cliccata una card di una collection per mostrarne la page
                 cardBank.setCursor(new Cursor(Cursor.HAND_CURSOR));
                 cardBank.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         System.out.println(collection.getNameCollection());
-                        controller.showCollectionPage(collection);
+                        controller.showCollectionView(collection);
 
                     }
 
                 });
 
-
+                //Constraints
                 GridBagConstraints gbc = new GridBagConstraints();
 
                 gbc.insets = new Insets(10, 20, 10, 20);
@@ -294,8 +311,10 @@ public class CollectionPickViewGUI extends JFrame {
                 gbc.weightx = 0.3;
                 gbc.fill = GridBagConstraints.BOTH;
 
-                panelSignIn.add(cardBank, gbc);
+                panelCenter.add(cardBank, gbc);
+                //Aggiunta una card passo alla colonna successiva
                 x++;
+                //Se sono arrivato all'ultima colonna, passo alla riga succesiva
                 if(x == 3)
                     y++;
 
@@ -304,21 +323,24 @@ public class CollectionPickViewGUI extends JFrame {
                     if (x == 3){
                         x = 0;
                     }
-                    JPanel addBank = new JPanel();
-                    addBank.setBackground(new Color(246, 248, 255));
-                    addBank.setBorder(new MatteBorder(0, 0, 0, 0, new Color(0, 84, 122)));
-                    addBank.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                    addBank.addMouseListener(new MouseAdapter() {
+
+                    //Creazione Panel che contiene la funzione per creare una raccolta
+                    JPanel addCollection = new JPanel();
+                    addCollection.setBackground(new Color(246, 248, 255));
+                    addCollection.setBorder(new MatteBorder(0, 0, 0, 0, new Color(0, 84, 122)));
+                    addCollection.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                    addCollection.addMouseListener(new MouseAdapter() {
                         @Override
                         public void mouseEntered(MouseEvent e) {
-                            addBank.setBorder(new MatteBorder(0, 0, 2, 0, new Color(0, 84, 122)));
+                            addCollection.setBorder(new MatteBorder(0, 0, 2, 0, new Color(0, 84, 122)));
                         }
 
                         public void mouseExited(MouseEvent e) {
-                            addBank.setBorder(new MatteBorder(0, 0, 0, 0, new Color(0, 84, 122)));
+                            addCollection.setBorder(new MatteBorder(0, 0, 0, 0, new Color(0, 84, 122)));
                         }
                     });
 
+                    //Creazione label 'Crea Raccolta'
                     JLabel createCollection = new JLabel("Crea Raccolta +");
                     if (fontRegularBold != null)
                         createCollection.setFont(fontRegularBold);
@@ -326,23 +348,33 @@ public class CollectionPickViewGUI extends JFrame {
                     createCollection.addMouseListener(new MouseAdapter() {
                         @Override
                         public void mouseEntered(MouseEvent e) {
-                            addBank.setBorder(new MatteBorder(0, 0, 2, 0, new Color(0, 84, 122)));
+                            addCollection.setBorder(new MatteBorder(0, 0, 2, 0, new Color(0, 84, 122)));
                         }
 
                         public void mouseExited(MouseEvent e) {
-                            addBank.setBorder(new MatteBorder(0, 0, 0, 0, new Color(0, 84, 122)));
+                            addCollection.setBorder(new MatteBorder(0, 0, 0, 0, new Color(0, 84, 122)));
                         }
                     });
 
+                    //Metodo per creare una raccolta quando premo sulla label Crea Raccolta
                     createCollection.addMouseListener(new MouseAdapter() {
                         @Override
                         public void mouseClicked(MouseEvent e){
 
+                            //Panel che contiene le Field per la Raccolta da creare
                             JPanel addCollectionPanel = new JPanel(new GridBagLayout());
                             addCollectionPanel.setBackground(new Color(246, 248, 255));
 
+                            //Creazione label 'Nome'
                             JLabel nameCollectionLabel = new JLabel("Nome");
+                            nameCollectionLabel.setForeground(new Color(0, 84, 122));
+
+                            //Creazione Field per inserire il nome della Raccolta
                             JTextField nameCollectionField = new JTextField();
+                            nameCollectionField.setBorder(new MatteBorder(0,0,2,0, new Color(0, 84, 122)));
+                            nameCollectionField.setBackground(new Color(246, 248, 255));
+
+                            //Metodo per inserire un massimo di caratteri al nome
                             PlainDocument doc = (PlainDocument) nameCollectionField.getDocument();
                             doc.setDocumentFilter(new DocumentFilter() {
                                 private int maxChars = 20;
@@ -372,11 +404,19 @@ public class CollectionPickViewGUI extends JFrame {
                                 }
                             });
 
+                            //Creazione label 'Descrizione'
                             JLabel descriptionCollectionLabel = new JLabel("Descrizione");
+                            descriptionCollectionLabel.setForeground(new Color(0, 84, 122));
+
+                            //Creazione TextArea per inserire la descrizione della raccolta
                             JTextArea descriptionCollectionArea = new JTextArea();
+                            descriptionCollectionArea.setBorder(new MatteBorder(2,2,2,2, new Color(0, 84, 122)));
+                            descriptionCollectionArea.setBackground(new Color(246, 248, 255));
+
+                            //Metodo per inserire un massimo di caratteri alla descrizione
                             doc = (PlainDocument) descriptionCollectionArea.getDocument();
                             doc.setDocumentFilter(new DocumentFilter() {
-                                private int maxChars = 170;
+                                private int maxChars = 140;
 
                                 @Override
                                 public void replace(DocumentFilter.FilterBypass fb, int offs, int length, String str, AttributeSet a)
@@ -415,6 +455,7 @@ public class CollectionPickViewGUI extends JFrame {
                                 descriptionCollectionArea.setFont(fontRegular);
                             }
 
+                            //Constraints per inserire le label e field all'interno del panel
                             GridBagConstraints gbc = new GridBagConstraints();
                             gbc.fill = GridBagConstraints.BOTH;
                             gbc.gridx = 0;
@@ -439,7 +480,6 @@ public class CollectionPickViewGUI extends JFrame {
                             addCollectionPanel.add(descriptionCollectionArea, gbc);
 
 
-
                             UIManager.put("OptionPane.background", new Color(246,248,255)); // Colore di sfondo
                             UIManager.put("Panel.background", new Color(246,248,255)); // Colore di sfondo per il pannello interno
 
@@ -451,47 +491,50 @@ public class CollectionPickViewGUI extends JFrame {
                                     "Crea Raccolta", // Titolo
                                     JOptionPane.YES_NO_CANCEL_OPTION,
                                     JOptionPane.QUESTION_MESSAGE, // Tipo di messaggio
-                                    iconAddCollection, // Icona personalizzata, usa null per l'icona di default
+                                    iconAddCollection, // Icona personalizzata
                                     optionsAdd, // Array contenente le etichette dei pulsanti
                                     optionsAdd[0] // Opzione di default
                             );
+                            //Se il pulsante che premo conferma la creazione della Raccolta
                             if (result == JOptionPane.YES_OPTION) {
                                 try {
                                     controller.addCollection(nameCollectionField.getText(), descriptionCollectionArea.getText());
                                 } catch (MyExc ex) {
                                     throw new RuntimeException(ex);
                                 }
+                                //Aggiorno la pagina
                                 controller.showCollectionPickView();
                             }
                         }
                     });
 
-                    GroupLayout glAddBank = new GroupLayout(addBank);
-                    addBank.setLayout(glAddBank);
+                    GroupLayout glAddBank = new GroupLayout(addCollection);
+                    addCollection.setLayout(glAddBank);
 
                     glAddBank.setAutoCreateGaps(true);
                     glAddBank.setAutoCreateContainerGaps(true);
 
                     GroupLayout.SequentialGroup hGroup2 = glAddBank.createSequentialGroup();
-                    GroupLayout.SequentialGroup vGroup2 = glAddBank.createSequentialGroup();
-
 
                     hGroup2.addGroup(glAddBank.createParallelGroup().
                             addComponent(createCollection));
                     glAddBank.setHorizontalGroup(hGroup2);
 
 
+                    GroupLayout.SequentialGroup vGroup2 = glAddBank.createSequentialGroup();
+
                     vGroup2.addGroup(glAddBank.createParallelGroup(GroupLayout.Alignment.BASELINE).
                             addComponent(createCollection));
                     glAddBank.setVerticalGroup(vGroup2);
 
+                    //Aggiunta della Card per aggiungere una raccolta nello scrollPane
                     gbc = new GridBagConstraints();
 
                     gbc.insets = new Insets(40, 20, 40, 20);
                     gbc.weightx = 0.3;
                     gbc.gridy = y;
                     gbc.gridx = x;
-                    panelSignIn.add(addBank, gbc);
+                    panelCenter.add(addCollection, gbc);
                 }
             }
         }
@@ -511,7 +554,7 @@ public class CollectionPickViewGUI extends JFrame {
                 }
             });
 
-            JLabel createCollection = new JLabel("Crea Collezione +");
+            JLabel createCollection = new JLabel("Crea Raccolta +");
             createCollection.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
@@ -529,13 +572,50 @@ public class CollectionPickViewGUI extends JFrame {
                     addCollectionPanel.setBackground(new Color(246, 248, 255));
 
                     JLabel nameCollectionLabel = new JLabel("Nome");
+                    nameCollectionLabel.setForeground(new Color(0, 84, 122));
+
                     JTextField nameCollectionField = new JTextField();
+                    nameCollectionField.setBorder(new MatteBorder(0,0,2,0, new Color(0, 84, 122)));
+                    nameCollectionField.setBackground(new Color(246, 248, 255));
+                    //Metodo per inserire un massimo di caratteri al nome
+                    PlainDocument doc = (PlainDocument) nameCollectionField.getDocument();
+                    doc.setDocumentFilter(new DocumentFilter() {
+                        private int maxChars = 20;
+
+                        @Override
+                        public void replace(DocumentFilter.FilterBypass fb, int offs, int length, String str, AttributeSet a)
+                                throws BadLocationException {
+                            String text = fb.getDocument().getText(0, fb.getDocument().getLength());
+                            int totalLength = text.length() - length + str.length();
+                            if (totalLength <= maxChars) {
+                                super.replace(fb, offs, length, str, a);
+                            } else {
+                                Toolkit.getDefaultToolkit().beep();
+                            }
+                        }
+
+                        @Override
+                        public void insertString(DocumentFilter.FilterBypass fb, int offs, String str, AttributeSet a)
+                                throws BadLocationException {
+                            String text = fb.getDocument().getText(0, fb.getDocument().getLength());
+                            int totalLength = text.length() + str.length();
+                            if (totalLength <= maxChars) {
+                                super.insertString(fb, offs, str, a);
+                            } else {
+                                Toolkit.getDefaultToolkit().beep();
+                            }
+                        }
+                    });
 
                     JLabel descriptionCollectionLabel = new JLabel("Descrizione");
+                    descriptionCollectionLabel.setForeground(new Color(0, 84, 122));
+
                     JTextArea descriptionCollectionArea = new JTextArea();
-                    PlainDocument doc = (PlainDocument) descriptionCollectionArea.getDocument();
+                    descriptionCollectionArea.setBorder(new MatteBorder(2,2,2,2, new Color(0, 84, 122)));
+                    descriptionCollectionArea.setBackground(new Color(246, 248, 255));
+                    doc = (PlainDocument) descriptionCollectionArea.getDocument();
                     doc.setDocumentFilter(new DocumentFilter() {
-                        private int maxChars = 170;
+                        private int maxChars = 140;
 
                         @Override
                         public void replace(DocumentFilter.FilterBypass fb, int offs, int length, String str, AttributeSet a)
@@ -654,7 +734,7 @@ public class CollectionPickViewGUI extends JFrame {
             gbc.insets = new Insets(40, 40, 40, 40);
             gbc.gridy = 2;
             gbc.gridx = 0;
-            panelSignIn.add(addCollection, gbc);
+            panelCenter.add(addCollection, gbc);
         }
     }
 

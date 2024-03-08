@@ -106,7 +106,7 @@ public class BankAccountPickViewGUI extends JFrame {
                         options[1] // Opzione di default
                 );
                 if (scelta == JOptionPane.YES_OPTION)
-                    controller.backLoginPage();
+                    controller.backLoginView();
             }
         });
         gbc = new GridBagConstraints();
@@ -211,7 +211,7 @@ public class BankAccountPickViewGUI extends JFrame {
 
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        controller.showHomePage(conto);
+                        controller.showHomeView(conto);
                     }
                 });
 

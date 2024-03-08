@@ -7,7 +7,6 @@ import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.InputStream;
-import java.sql.SQLException;
 
 public class LoginViewGUI extends JFrame{
 
@@ -215,7 +214,7 @@ public class LoginViewGUI extends JFrame{
 
             @Override
             public void mouseClicked(MouseEvent e){
-                controller.showFrameSignIn();
+                controller.showSingUpView();
             }
         });
 

@@ -10,6 +10,7 @@ import java.io.InputStream;
 
 public class CardViewGUI extends JFrame {
     private Controller controller;
+
     //Dichiarazioni Variabili per i Font
     private Font fontRegular;
     private Font fontBold;
@@ -17,6 +18,12 @@ public class CardViewGUI extends JFrame {
     private Font fontRegularSmall;
     private Font fontRegularBold;
     private Font fontRegularXXL;
+
+    //Dichiarazioni immagini
+    private ImageIcon iconChip = new ImageIcon(CardViewGUI.class.getResource("/IMG/chip.png"));
+    private ImageIcon iconHiddenPassword = new ImageIcon(CardViewGUI.class.getResource("/IMG/hiddenpassword.png"));
+    private ImageIcon iconShowedPassword = new ImageIcon(CardViewGUI.class.getResource("/IMG/showedpassword.png"));
+
 
     public CardViewGUI(Controller controller){
         this.controller = controller;
@@ -36,11 +43,12 @@ public class CardViewGUI extends JFrame {
         JPanel contentPane = new JPanel(new GridBagLayout());
         contentPane.setBackground(new Color(194, 74, 74));
 
-        JLabel smuLabel = new JLabel("S.M.U.");
+        //Creazione titolo SavingMoneyUnina
+        JLabel titleSmuLabel = new JLabel("S.M.U.");
         GridBagConstraints gbc = new GridBagConstraints();
-        contentPane.add(smuLabel, gbc);
+        contentPane.add(titleSmuLabel, gbc);
 
-        ImageIcon iconChip = new ImageIcon(CardViewGUI.class.getResource("/IMG/chip.png"));
+        //Creazione bottone Image Chip
         JButton chip = new JButton();
         chip.setBackground(null);
         chip.setIcon(iconChip);
@@ -50,20 +58,24 @@ public class CardViewGUI extends JFrame {
         chip.setBorder(null);
         chip.setFocusPainted(false);
 
-        JLabel titolareLabel = new JLabel("Titolare");
-        titolareLabel.setForeground(new Color(246, 248, 255));
+        //Creazione label 'Titolare'
+        JLabel holderLabel = new JLabel("Titolare");
+        holderLabel.setForeground(new Color(246, 248, 255));
 
-        JLabel nomeTitolareLabel = new JLabel(controller.getAccount().getName() +" "+controller.getAccount().getSurname());
-        nomeTitolareLabel.setForeground(new Color(246, 248, 255));
-
-
-        JLabel numeroCartaLabel = new JLabel(controller.getCarta().getPan().substring(0,4) + " " +controller.getCarta().getPan().substring(4,8) + " " +controller.getCarta().getPan().substring(8,12) + " "+ controller.getCarta().getPan().substring(12,16));
-        numeroCartaLabel.setForeground(new Color(246, 248, 255));
+        //Creazione label che contiene il nome e cognome del titolare della carta
+        JLabel nameSurnameHolderLabel = new JLabel(controller.getAccount().getName() +" "+controller.getAccount().getSurname());
+        nameSurnameHolderLabel.setForeground(new Color(246, 248, 255));
 
 
-        JLabel pinLabel = new JLabel("PIN");
-        pinLabel.setForeground(new Color(246, 248, 255));
+        //Creazione label che contiene il numero della carta
+        JLabel panCardLabel = new JLabel(controller.getCarta().getPan().substring(0,4) + " " +controller.getCarta().getPan().substring(4,8) + " " +controller.getCarta().getPan().substring(8,12) + " "+ controller.getCarta().getPan().substring(12,16));
+        panCardLabel.setForeground(new Color(246, 248, 255));
 
+
+        JLabel pinCardLabel = new JLabel("PIN");
+        pinCardLabel.setForeground(new Color(246, 248, 255));
+
+        //Creazione label che contiene il numero del pin della carta
         JPasswordField pinNumberLabel = new JPasswordField(controller.getCarta().getPin());
         pinNumberLabel.setBackground(null);
         pinNumberLabel.setBorder(null);
@@ -71,6 +83,7 @@ public class CardViewGUI extends JFrame {
         pinNumberLabel.setEchoChar('*');
         pinNumberLabel.setForeground(new Color(246, 248, 255));
 
+        //Pulsante per mostrare e nascondere il pin
         JCheckBox showPinCheckBox = new JCheckBox("");
         if (fontRegularSmall != null)
             showPinCheckBox.setFont(fontRegularSmall);
@@ -78,16 +91,17 @@ public class CardViewGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (showPinCheckBox.isSelected()) {
-                    pinNumberLabel.setEchoChar((char) 0); // Mostra la password
+                    pinNumberLabel.setEchoChar((char) 0); // Mostra il pin
                 } else {
-                    pinNumberLabel.setEchoChar('*'); // Nasconde la password
+                    pinNumberLabel.setEchoChar('*'); // Nasconde il pin
                 }
             }
         });
 
-        JLabel cvvLabel = new JLabel("CVV");
-        cvvLabel.setForeground(new Color(246, 248, 255));
+        JLabel cvvCardLabel = new JLabel("CVV");
+        cvvCardLabel.setForeground(new Color(246, 248, 255));
 
+        //Creazione label che contiene il numero del cvv della carta
         JPasswordField cvvNumberLabel = new JPasswordField(controller.getCarta().getCvv());
         cvvNumberLabel.setEchoChar('*');
         cvvNumberLabel.setForeground(new Color(246, 248, 255));
@@ -95,6 +109,7 @@ public class CardViewGUI extends JFrame {
         cvvNumberLabel.setBorder(null);
         cvvNumberLabel.setEditable(false);
 
+        //Pulsante per mostrare e nascondere il cvv
         JCheckBox showCvvCheckBox = new JCheckBox("");
         if (fontRegularSmall != null)
             showCvvCheckBox.setFont(fontRegularSmall);
@@ -102,16 +117,14 @@ public class CardViewGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (showCvvCheckBox.isSelected()) {
-                    cvvNumberLabel.setEchoChar((char) 0); // Mostra la password
+                    cvvNumberLabel.setEchoChar((char) 0); // Mostra il cvv
                 } else {
-                    cvvNumberLabel.setEchoChar('*'); // Nasconde la password
+                    cvvNumberLabel.setEchoChar('*'); // Nasconde il cvv
                 }
             }
         });
 
-        ImageIcon iconHiddenPassword = new ImageIcon(CardViewGUI.class.getResource("/IMG/hiddenpassword.png"));
-        ImageIcon iconShowedPassword = new ImageIcon(CardViewGUI.class.getResource("/IMG/showedpassword.png"));
-
+        //Setting delle icone ai pulsanti per nascondere/mostrare le informazioni
         showPinCheckBox.setIcon(iconHiddenPassword);
         showPinCheckBox.setSelectedIcon(iconShowedPassword);
         showPinCheckBox.setPressedIcon(iconShowedPassword);
@@ -124,13 +137,13 @@ public class CardViewGUI extends JFrame {
 
 
         if (fontRegular != null && fontRegularBold != null && fontBold != null){
-            smuLabel.setFont(fontBold);
-            titolareLabel.setFont(fontRegularBold);
-            nomeTitolareLabel.setFont(fontRegular);
-            numeroCartaLabel.setFont(fontRegularBold);
-            pinLabel.setFont(fontRegularBold);
+            titleSmuLabel.setFont(fontBold);
+            holderLabel.setFont(fontRegularBold);
+            nameSurnameHolderLabel.setFont(fontRegular);
+            panCardLabel.setFont(fontRegularBold);
+            pinCardLabel.setFont(fontRegularBold);
             pinNumberLabel.setFont(fontRegular);
-            cvvLabel.setFont(fontRegularBold);
+            cvvCardLabel.setFont(fontRegularBold);
             cvvNumberLabel.setFont(fontRegular);
         }
 
@@ -141,7 +154,7 @@ public class CardViewGUI extends JFrame {
         gbc.weighty = 0.1;
         gbc.anchor = GridBagConstraints.NORTHWEST;
         gbc.insets = new Insets(10, 10, 0, 0);
-        contentPane.add(smuLabel, gbc);
+        contentPane.add(titleSmuLabel, gbc);
 
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
@@ -159,7 +172,7 @@ public class CardViewGUI extends JFrame {
         gbc.weighty = 0.3;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(0, 10, 0, 0);
-        contentPane.add(numeroCartaLabel, gbc);
+        contentPane.add(panCardLabel, gbc);
 
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -168,7 +181,7 @@ public class CardViewGUI extends JFrame {
         gbc.weighty = 0.3;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(0, 10, 0, 0);
-        contentPane.add(pinLabel, gbc);
+        contentPane.add(pinCardLabel, gbc);
 
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
@@ -196,7 +209,7 @@ public class CardViewGUI extends JFrame {
         gbc.weighty = 0.3;
         gbc.anchor = GridBagConstraints.NORTHWEST;
         gbc.insets = new Insets(0, 10, 0, 0);
-        contentPane.add(cvvLabel, gbc);
+        contentPane.add(cvvCardLabel, gbc);
 
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
@@ -224,7 +237,7 @@ public class CardViewGUI extends JFrame {
         gbc.weighty = 0.3;
         gbc.anchor = GridBagConstraints.NORTHWEST;
         gbc.insets = new Insets(0, 10, 0, 0);
-        contentPane.add(titolareLabel, gbc);
+        contentPane.add(holderLabel, gbc);
 
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
@@ -233,7 +246,7 @@ public class CardViewGUI extends JFrame {
         gbc.weighty = 0.3;
         gbc.anchor = GridBagConstraints.NORTHWEST;
         gbc.insets = new Insets(0, 0, 0, 0);
-        contentPane.add(nomeTitolareLabel, gbc);
+        contentPane.add(nameSurnameHolderLabel, gbc);
 
         setContentPane(contentPane);
 

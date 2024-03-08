@@ -114,7 +114,7 @@ public class PiggyBanksViewGUI extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                controller.showHomePage(controller.getContoScelto());
+                controller.showHomeView(controller.getContoScelto());
             }
         });
 
@@ -198,7 +198,7 @@ public class PiggyBanksViewGUI extends JFrame {
                                 JOptionPane.ERROR_MESSAGE
                         );
                     }
-                    controller.showSalvadanaioPage();
+                    controller.showPiggyBankView();
                 }
 
             }
@@ -365,7 +365,7 @@ public class PiggyBanksViewGUI extends JFrame {
                             if (resultFill == JOptionPane.YES_OPTION) {
                                 controller.fillPiggyBank((String) table.getValueAt(currentRow, 0), moneyField.getText());
                                 controller.updateBankAccount(controller.getContoScelto());
-                                controller.showSalvadanaioPage();
+                                controller.showPiggyBankView();
                             }
                             break;
                         case 2: // caso prendi soldi
@@ -397,14 +397,14 @@ public class PiggyBanksViewGUI extends JFrame {
                                 String numericValue = valueWithCurrency.replaceAll("[^\\d.]", "");
                                 controller.getMoneyByPiggyBank(numericValue, (String) table.getValueAt(currentRow, 0), getMoneyField.getText());
                                 controller.updateBankAccount(controller.getContoScelto());
-                                controller.showSalvadanaioPage();
+                                controller.showPiggyBankView();
 
                             }
                             break;
                         case 3: // caso elimina salvadanaio
                             if (table.getValueAt(currentRow, 3).equals("0.0€")) {
                                 controller.deletePiggyBank((String) table.getValueAt(currentRow, 0));
-                                controller.showSalvadanaioPage();
+                                controller.showPiggyBankView();
                             }
                             else{
                                 JOptionPane.showMessageDialog(

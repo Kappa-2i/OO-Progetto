@@ -14,12 +14,12 @@ public class Controller {
 
     //Dichiarazioni delle Gui
     private LoginViewGUI frameLogin;
-    private SignUpViewGUI frameSignIn;
-    private BankAccountPickViewGUI framePick;
+    private SignUpViewGUI frameSignUp;
+    private BankAccountPickViewGUI framePickBankAccount;
     private HomeViewGUI frameHome;
     private CardViewGUI frameCard;
-    private PiggyBanksViewGUI frameSalvadanaio;
-    private TransactionViewGUI frameTransazioni;
+    private PiggyBanksViewGUI framePiggyBank;
+    private TransactionViewGUI frameTransaction;
     private BankTransferViewGUI frameBankTransfer;
     private CollectionPickViewGUI framePickCollection;
     private CollectionViewGUI frameCollection;
@@ -75,7 +75,7 @@ public class Controller {
             account = accountDao.checkCredentials(email.toLowerCase(), password);
             if (account != null){
                 frameLogin(false);
-                showPickBankAccountFrame();
+                showPickBankAccountView();
             }
             else{
                 //Se uno dei due campi è sbagliato viene visualizzato un messaggio di errore.
@@ -102,17 +102,17 @@ public class Controller {
     /**
      *Metodo che permette di gestire la viusalizzazione della pagina di SignIn.
      * */
-    public void showFrameSignIn(){
+    public void showSingUpView(){
         frameLogin(false);
-        frameSignIn = new SignUpViewGUI(this);
+        frameSignUp = new SignUpViewGUI(this);
         frameSignUp(true);
     }
 
     /**
      *Metodo che permette di gestire la viusalizzazione della pagina di scelta del conto corrente.
      * */
-    public void showPickBankAccountFrame(){
-        framePick = new BankAccountPickViewGUI(this);
+    public void showPickBankAccountView(){
+        framePickBankAccount = new BankAccountPickViewGUI(this);
         framePickBankAccount(true);
     }
 
@@ -130,7 +130,7 @@ public class Controller {
             if (!email.isEmpty() && !password.isEmpty() && !name.isEmpty() && !surname.isEmpty()) {
                 accountDao.insertAccount(email, password, name, surname);
                 JOptionPane.showMessageDialog(
-                        frameSignIn,
+                        frameSignUp,
                         "Dati dell'account inseriti!",
                         "Benvenuta/o",
                         JOptionPane.PLAIN_MESSAGE,
@@ -138,7 +138,7 @@ public class Controller {
             }
             else{
                 JOptionPane.showMessageDialog(
-                        frameSignIn,
+                        frameSignUp,
                         "Inserisci delle credenziali valide!",
                         "Errore",
                         JOptionPane.PLAIN_MESSAGE,
@@ -147,7 +147,7 @@ public class Controller {
         }
         catch (MyExc exc){
             JOptionPane.showMessageDialog(
-                    frameSignIn,
+                    frameSignUp,
                     "L'email deve contenere una '@'!",
                     "Errore",
                     JOptionPane.PLAIN_MESSAGE,
@@ -211,7 +211,7 @@ public class Controller {
             checkCredentials(account.getEmail(), account.getPassword());
 
         JOptionPane.showMessageDialog(
-                framePick,
+                framePickBankAccount,
                 "Conto Corrente con Iban: " +iban+ ", eliminato con successo!",
                 "Conto Corrente eliminato",
                 JOptionPane.PLAIN_MESSAGE,
@@ -222,7 +222,7 @@ public class Controller {
     /**
      * Metodo per gesitre la visualizzaione della pagina di Home page.
      * @param conto riferimento per le informazioni da visualizzare in Home Page.*/
-    public void showHomePage(BankAccount conto){
+    public void showHomeView(BankAccount conto){
 
         //Viene selezionato il conto dopo averlo scelto dalla pagina di selezione.
         contoScelto = conto;
@@ -232,8 +232,8 @@ public class Controller {
         carta = cartaDAO.selectCard(contoScelto);
 
         framePickBankAccount(false);
-        if(frameSalvadanaio != null)
-            frameSalvadanaio(false);
+        if(framePiggyBank != null)
+            framePiggyBank(false);
         if(framePickCollection != null)
             framePickCollection(false);
         if(frameHome != null)
@@ -245,7 +245,7 @@ public class Controller {
     /**
      * Metodo che permette di tornare alla pagina di Login.
      */
-    public void backLoginPage(){
+    public void backLoginView(){
         //Quando si torna alla pagina di Login l'account viene settato a null.
         account = null;
         //Quando si torna alla pagina di Login il conto scelto viene settato a null.
@@ -256,11 +256,11 @@ public class Controller {
             frameBankTransfer(false);
         if(frameCard!=null)
             frameCard(false);
-        if(framePick != null)
+        if(framePickBankAccount != null)
             framePickBankAccount(false);
         if(frameHome != null)
             frameHome(false);
-        if(frameSignIn != null)
+        if(frameSignUp != null)
             frameSignUp(false);
 
         frameLogin(true);
@@ -269,7 +269,7 @@ public class Controller {
 
     /**
      * Metodo che permette gestire la visualizzazione della pagina della carta.*/
-    public void showCardPage(){
+    public void showCardView(){
         if (frameCard != null) {
             frameCard(false);
             frameCard = new CardViewGUI(this);
@@ -288,7 +288,7 @@ public class Controller {
     /**
      * Metodo che permette di effettuare l'upgrade della carta da Debito (default) a Credito.
      * @param pan riferimento per la carta da aggiornare.*/
-    public void upgradeCarta(String pan){
+    public void upgradeCard(String pan){
         if(contoScelto.getBalance() >= 5) {
             cartaDAO.upgradeCard(pan);
             JOptionPane.showMessageDialog(
@@ -300,7 +300,7 @@ public class Controller {
             );
             frameHome(false);
             contoScelto.setBalance(contoCorrenteDAO.updateBankAccount(contoScelto));
-            showHomePage(contoScelto);
+            showHomeView(contoScelto);
         }
         else {
             JOptionPane.showMessageDialog(
@@ -316,7 +316,7 @@ public class Controller {
     /**
      * Metodo che permette di effetuare il downgrade della carta Da credito a Debito.
      * @param pan riferimento per la carta da aggiornare.*/
-    public void downgradeCarta(String pan){
+    public void downgradeCard(String pan){
         cartaDAO.downgradeCard(pan);
         JOptionPane.showMessageDialog(
                 null,
@@ -326,14 +326,14 @@ public class Controller {
                 iconChecked
         );
         frameHome(false);
-        showHomePage(contoScelto);
+        showHomeView(contoScelto);
     }
 
     /**
      * Metodo che permette di gestire la visualizzazione della pagina dei salvadanai. */
-    public void showSalvadanaioPage(){
-        if (frameSalvadanaio != null)
-            frameSalvadanaio(false);
+    public void showPiggyBankView(){
+        if (framePiggyBank != null)
+            framePiggyBank(false);
         //Vengono recuperati i salvadanai associati al conto scelto.
         salvadanai = salvadanaioDAO.selectPiggyBank(contoScelto);
         contoScelto.setPiggyBanks(salvadanai);
@@ -343,9 +343,9 @@ public class Controller {
         if(frameCard!=null){
             frameCard(false);
         }
-        frameSalvadanaio = new PiggyBanksViewGUI(this);
+        framePiggyBank = new PiggyBanksViewGUI(this);
         frameHome(false);
-        frameSalvadanaio(true);
+        framePiggyBank(true);
     }
 
     /**
@@ -369,7 +369,7 @@ public class Controller {
             }
         } catch (MyExc e) {
             JOptionPane.showMessageDialog(
-                    frameSalvadanaio,
+                    framePiggyBank,
                     e.getMessage(),
                     "Errore",
                     JOptionPane.PLAIN_MESSAGE,
@@ -399,7 +399,7 @@ public class Controller {
                         salvadanaioDAO.fillPiggyBank(contoScelto, name, Math.round((Double.parseDouble(moneyToSend) * 100.00) / 100.00));
                     } else {
                         JOptionPane.showMessageDialog(
-                                frameSalvadanaio,
+                                framePiggyBank,
                                 "Saldo conto corrente insufficiente!",
                                 "Errore",
                                 JOptionPane.PLAIN_MESSAGE,
@@ -410,7 +410,7 @@ public class Controller {
                 }
                 else {
                     JOptionPane.showMessageDialog(
-                            frameSalvadanaio,
+                            framePiggyBank,
                             "Inserisci una cifra valida!",
                             "Errore inserimento",
                             JOptionPane.PLAIN_MESSAGE,
@@ -420,7 +420,7 @@ public class Controller {
             }
             else {
                 JOptionPane.showMessageDialog(
-                        frameSalvadanaio,
+                        framePiggyBank,
                         "Riempi tutti i campi!",
                         "Errore inserimento",
                         JOptionPane.PLAIN_MESSAGE,
@@ -430,7 +430,7 @@ public class Controller {
         }
         catch (NumberFormatException e){
             JOptionPane.showMessageDialog(
-                    frameSalvadanaio,
+                    framePiggyBank,
                     "Inserisci una cifra valida!",
                     "Errore inserimento",
                     JOptionPane.ERROR_MESSAGE,
@@ -452,7 +452,7 @@ public class Controller {
                     salvadanaioDAO.getMoneyByPiggyBank(contoScelto, name, Math.round((Double.parseDouble(moneyToGet)*100.00)/100.00));
                 } else {
                     JOptionPane.showMessageDialog(
-                            frameSalvadanaio,
+                            framePiggyBank,
                             "Saldo salvadanaio insufficiente!",
                             "Errore",
                             JOptionPane.ERROR_MESSAGE
@@ -461,7 +461,7 @@ public class Controller {
             }
             else {
                 JOptionPane.showMessageDialog(
-                        frameSalvadanaio,
+                        framePiggyBank,
                         "Inserisci una cifra valida!",
                         "Errore inserimento",
                         JOptionPane.PLAIN_MESSAGE,
@@ -471,7 +471,7 @@ public class Controller {
         }
         catch (NumberFormatException e){
             JOptionPane.showMessageDialog(
-                    frameSalvadanaio,
+                    framePiggyBank,
                     "Inserisci una cifra valida",
                     "Errore inserimento",
                     JOptionPane.PLAIN_MESSAGE,
@@ -484,9 +484,9 @@ public class Controller {
     /**
      * Metodo per gesitre la visualizzaione della pagina de 'Le mie spese'.
      * */
-    public void showTransazioniPage(){
-        if (frameTransazioni != null)
-            frameTransazioni(false);
+    public void showTransactionView(){
+        if (frameTransaction != null)
+            frameTransaction(false);
         //Vengono recuperati le transazioni associati al conto scelto.
         transazioni = transazioneDAO.selectTransazioniByIban(contoScelto);
         contoScelto.setTransactions(transazioni);
@@ -496,14 +496,14 @@ public class Controller {
         if(frameCard!=null){
             frameCard(false);
         }
-        frameTransazioni = new TransactionViewGUI(this);
+        frameTransaction = new TransactionViewGUI(this);
         frameHome(false);
-        frameTransazioni(true);
+        frameTransaction(true);
     }
 
     /** Metodo per gestire la visulizzazione della pagina Invio Bonifico.
      * */
-    public void showBankTransferPage(){
+    public void showBankTransferView(){
         if(frameBankTransfer != null){
             frameBankTransfer(false);
         }
@@ -542,7 +542,7 @@ public class Controller {
                                         );
                                         frameBankTransfer(false);
                                         contoScelto.setBalance(contoCorrenteDAO.updateBankAccount(contoScelto));
-                                        showHomePage(contoScelto);
+                                        showHomeView(contoScelto);
 
                                     }
                                 } else {
@@ -612,7 +612,7 @@ public class Controller {
                                         );
                                         frameBankTransfer(false);
                                         contoScelto.setBalance(contoCorrenteDAO.updateBankAccount(contoScelto));
-                                        showHomePage(contoScelto);
+                                        showHomeView(contoScelto);
                                     }
                                 } else {
                                     JOptionPane.showMessageDialog(
@@ -734,7 +734,7 @@ public class Controller {
      * Metodo per gestire la visualizzazione della pagina delle collezioni.
      * @param collection collezione da visualizzare.
      * */
-    public void showCollectionPage(Collection collection){
+    public void showCollectionView(Collection collection){
         selectedCollection = collection;
         transactionsCollection = transazioneDAO.selectTransactionsByCollection(selectedCollection, contoScelto);
 
@@ -769,7 +769,7 @@ public class Controller {
             }
         } catch (MyExc e) {
             JOptionPane.showMessageDialog(
-                    frameSalvadanaio,
+                    framePiggyBank,
                     e.getMessage(),
                     "Errore",
                     JOptionPane.PLAIN_MESSAGE,
@@ -805,7 +805,7 @@ public class Controller {
      * @param month mese per cui visualizzare il totale in uscita.
      * @retrun double totale in uscita calcolato.
      * */
-    public double totaleInviatoMensile(BankAccount bankAccount, String month){
+    public double totalMonthlySent(BankAccount bankAccount, String month){
         return transazioneDAO.totalSentMonthly(bankAccount, month);
     }
 
@@ -815,7 +815,7 @@ public class Controller {
      * @param month per cui visualizzare il totale in entrata.
      * @retrun double totale in entrata calcolato.
      * */
-    public double totaleRicevutoMensile(BankAccount bankAccount, String month){
+    public double totalMonthlyReceived(BankAccount bankAccount, String month){
         return transazioneDAO.totalReceivedMonthly(bankAccount, month);
     }
 
@@ -832,7 +832,7 @@ public class Controller {
      * @param isVisibile setta la visibilità della pagina
      * */
     public void frameSignUp(Boolean isVisibile){
-        frameSignIn.setVisible(isVisibile);
+        frameSignUp.setVisible(isVisibile);
     }
 
     /**
@@ -840,7 +840,7 @@ public class Controller {
      * @param isVisibile setta la visibilità della pagina
      * */
     public void framePickBankAccount(Boolean isVisibile){
-        framePick.setVisible(isVisibile);
+        framePickBankAccount.setVisible(isVisibile);
     }
 
     /**
@@ -871,15 +871,15 @@ public class Controller {
      * Metodo che gestisce la visibilità della pagina per visualizzare i salvadanai.
      * @param isVisible setta la visibilità della pagina
      * */
-    public void frameSalvadanaio(Boolean isVisible){
-        frameSalvadanaio.setVisible(isVisible);
+    public void framePiggyBank(Boolean isVisible){
+        framePiggyBank.setVisible(isVisible);
     }
 
     /**
      * Metodo che gestisce la visibilità della pagina delle spese.
      * @param isVisibile setta la visibilità della pagina.*/
-    public void frameTransazioni(Boolean isVisibile){
-        frameTransazioni.setVisible(isVisibile);
+    public void frameTransaction(Boolean isVisibile){
+        frameTransaction.setVisible(isVisibile);
     }
 
     /**

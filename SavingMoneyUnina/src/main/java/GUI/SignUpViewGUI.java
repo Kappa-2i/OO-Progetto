@@ -259,7 +259,7 @@ public class SignUpViewGUI extends JFrame{
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.backLoginPage();
+                controller.backLoginView();
             }
         });
         gbc.gridy = 11;
@@ -288,7 +288,7 @@ public class SignUpViewGUI extends JFrame{
                     confirmPasswordField.setText("");
                     nameField.setText("");
                     surnameField.setText("");
-                    controller.backLoginPage();
+                    controller.backLoginView();
                 }
                 else {
                     JOptionPane.showMessageDialog(
