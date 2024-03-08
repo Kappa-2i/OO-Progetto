@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 public class CollectionDAOImpl implements CollectionDAO {
 
+    @Override
     public ArrayList<Collection> selectCollectionByIban(BankAccount bankAccount){
 
         ArrayList<Collection> collections = new ArrayList<Collection>();
@@ -41,6 +42,7 @@ public class CollectionDAOImpl implements CollectionDAO {
     }
 
 
+    @Override
     public void addCollection(BankAccount bankAccount, String name, String description) throws MyExc {
         CallableStatement statement = null;
         try (Connection conn = DATABASE.DBConnection.getDBConnection().getConnection()) {
@@ -68,6 +70,8 @@ public class CollectionDAOImpl implements CollectionDAO {
         }
     }
 
+
+    @Override
     public void deleteCollection(BankAccount conto, String name){
         CallableStatement statement = null;
         try (Connection conn = DATABASE.DBConnection.getDBConnection().getConnection()) {

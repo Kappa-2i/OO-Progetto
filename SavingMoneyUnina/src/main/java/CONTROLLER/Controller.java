@@ -354,16 +354,24 @@ public class Controller {
 
     }
 
-    public void deletePiggyBank(String nome){
-        salvadanaioDAO.deletePiggyBank(contoScelto, nome);
+    /**
+     * Metodo per eliminare un salvadanaio dal conto corrente.
+     * @param name nome del salvadanaio da eliminare.
+     * */
+    public void deletePiggyBank(String name){
+        salvadanaioDAO.deletePiggyBank(contoScelto, name);
     }
 
-    public void fillPiggyBank(String nome, String soldiDaInviare){
+    /**
+     * Metodo per aggiungere soldi al salvadanaio.
+     * @param name nome del salvadanaio a cui aggiungere i soldi.
+     * @param moneyToSend somma da inserire nel salvadanaio.*/
+    public void fillPiggyBank(String name, String moneyToSend){
         try{
-            if(!soldiDaInviare.isEmpty()) {
-                if(Math.round((Double.parseDouble(soldiDaInviare)*100.00)/100.00) > 0) {
-                    if (contoScelto.getBalance() >= Math.round((Double.parseDouble(soldiDaInviare) * 100.00) / 100.00)) {
-                        salvadanaioDAO.fillPiggyBank(contoScelto, nome, Math.round((Double.parseDouble(soldiDaInviare) * 100.00) / 100.00));
+            if(!moneyToSend.isEmpty()) {
+                if(Math.round((Double.parseDouble(moneyToSend)*100.00)/100.00) > 0) {
+                    if (contoScelto.getBalance() >= Math.round((Double.parseDouble(moneyToSend) * 100.00) / 100.00)) {
+                        salvadanaioDAO.fillPiggyBank(contoScelto, name, Math.round((Double.parseDouble(moneyToSend) * 100.00) / 100.00));
                     } else {
                         JOptionPane.showMessageDialog(
                                 frameSalvadanaio,

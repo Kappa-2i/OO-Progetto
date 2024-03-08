@@ -12,6 +12,10 @@ public interface BankAccountDAO {
      * @return ArrayList di conti correnti*/
     public ArrayList<BankAccount> selectBankAccountByAccount(Account account);
 
+    /**
+     * Metodo per recuperare il saldo aggiornato del conto corrente inserito dal db.
+     * @param selectedBankAccount riferimento per il conto a cui aggiornare il saldo.
+     * @return saldo aggiornato*/
     public Double updateBankAccount(BankAccount selectedBankAccount);
 
     /**

@@ -42,11 +42,11 @@ public interface TransactionDAO {
 
     /**
      *Metodo per inviare un bonifico.
-     * @param bankAccount riferimento per il conto del mittente;
-     * @param receiver riferimento iban del destinatario;
-     * @param amount riferimento per la cifra da inviare;
-     * @param reason riferimento per la causale;
-     * @param category riferimento per la categoria;
+     * @param bankAccount riferimento del conto del mittente;
+     * @param receiver riferimento del destinatario;
+     * @param amount riferimento della cifra da inviare;
+     * @param reason riferimento della causale;
+     * @param category riferimento della categoria;
      * @param nameCollection riferimento per il nome della collezione.*/
     public void sendBankTransfer(BankAccount bankAccount, String receiver, String amount, String reason, String category, String nameCollection);
 
@@ -54,31 +54,31 @@ public interface TransactionDAO {
      *Metodo per inviare un bonifico istantaneo.
      * @param bankAccount riferimento per il conto del mittente;
      * @param receiver riferimento iban del destinatario;
-     * @param amount riferimento per la cifra da inviare;
-     * @param reason riferimento per la causale;
-     * @param category riferimento per la categoria;
+     * @param amount riferimento della cifra da inviare;
+     * @param reason riferimento della causale;
+     * @param category riferimento della categoria;
      * @param nameCollection riferimento per il nome della collezione.*/
     public void sendIstantBankTransfer(BankAccount bankAccount, String receiver, String amount, String reason, String category, String nameCollection);
 
     /**
      * Metodo per controllare se il conto a cui viene inviato il bonifico è corretto.
-     * @param receiver riferimento per l'iban del destinatario;
-     * @param name riferimento per il nome del destinatrario;
-     * @param surname riferimento per il cognome del destinatrario;
+     * @param receiver riferimento dell'iban del destinatario;
+     * @param name riferimento del nome del destinatrario;
+     * @param surname riferimento del cognome del destinatrario;
      * @return true se esiste il destinatario, false altrimenti.*/
     public boolean checkIban(String receiver, String name, String surname) throws MyExc;
 
     /**
      * Metodo per selezionare le transazioni in base alla collezione desiderata.
-     * @param collection riferimento per la collezione per recuperare le transazioni;
-     * @param bankAccount riferimento per il conto per cui recuperare le transazioni.
+     * @param collection riferimento della collezione per recuperare le transazioni;
+     * @param bankAccount riferimento del conto per cui recuperare le transazioni.
      * @return ArrayList di Transazioni*/
     public ArrayList<Transaction> selectTransactionsByCollection(Collection collection, BankAccount bankAccount);
 
     /**
      * Metodo per recuperare il totale della collezione desiderata.
-     * @param bankAccount riferimento per il contocorrente;
-     * @param name riferimento per il nome della collezione.
+     * @param bankAccount riferimento del contocorrente;
+     * @param name riferimento del nome della collezione.
      * @return totale della collezione.*/
     public double selectSumOfCollections(BankAccount bankAccount, String name);
 

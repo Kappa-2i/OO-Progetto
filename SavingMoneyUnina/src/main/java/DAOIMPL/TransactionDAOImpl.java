@@ -9,6 +9,8 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class TransactionDAOImpl implements TransactionDAO {
+
+    @Override
     public ArrayList<Transaction> selectTransazioniByIban(BankAccount bankAccount){
 
         ArrayList<Transaction> transactions = new ArrayList<Transaction>();
@@ -53,6 +55,8 @@ public class TransactionDAOImpl implements TransactionDAO {
         return null;
     }
 
+
+    @Override
     public Double[] viewReport(BankAccount bankAccount, String yearmonth){
         try (Connection conn = DBConnection.getDBConnection().getConnection()) {
             // Prepara la query sostituendo i valori di iban e mese
@@ -185,7 +189,7 @@ public class TransactionDAOImpl implements TransactionDAO {
         return "Conto Corrente Eliminato";
     }
 
-
+    @Override
     public boolean checkIban(String receiver, String name, String surname) throws MyExc{
         try (Connection conn = DBConnection.getDBConnection().getConnection()) {
             // Prepara la query sostituendo i valori di iban e mese

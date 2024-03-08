@@ -8,8 +8,10 @@ public interface AccountDAO {
     /**
      * Metodo che recupera email e password dal db per controllare la validità delle credenziali inserite.
      * @param email riferimento per l'account da controllare.
-     * @param password riferimento per l'account da controllare.*/
-    Account checkCredentials(String email, String password);
+     * @param password riferimento per l'account da controllare.
+     * @return account inserito
+     * */
+    public Account checkCredentials(String email, String password);
 
     /**
      * Metodo per l'inserimeto di un nuovo accont all'interno del db

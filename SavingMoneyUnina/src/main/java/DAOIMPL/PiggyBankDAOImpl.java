@@ -9,6 +9,8 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class PiggyBankDAOImpl implements PiggyBankDAO {
+
+    @Override
     public ArrayList<PiggyBank> selectPiggyBank(BankAccount bankAccount){
 
         ArrayList<PiggyBank> piggyBanks = new ArrayList<PiggyBank>();
@@ -42,6 +44,8 @@ public class PiggyBankDAOImpl implements PiggyBankDAO {
         return null;
     }
 
+
+    @Override
     public void addPiggyBank(BankAccount selectedBankAccount, String name, double target, String description) throws MyExc {
         CallableStatement statement = null;
         try (Connection conn = DBConnection.getDBConnection().getConnection()) {
@@ -73,6 +77,7 @@ public class PiggyBankDAOImpl implements PiggyBankDAO {
         }
     }
 
+    @Override
     public void deletePiggyBank(BankAccount selectedBankAccount, String name){
         CallableStatement statement = null;
         try (Connection conn = DBConnection.getDBConnection().getConnection()) {
@@ -94,6 +99,7 @@ public class PiggyBankDAOImpl implements PiggyBankDAO {
         }
     }
 
+    @Override
     public void fillPiggyBank(BankAccount selectedBankAccount, String name, double money){
         CallableStatement statement = null;
         try (Connection conn = DBConnection.getDBConnection().getConnection()) {
@@ -115,6 +121,7 @@ public class PiggyBankDAOImpl implements PiggyBankDAO {
         }
     }
 
+    @Override
     public void getMoneyByPiggyBank(BankAccount selectedBankAccount, String name, double money){
         CallableStatement statement = null;
         try (Connection conn = DBConnection.getDBConnection().getConnection()) {
