@@ -92,7 +92,7 @@ public class BankAccountDAOImpl implements BankAccountDAO {
         try (Connection conn = DBConnection.getDBConnection().getConnection()){
 
             //Chiamata della funzione del db.
-            String callFunction = "{call test.rimuovi_contocorrente_con_carta2(?)}";
+            String callFunction = "{call test.rimuovi_contocorrente_con_carta(?)}";
 
             statement = conn.prepareCall(callFunction);
 

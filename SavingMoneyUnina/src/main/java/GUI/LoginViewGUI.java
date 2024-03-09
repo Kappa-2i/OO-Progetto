@@ -127,6 +127,7 @@ public class LoginViewGUI extends JFrame{
         gbc.gridy = 2;
         gbc.insets = new Insets(5, 5, 5, 5);
         panelLoginWhite.add(emailLabel, gbc); //Aggiunge la emailLabel al panelLoginWhite
+        gbc.insets = new Insets(5, 5, 0, 5);
         gbc.gridy = 3;
         panelLoginWhite.add(emailField, gbc); //Aggiunge la emailfield al panelLoginWhite
 
@@ -159,8 +160,9 @@ public class LoginViewGUI extends JFrame{
         gbc.gridy = 4;
         gbc.gridwidth = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(5, 5, 5, 5);
         panelLoginWhite.add(passwordLabel, gbc); //Aggiunge la passwordLabel al panelLoginWhite
-
+        gbc.insets = new Insets(0, 5, 0, 5);
         gbc.gridy = 5;
         panelLoginWhite.add(passwordField, gbc); //Aggiunge la passwordField al panelLoginWhite
 
@@ -247,6 +249,17 @@ public class LoginViewGUI extends JFrame{
             public void mouseExited(MouseEvent e) {
                 // Quando il mouse esce dalla JLabel, rimuovi la sottolineatura
                 forgottenPasswordLabel.setText("Password dimenticata?");
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Quando il mouse esce dalla JLabel, rimuovi la sottolineatura
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Errore - Lavori in corso!",
+                        "Error 404",
+                        JOptionPane.ERROR_MESSAGE
+                );
             }
         });
         gbc.gridx = 0;

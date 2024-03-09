@@ -29,6 +29,7 @@ public class PiggyBanksViewGUI extends JFrame {
     private ImageIcon iconAddPiggyBank = new ImageIcon(PiggyBanksViewGUI.class.getResource("/IMG/addPiggyBank.png"));
     private ImageIcon iconExit = new ImageIcon(PiggyBanksViewGUI.class.getResource("/IMG/door_exit.png"));
     private ImageIcon iconInformation = new ImageIcon(PiggyBanksViewGUI.class.getResource("/IMG/information.png"));
+    private ImageIcon iconPiggyBank = new ImageIcon(PiggyBanksViewGUI.class.getResource("/IMG/saving_resized.png"));
 
 
     public PiggyBanksViewGUI(Controller controller){
@@ -132,13 +133,44 @@ public class PiggyBanksViewGUI extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 // Creazione del JPanel che conterrà i JTextField
                 JPanel addPiggyPanel = new JPanel(new GridBagLayout());
-                JLabel namePiggyLabel = new JLabel("Nome salvadanaio: ");
-                JTextField nomeField = new JTextField();
-                JLabel obiettivoLabel = new JLabel("Obiettivo: ");
-                JTextField obiettivoField = new JTextField();
-                JLabel descrizioneLabel = new JLabel("Descrizione: ");
-                JTextField descrizionField = new JTextField();
 
+
+                JLabel namePiggyLabel = new JLabel("Nome salvadanaio: ");
+                namePiggyLabel.setForeground(new Color(0, 50, 73));
+
+
+                JTextField namePiggyField = new JTextField();
+                namePiggyField.setBorder(new MatteBorder(0,0,2,0, new Color(0, 50, 73)));
+                namePiggyField.setBackground(new Color(246, 248, 255));
+
+                JLabel targetLabel = new JLabel("Obiettivo: ");
+                targetLabel.setForeground(new Color(0, 50, 73));
+
+
+                JTextField targetField = new JTextField();
+                targetField.setBorder(new MatteBorder(0,0,2,0, new Color(0, 50, 73)));
+                targetField.setBackground(new Color(246, 248, 255));
+
+                JLabel descriptionLabel = new JLabel("Descrizione: ");
+                descriptionLabel.setForeground(new Color(0, 50, 73));
+
+
+                JTextField descriptionField = new JTextField();
+                descriptionField.setBorder(new MatteBorder(0,0,2,0, new Color(0, 50, 73)));
+                descriptionField.setBackground(new Color(246, 248, 255));
+
+
+                if(fontRegularBold != null){
+                    namePiggyLabel.setFont(fontRegularBold);
+                    targetLabel.setFont(fontRegularBold);
+                    descriptionLabel.setFont(fontRegularBold);
+                }
+
+                if(fontRegular != null){
+                    namePiggyField.setFont(fontRegular);
+                    targetField.setFont(fontRegular);
+                    descriptionField.setFont(fontRegular);
+                }
 
 
                 GridBagConstraints gbc = new GridBagConstraints();
@@ -151,27 +183,34 @@ public class PiggyBanksViewGUI extends JFrame {
                 gbc.weightx = 0.6;
                 gbc.gridy = 1;
                 gbc.gridx = 0;
-                addPiggyPanel.add(nomeField, gbc);
+                addPiggyPanel.add(namePiggyField, gbc);
                 gbc.gridwidth = 1;
                 gbc.weightx = 0.3;
                 gbc.gridy = 2;
                 gbc.gridx = 0;
-                addPiggyPanel.add(obiettivoLabel, gbc);
+                gbc.insets = new Insets(5, 0, 0, 0);
+                addPiggyPanel.add(targetLabel, gbc);
                 gbc.gridwidth = 2;
                 gbc.weightx = 0.6;
                 gbc.gridy = 3;
                 gbc.gridx = 0;
-                addPiggyPanel.add(obiettivoField, gbc);
+                gbc.insets = new Insets(0, 0, 0, 0);
+                addPiggyPanel.add(targetField, gbc);
                 gbc.gridwidth = 1;
                 gbc.weightx = 0.3;
                 gbc.gridy = 4;
                 gbc.gridx = 0;
-                addPiggyPanel.add(descrizioneLabel, gbc);
+                gbc.insets = new Insets(5, 0, 0, 0);
+                addPiggyPanel.add(descriptionLabel, gbc);
                 gbc.gridwidth = 2;
                 gbc.weightx = 0.6;
                 gbc.gridy = 5;
                 gbc.gridx = 0;
-                addPiggyPanel.add(descrizionField, gbc);
+                gbc.insets = new Insets(0, 0, 0, 0);
+                addPiggyPanel.add(descriptionField, gbc);
+
+                UIManager.put("OptionPane.background", new Color(246,248,255)); // Colore di sfondo
+                UIManager.put("Panel.background", new Color(246,248,255)); // Colore di sfondo per il pannello interno
 
                 // Mostra il JOptionPane con i JTextField inseriti
                 int result = JOptionPane.showOptionDialog(
@@ -180,13 +219,13 @@ public class PiggyBanksViewGUI extends JFrame {
                         "Crea Salvadanaio",
                         JOptionPane.YES_NO_CANCEL_OPTION,
                         JOptionPane.QUESTION_MESSAGE,
-                        iconExit, // Icona personalizzata
+                        iconPiggyBank, // Icona personalizzata
                         optionsAdd, // Array contenente le etichette dei pulsanti
                         optionsAdd[0] // Opzione di default
                 );
                 if (result == JOptionPane.YES_OPTION) {
                     try {
-                        controller.addPiggyBank(nomeField.getText(), Math.round(Double.parseDouble(obiettivoField.getText())*100.00)/100.00, descrizionField.getText());
+                        controller.addPiggyBank(namePiggyField.getText(), Math.round(Double.parseDouble(targetField.getText())*100.00)/100.00, descriptionField.getText());
                     } catch (MyExc ex) {
                         throw new RuntimeException(ex);
                     }
@@ -342,16 +381,34 @@ public class PiggyBanksViewGUI extends JFrame {
                             break;
                         case 1: // caso invia soldi
                             JPanel fillPiggyBankPanel = new JPanel(new GridBagLayout());
-                            JLabel soldiLabel = new JLabel("Inserisci una cifra da inviare al salvadanaio: ");
-                            JTextField moneyField = new JTextField();
+                            JLabel moneyLabel = new JLabel("Inserisci una cifra da inviare al salvadanaio: ");
+                            moneyLabel.setForeground(new Color(0, 50, 73));
+                            // Crea il modello personalizzato per il JSpinner
+                            SpinnerModel model = new SpinnerNumberModel(0.0, // valore iniziale
+                                    0.0, // min (null significa nessun limite)
+                                    null, // max (null significa nessun limite)
+                                    0.5); // passo (incremento di 0.5)
+
+                            // Crea il JSpinner con il modello personalizzato
+                            JSpinner spinnerMoney = new JSpinner(model);
+                            // Ottieni l'editor dello spinner
+                            JSpinner.DefaultEditor spinnerEditor = (JSpinner.DefaultEditor)spinnerMoney.getEditor();
+                            // Disabilita il campo di testo dell'editor per impedire l'inserimento manuale
+                            spinnerEditor.getTextField().setEditable(false);
+
+                            if(fontRegularBold != null)
+                                moneyLabel.setFont(fontRegularBold);
+                            if(fontRegular!= null)
+                                spinnerMoney.setFont(fontRegular);
+
                             GridBagConstraints gbc = new GridBagConstraints();
                             gbc.fill = GridBagConstraints.BOTH;
                             gbc.gridy = 0;
                             gbc.gridx = 0;
-                            fillPiggyBankPanel.add(soldiLabel, gbc);
+                            fillPiggyBankPanel.add(moneyLabel, gbc);
                             gbc.gridy = 1;
                             gbc.gridx = 0;
-                            fillPiggyBankPanel.add(moneyField, gbc);
+                            fillPiggyBankPanel.add(spinnerMoney, gbc);
                             int resultFill = JOptionPane.showOptionDialog(
                                     null,
                                     fillPiggyBankPanel,
@@ -363,15 +420,33 @@ public class PiggyBanksViewGUI extends JFrame {
                                     optionsFill[0] // Opzione di default
                             );
                             if (resultFill == JOptionPane.YES_OPTION) {
-                                controller.fillPiggyBank((String) table.getValueAt(currentRow, 0), moneyField.getText());
+                                controller.fillPiggyBank((String) table.getValueAt(currentRow, 0), String.valueOf(spinnerMoney.getValue()));
                                 controller.updateBankAccount(controller.getSelectedBankAccount());
                                 controller.showPiggyBankView();
                             }
                             break;
                         case 2: // caso prendi soldi
                             JPanel getPiggyBankPanel = new JPanel(new GridBagLayout());
+
                             JLabel getMoneyLabel = new JLabel("Inserisci una cifra da prendere dal salvadanaio: ");
-                            JTextField getMoneyField = new JTextField();
+
+                            model = new SpinnerNumberModel(0.0, // valore iniziale
+                                    0.0, // min (null significa nessun limite)
+                                    null, // max (null significa nessun limite)
+                                    0.5); // passo (incremento di 0.5)
+
+                            // Crea il JSpinner con il modello personalizzato
+                            JSpinner spinnerGetMoney = new JSpinner(model);
+                            // Ottieni l'editor dello spinner
+                            spinnerEditor = (JSpinner.DefaultEditor)spinnerGetMoney.getEditor();
+                            // Disabilita il campo di testo dell'editor per impedire l'inserimento manuale
+                            spinnerEditor.getTextField().setEditable(false);
+
+                            if(fontRegularBold != null)
+                                getMoneyLabel.setFont(fontRegularBold);
+                            if(fontRegular != null)
+                                spinnerGetMoney.setFont(fontRegular);
+
                             gbc = new GridBagConstraints();
                             gbc.fill = GridBagConstraints.BOTH;
                             gbc.gridy = 0;
@@ -379,7 +454,7 @@ public class PiggyBanksViewGUI extends JFrame {
                             getPiggyBankPanel.add(getMoneyLabel, gbc);
                             gbc.gridy = 1;
                             gbc.gridx = 0;
-                            getPiggyBankPanel.add(getMoneyField, gbc);
+                            getPiggyBankPanel.add(spinnerGetMoney, gbc);
                             int resultGet = JOptionPane.showOptionDialog(
                                     null,
                                     getPiggyBankPanel,
@@ -395,7 +470,7 @@ public class PiggyBanksViewGUI extends JFrame {
                                 String valueWithCurrency = (String) table.getValueAt(currentRow, 3);
                                 //  Rimuove il simbolo della valuta '€' e qualsiasi altro carattere non numerico, mantenendo solo numeri e punto decimale
                                 String numericValue = valueWithCurrency.replaceAll("[^\\d.]", "");
-                                controller.getMoneyByPiggyBank(numericValue, (String) table.getValueAt(currentRow, 0), getMoneyField.getText());
+                                controller.getMoneyByPiggyBank(numericValue, (String) table.getValueAt(currentRow, 0), String.valueOf(spinnerGetMoney.getValue()));
                                 controller.updateBankAccount(controller.getSelectedBankAccount());
                                 controller.showPiggyBankView();
 

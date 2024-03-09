@@ -394,9 +394,9 @@ public class Controller {
     public void fillPiggyBank(String name, String moneyToSend){
         try{
             if(!moneyToSend.isEmpty()) {
-                if(Math.round((Double.parseDouble(moneyToSend)*100.00)/100.00) > 0) {
-                    if (selectedBankAccount.getBalance() >= Math.round((Double.parseDouble(moneyToSend) * 100.00) / 100.00)) {
-                        salvadanaioDAO.fillPiggyBank(selectedBankAccount, name, Math.round((Double.parseDouble(moneyToSend) * 100.00) / 100.00));
+                if((Math.round(Double.parseDouble(moneyToSend)*1000.00)/1000.00) > 0) {
+                    if (selectedBankAccount.getBalance() >= (Math.round(Double.parseDouble(moneyToSend) * 1000.00) / 1000.00)) {
+                        salvadanaioDAO.fillPiggyBank(selectedBankAccount, name, (Math.round(Double.parseDouble(moneyToSend) * 1000.00) / 1000.00));
                     } else {
                         JOptionPane.showMessageDialog(
                                 framePiggyBank,
@@ -448,8 +448,8 @@ public class Controller {
     public void getMoneyByPiggyBank(String piggyBankBalance, String name, String moneyToGet){
         try{
             if(!moneyToGet.isEmpty()) {
-                if (Double.parseDouble(piggyBankBalance) >= Math.round((Double.parseDouble(moneyToGet)*100.00)/100.00)) {
-                    salvadanaioDAO.getMoneyByPiggyBank(selectedBankAccount, name, Math.round((Double.parseDouble(moneyToGet)*100.00)/100.00));
+                if (Double.parseDouble(piggyBankBalance) >= ((Double.parseDouble(moneyToGet)*100.00)/100.00)) {
+                    salvadanaioDAO.getMoneyByPiggyBank(selectedBankAccount, name, ((Double.parseDouble(moneyToGet)*100.00)/100.00));
                 } else {
                     JOptionPane.showMessageDialog(
                             framePiggyBank,
@@ -525,15 +525,15 @@ public class Controller {
     public void sendBankTransfer(String ibanReceiver, String amount, String name, String surname, String reason, String category, String typeBankTransfer, String nameCollection){
         try{
             if(typeBankTransfer.equals("Bonifico")){
-                if(!amount.isEmpty()) {
-                    if((getCard().getTypeCard().equals("CartaDiDebito") && Double.parseDouble(amount)<=3000) || (getCard().getTypeCard().equals("CartaDiCredito"))) {
+                if(!amount.isEmpty() && Math.round(Double.parseDouble(amount)*100.00)/100.00 != 0.00d) {
+                    if((getCard().getTypeCard().equals("CartaDiDebito") && Math.round(Double.parseDouble(amount)*100.00)/100.00 <= 3000) || (getCard().getTypeCard().equals("CartaDiCredito"))) {
                         if (!selectedBankAccount.getIban().equals(ibanReceiver)) {
-                            if (selectedBankAccount.getBalance() >= Math.round((Double.parseDouble(amount) * 100.00) / 100.00)) {
+                            if (selectedBankAccount.getBalance() >= (Math.round(Double.parseDouble(amount) * 100.00) / 100.00)) {
                                 if (!ibanReceiver.isEmpty() && !name.isEmpty() && !surname.isEmpty() && !reason.isEmpty()) {
                                     if (transazioneDAO.checkIban(ibanReceiver, name, surname)) {
                                         if (nameCollection == null)
                                             nameCollection = "ALTRO";
-                                        transazioneDAO.sendBankTransfer(selectedBankAccount, ibanReceiver, amount, reason, category, nameCollection);
+                                        transazioneDAO.sendBankTransfer(selectedBankAccount, ibanReceiver, String.valueOf(Math.round(Double.parseDouble(amount)*100.00)/100.00) , reason, category, nameCollection);
                                         JOptionPane.showMessageDialog(
                                                 frameBankTransfer,
                                                 "Bonifico inviato con successo!",
@@ -595,15 +595,15 @@ public class Controller {
 
             }
             else {
-                if(!amount.isEmpty()) {
-                    if((getCard().getTypeCard().equals("CartaDiDebito") && Double.parseDouble(amount)<=3000) || (getCard().getTypeCard().equals("CartaDiCredito"))) {
+                if(!amount.isEmpty() && Math.round(Double.parseDouble(amount)*100.00)/100.00 != 0.00d) {
+                    if((getCard().getTypeCard().equals("CartaDiDebito") && Math.round(Double.parseDouble(amount)*100.00)/100.00 <= 3000) || (getCard().getTypeCard().equals("CartaDiCredito"))) {
                         if (!selectedBankAccount.getIban().equals(ibanReceiver)) {
-                            if (selectedBankAccount.getBalance() >= Math.round((Double.parseDouble(amount) * 100.00) / 100.00)) {
+                            if (selectedBankAccount.getBalance() >= (Math.round(Double.parseDouble(amount) * 100.00) / 100.00)) {
                                 if (!ibanReceiver.isEmpty() && !name.isEmpty() && !surname.isEmpty() && !reason.isEmpty()) {
                                     if (transazioneDAO.checkIban(ibanReceiver, name, surname)) {
                                         if (nameCollection == null)
                                             nameCollection = "ALTRO";
-                                        transazioneDAO.sendIstantBankTransfer(selectedBankAccount, ibanReceiver, amount, reason, category, nameCollection);
+                                        transazioneDAO.sendIstantBankTransfer(selectedBankAccount, ibanReceiver, String.valueOf(Math.round(Double.parseDouble(amount) * 100.00)/100.00), reason, category, nameCollection);
                                         JOptionPane.showMessageDialog(
                                                 frameBankTransfer,
                                                 "Bonifico inviato con successo!",
@@ -655,7 +655,7 @@ public class Controller {
                 else {
                     JOptionPane.showMessageDialog(
                             frameBankTransfer,
-                            "Riempi tutti i campi.",
+                            "Inserisci una cifra valida.",
                             "Errore",
                             JOptionPane.PLAIN_MESSAGE,
                             iconAlert

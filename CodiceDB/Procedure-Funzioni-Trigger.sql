@@ -527,7 +527,7 @@ BEGIN
 
                                     --aggiorno il saldo del mittente
                                       UPDATE test.contocorrente
-                                      SET saldo = saldo - soldi_In
+                                      SET saldo = saldo - soldi_In - 2
                                       WHERE iban = iban_mittente_In;
                                       RAISE NOTICE E'---------------------------------------------------------------------------\nBonifico inviato con successo!\n---------------------------------------------------------------------------';
                               else

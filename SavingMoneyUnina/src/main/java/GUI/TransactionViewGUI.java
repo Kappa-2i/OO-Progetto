@@ -211,6 +211,7 @@ public class TransactionViewGUI extends JFrame {
         panelTop.add(Box.createHorizontalGlue(), gbc);
 
         // Configurazione per buttonHome
+        gbc = new GridBagConstraints();
         gbc.gridx = 6;
         gbc.insets = new Insets(0, 20, 0, 15);
         panelTop.add(buttonHome, gbc);

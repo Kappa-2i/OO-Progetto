@@ -183,6 +183,7 @@ public class CollectionViewGUI extends JFrame {
         panelHeader.add(Box.createHorizontalGlue(), gbc);
 
         // Configurazione per il button Home
+        gbc = new GridBagConstraints();
         gbc.gridx = 6;
         gbc.insets = new Insets(0, 20, 0, 15);
         panelHeader.add(buttonHome, gbc);
