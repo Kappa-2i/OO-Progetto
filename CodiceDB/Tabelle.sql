@@ -67,8 +67,8 @@ create table Raccolta
 (
     Nomeraccolta Varchar(255) not null,
     Datacreazione Date not null,
-    Descrizione Varchar(1000) default NULL,
-    Contocorrente_Iban Varchar not null references Contocorrente(IBAN),
+    Descrizione Varchar(1000) default NULL::Character Varying,
+    Contocorrente_Iban Varchar references Contocorrente(IBAN) on delete cascade,
     Id_Raccolta Serial primary key
 );
 
@@ -76,7 +76,7 @@ create table Raccolta
 --Creazione della tabella ContoCorrente
 create table Contocorrente
 (
-    Iban Varchar(27) primary key,
+    Iban Varchar(27) not null primary key,
     Dataapertura  Date not null,
     Saldo Numeric default 0 not null,
     Account_Email Varchar(255) not null references Account(Email) on delete cascade
