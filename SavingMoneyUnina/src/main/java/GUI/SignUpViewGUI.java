@@ -20,7 +20,9 @@ public class SignUpViewGUI extends JFrame{
     private Font fontRegularSmall;
     private Font fontRegularBold;
 
+    //Dichiarazioni icone
     private ImageIcon iconApp = new ImageIcon(SignUpViewGUI.class.getResource("/IMG/digital-money.png"));
+    private ImageIcon iconCancel = new ImageIcon(SignUpViewGUI.class.getResource("/IMG/cancel.png"));
 
     public SignUpViewGUI(Controller controller){
         this.controller = controller;
@@ -277,6 +279,8 @@ public class SignUpViewGUI extends JFrame{
         signButton.setForeground(new Color(246, 248, 255));
         signButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cambia il cursore per indicare che è cliccabile
         signButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        UIManager.put("OptionPane.background", new Color(246,248,255)); // Colore di sfondo
+        UIManager.put("Panel.background", new Color(246,248,255)); // Colore di sfondo per il pannello interno
         signButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -295,7 +299,9 @@ public class SignUpViewGUI extends JFrame{
                             null,
                             "Le password non corrispondono",
                             "Errore",
-                            JOptionPane.ERROR_MESSAGE
+                            JOptionPane.PLAIN_MESSAGE,
+                            iconCancel
+
                     );
                 }
             }

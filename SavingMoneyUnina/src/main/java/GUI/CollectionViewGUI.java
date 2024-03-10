@@ -218,6 +218,8 @@ public class CollectionViewGUI extends JFrame {
                 //Creazione label che se cliccata mostra la causale
                 JLabel causalLabel = new JLabel("<html><u><i>Causale</i></u></html>");
                 causalLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                UIManager.put("OptionPane.background", new Color(246,248,255)); // Colore di sfondo
+                UIManager.put("Panel.background", new Color(246,248,255)); // Colore di sfondo per il pannello interno
                 causalLabel.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {

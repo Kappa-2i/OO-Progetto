@@ -30,6 +30,8 @@ public class PiggyBanksViewGUI extends JFrame {
     private ImageIcon iconExit = new ImageIcon(PiggyBanksViewGUI.class.getResource("/IMG/door_exit.png"));
     private ImageIcon iconInformation = new ImageIcon(PiggyBanksViewGUI.class.getResource("/IMG/information.png"));
     private ImageIcon iconPiggyBank = new ImageIcon(PiggyBanksViewGUI.class.getResource("/IMG/saving_resized.png"));
+    private ImageIcon iconAlert = new ImageIcon(PiggyBanksViewGUI.class.getResource("/IMG/alert.png"));
+    private ImageIcon iconFill = new ImageIcon(PiggyBanksViewGUI.class.getResource("/IMG/fillPiggy.png"));
 
 
     public PiggyBanksViewGUI(Controller controller){
@@ -86,35 +88,34 @@ public class PiggyBanksViewGUI extends JFrame {
         // Dichiarazione dei componenti per il pannello superiore
         JLabel piggyBankLabel = new JLabel("Piggy Bank");
         piggyBankLabel.setForeground(new Color(246, 248, 255));
-        JLabel titoloSmu = new JLabel("S.M.U.");
-        titoloSmu.setForeground(Color.WHITE);
+        JLabel titleSmu = new JLabel("S.M.U.");
+        titleSmu.setForeground(Color.WHITE);
         if (fontExtraBold != null) {
             piggyBankLabel.setFont(fontExtraBold);
-            titoloSmu.setFont(fontRegular);
+            titleSmu.setFont(fontRegular);
         }
 
-        JButton buttonLogo = new JButton();
-        buttonLogo.setBackground(null);
-        buttonLogo.setIcon(iconUnina);
-        buttonLogo.setContentAreaFilled(false);
-        buttonLogo.setOpaque(false);
-        buttonLogo.setBorderPainted(false);
-        buttonLogo.setBorder(null);
-        buttonLogo.setFocusPainted(false);
+        JButton iconButton = new JButton();
+        iconButton.setBackground(null);
+        iconButton.setIcon(iconUnina);
+        iconButton.setContentAreaFilled(false);
+        iconButton.setOpaque(false);
+        iconButton.setBorderPainted(false);
+        iconButton.setBorder(null);
+        iconButton.setFocusPainted(false);
 
-        JButton buttonHome = new JButton();
-        buttonHome.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        buttonHome.setBackground(null);
-        buttonHome.setIcon(iconHome);
-        buttonHome.setContentAreaFilled(false);
-        buttonHome.setOpaque(false);
-        buttonHome.setBorderPainted(false);
-        buttonHome.setBorder(null);
-        buttonHome.setFocusPainted(false);
-        buttonHome.addMouseListener(new MouseAdapter() {
+        JButton homeButton = new JButton();
+        homeButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        homeButton.setBackground(null);
+        homeButton.setIcon(iconHome);
+        homeButton.setContentAreaFilled(false);
+        homeButton.setOpaque(false);
+        homeButton.setBorderPainted(false);
+        homeButton.setBorder(null);
+        homeButton.setFocusPainted(false);
+        homeButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-
                 controller.showHomeView(controller.getSelectedBankAccount());
             }
         });
@@ -234,7 +235,8 @@ public class PiggyBanksViewGUI extends JFrame {
                                 null,
                                 "Inserisci una cifra valida!",
                                 "Errore inserimento",
-                                JOptionPane.ERROR_MESSAGE
+                                JOptionPane.PLAIN_MESSAGE,
+                                iconAlert
                         );
                     }
                     controller.showPiggyBankView();
@@ -248,11 +250,11 @@ public class PiggyBanksViewGUI extends JFrame {
         gbc.weightx = 0;
         gbc.fill = GridBagConstraints.NONE;
         gbc.insets = new Insets(0, 15, 0, 0);
-        panelHeader.add(buttonLogo, gbc);
+        panelHeader.add(iconButton, gbc);
 
         // Configurazione per il titoloSmu a sinistra di homePageLabel
         gbc.gridx = 2;
-        panelHeader.add(titoloSmu, gbc);
+        panelHeader.add(titleSmu, gbc);
 
         gbc = new GridBagConstraints();
         gbc.gridx = 3;
@@ -277,7 +279,7 @@ public class PiggyBanksViewGUI extends JFrame {
 
         gbc.gridx = 7;
         gbc.insets = new Insets(0, 20, 0, 15);
-        panelHeader.add(buttonHome, gbc);
+        panelHeader.add(homeButton, gbc);
 
 
         /**
@@ -297,7 +299,7 @@ public class PiggyBanksViewGUI extends JFrame {
         };
         // Aggiungere i dati del salvadanaio al modello
         for(PiggyBank piggyBanks : controller.getPiggyBanks()){
-            Object[] riga = {
+            Object[] row = {
                     piggyBanks.getNamePiggyBank(),
                     piggyBanks.getDescription(),
                     piggyBanks.getTarget() + "€",
@@ -305,7 +307,7 @@ public class PiggyBanksViewGUI extends JFrame {
                     piggyBanks.getRemainingBalance() + "€",
                     piggyBanks.getCreationDate()
             };
-            model.addRow(riga);
+            model.addRow(row);
         }
 
         // Creare la tabella con il modello
@@ -385,7 +387,7 @@ public class PiggyBanksViewGUI extends JFrame {
                             moneyLabel.setForeground(new Color(0, 50, 73));
                             // Crea il modello personalizzato per il JSpinner
                             SpinnerModel model = new SpinnerNumberModel(0.0, // valore iniziale
-                                    0.0, // min (null significa nessun limite)
+                                    0.0, //
                                     null, // max (null significa nessun limite)
                                     0.5); // passo (incremento di 0.5)
 
@@ -415,7 +417,7 @@ public class PiggyBanksViewGUI extends JFrame {
                                     "Invia soldi al salvadanaio",
                                     JOptionPane.DEFAULT_OPTION,
                                     JOptionPane.QUESTION_MESSAGE,
-                                    iconInformation, // Icona personalizzata
+                                    iconFill, // Icona personalizzata
                                     optionsFill, // Array contenente le etichette dei pulsanti
                                     optionsFill[0] // Opzione di default
                             );
@@ -429,6 +431,7 @@ public class PiggyBanksViewGUI extends JFrame {
                             JPanel getPiggyBankPanel = new JPanel(new GridBagLayout());
 
                             JLabel getMoneyLabel = new JLabel("Inserisci una cifra da prendere dal salvadanaio: ");
+                            getMoneyLabel.setForeground(new Color(0, 50, 73));
 
                             model = new SpinnerNumberModel(0.0, // valore iniziale
                                     0.0, // min (null significa nessun limite)
@@ -461,7 +464,7 @@ public class PiggyBanksViewGUI extends JFrame {
                                     "Prendi soldi dal salvadanaio",
                                     JOptionPane.DEFAULT_OPTION,
                                     JOptionPane.QUESTION_MESSAGE,
-                                    iconInformation, // Icona personalizzata
+                                    iconFill, // Icona personalizzata
                                     optionsGet, // Array contenente le etichette dei pulsanti
                                     optionsGet[0] // Opzione di default
                             );

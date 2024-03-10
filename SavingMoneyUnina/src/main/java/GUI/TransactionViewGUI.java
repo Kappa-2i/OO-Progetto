@@ -46,6 +46,7 @@ public class TransactionViewGUI extends JFrame {
     //Dichiarazione icone
     private ImageIcon iconUnina = new ImageIcon(TransactionViewGUI.class.getResource("/IMG/unina.png"));
     private ImageIcon iconHome = new ImageIcon(TransactionViewGUI.class.getResource("/IMG/home.png"));
+    private ImageIcon iconInfo = new ImageIcon(TransactionViewGUI.class.getResource("/IMG/information.png"));
 
     //Dichiarazione opzioni da cliccare per il JOptionPane
     private Object[] optionsView = {"Visualizza", "Annulla"};
@@ -227,9 +228,10 @@ public class TransactionViewGUI extends JFrame {
         JComboBox<String> monthsComboBox = new JComboBox<>(mesi);
 
         // Imposta un'opzione di default
-        int selectedIndex = 0;
+        int selectedIndex = 2;
         // Calcola il numero del mese come stringa, aggiungendo uno zero davanti se necessario
         monthNumber = String.format("%02d", selectedIndex + 1);
+        monthsComboBox.setSelectedIndex(Integer.parseInt(monthNumber)-1);
         // Ottiene l'anno corrente
         currentYear = String.valueOf(LocalDate.now().getYear());
         // Combina l'anno e il mese nel formato YYYY-MM
@@ -605,6 +607,8 @@ public class TransactionViewGUI extends JFrame {
                 //Creazione label che contiene la data e l'ora della transazione
                 JLabel dateTimeLabel = new JLabel(transaction.getDateTransaction() + ", " + transaction.getTimeTransaction());
 
+                UIManager.put("OptionPane.background", new Color(246,248,255)); // Colore di sfondo
+                UIManager.put("Panel.background", new Color(246,248,255)); // Colore di sfondo per il pannello interno
                 //Creazione label che contiene la causale da cliccare della transazione
                 JLabel causalLabel = new JLabel("<html><u><i>Causale</i></u></html>");
                 causalLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -615,7 +619,8 @@ public class TransactionViewGUI extends JFrame {
                                 null,
                                 transaction.getCausal(),
                                 "Causale",
-                                JOptionPane.INFORMATION_MESSAGE
+                                JOptionPane.PLAIN_MESSAGE,
+                                iconInfo
                         );
                     }
                 });

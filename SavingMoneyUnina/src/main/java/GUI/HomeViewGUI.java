@@ -138,6 +138,8 @@ public class HomeViewGUI extends JFrame {
         logOutButton.setBorderPainted(false);
         logOutButton.setBorder(null);
         logOutButton.setFocusPainted(false);
+        UIManager.put("OptionPane.background", new Color(246,248,255)); // Colore di sfondo
+        UIManager.put("Panel.background", new Color(246,248,255)); // Colore di sfondo per il pannello interno
         logOutButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {

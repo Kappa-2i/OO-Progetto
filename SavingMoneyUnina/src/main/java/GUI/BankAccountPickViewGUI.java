@@ -92,6 +92,8 @@ public class BankAccountPickViewGUI extends JFrame {
         logOutButton.setOpaque(true);
         logOutButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cambia il cursore per indicare che è cliccabile
         logOutButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        UIManager.put("OptionPane.background", new Color(246,248,255)); // Colore di sfondo
+        UIManager.put("Panel.background", new Color(246,248,255)); // Colore di sfondo per il pannello interno
         logOutButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {

@@ -95,7 +95,8 @@ public class Controller {
                     "Inserisci delle credenziali valide!",
                     "Errore di Login",
                     JOptionPane.PLAIN_MESSAGE,
-                    iconAlert);
+                    iconAlert
+            );
         }
     }
 
@@ -134,7 +135,8 @@ public class Controller {
                         "Dati dell'account inseriti!",
                         "Benvenuta/o",
                         JOptionPane.PLAIN_MESSAGE,
-                        iconChecked);
+                        iconChecked
+                );
             }
             else{
                 JOptionPane.showMessageDialog(
@@ -142,7 +144,8 @@ public class Controller {
                         "Inserisci delle credenziali valide!",
                         "Errore",
                         JOptionPane.PLAIN_MESSAGE,
-                        iconAlert);
+                        iconAlert
+                );
             }
         }
         catch (MyExc exc){
@@ -455,7 +458,8 @@ public class Controller {
                             framePiggyBank,
                             "Saldo salvadanaio insufficiente!",
                             "Errore",
-                            JOptionPane.ERROR_MESSAGE
+                            JOptionPane.PLAIN_MESSAGE,
+                            iconAlert
                     );
                 }
             }
@@ -538,7 +542,8 @@ public class Controller {
                                                 frameBankTransfer,
                                                 "Bonifico inviato con successo!",
                                                 "",
-                                                JOptionPane.INFORMATION_MESSAGE
+                                                JOptionPane.PLAIN_MESSAGE,
+                                                iconChecked
                                         );
                                         frameBankTransfer(false);
                                         selectedBankAccount.setBalance(contoCorrenteDAO.updateBankAccount(selectedBankAccount));
@@ -598,7 +603,7 @@ public class Controller {
                 if(!amount.isEmpty() && Math.round(Double.parseDouble(amount)*100.00)/100.00 != 0.00d) {
                     if((getCard().getTypeCard().equals("CartaDiDebito") && Math.round(Double.parseDouble(amount)*100.00)/100.00 <= 3000) || (getCard().getTypeCard().equals("CartaDiCredito"))) {
                         if (!selectedBankAccount.getIban().equals(ibanReceiver)) {
-                            if (selectedBankAccount.getBalance() >= (Math.round(Double.parseDouble(amount) * 100.00) / 100.00)) {
+                            if (selectedBankAccount.getBalance() >= (Math.round(Double.parseDouble(amount) * 100.00) / 100.00 + 2)) {
                                 if (!ibanReceiver.isEmpty() && !name.isEmpty() && !surname.isEmpty() && !reason.isEmpty()) {
                                     if (transazioneDAO.checkIban(ibanReceiver, name, surname)) {
                                         if (nameCollection == null)
@@ -608,7 +613,8 @@ public class Controller {
                                                 frameBankTransfer,
                                                 "Bonifico inviato con successo!",
                                                 "",
-                                                JOptionPane.INFORMATION_MESSAGE
+                                                JOptionPane.PLAIN_MESSAGE,
+                                                iconChecked
                                         );
                                         frameBankTransfer(false);
                                         selectedBankAccount.setBalance(contoCorrenteDAO.updateBankAccount(selectedBankAccount));

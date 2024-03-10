@@ -24,6 +24,7 @@ public class LoginViewGUI extends JFrame{
     private ImageIcon iconHiddenPassword = new ImageIcon(LoginViewGUI.class.getResource("/IMG/hiddenpassword.png"));
     private ImageIcon iconShowedPassword = new ImageIcon(LoginViewGUI.class.getResource("/IMG/showedpassword.png"));
     private ImageIcon iconApp = new ImageIcon(LoginViewGUI.class.getResource("/IMG/digital-money.png"));
+    private ImageIcon iconWip = new ImageIcon(LoginViewGUI.class.getResource("/IMG/wip.png"));
 
 
     public LoginViewGUI(Controller controller){
@@ -236,7 +237,8 @@ public class LoginViewGUI extends JFrame{
         if (fontRegularSmall != null)
             forgottenPasswordLabel.setFont(fontRegularSmall);
         forgottenPasswordLabel.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cambia il cursore per indicare che è cliccabile
-
+        UIManager.put("OptionPane.background", new Color(246,248,255)); // Colore di sfondo
+        UIManager.put("Panel.background", new Color(246,248,255)); // Colore di sfondo per il pannello interno
         // Aggiunge un MouseListener alla JLabel
         forgottenPasswordLabel.addMouseListener(new MouseAdapter() {
             @Override
@@ -251,6 +253,7 @@ public class LoginViewGUI extends JFrame{
                 forgottenPasswordLabel.setText("Password dimenticata?");
             }
 
+
             @Override
             public void mouseClicked(MouseEvent e) {
                 // Quando il mouse esce dalla JLabel, rimuovi la sottolineatura
@@ -258,7 +261,8 @@ public class LoginViewGUI extends JFrame{
                         null,
                         "Errore - Lavori in corso!",
                         "Error 404",
-                        JOptionPane.ERROR_MESSAGE
+                        JOptionPane.PLAIN_MESSAGE,
+                        iconWip
                 );
             }
         });
