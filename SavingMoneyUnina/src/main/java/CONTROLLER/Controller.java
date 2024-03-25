@@ -35,7 +35,7 @@ public class Controller {
     private BankAccountDAO contoCorrenteDAO;
     private CardDAO cartaDAO;
     private PiggyBankDAO salvadanaioDAO;
-    private TransactionDAO transazioneDAO;
+    private TransactionDAO transactionDAO;
     private CollectionDAO collectionDAO;
 
     //Dichiarazione delle variabili
@@ -60,7 +60,7 @@ public class Controller {
         this.contoCorrenteDAO = new BankAccountDAOImpl();
         this.cartaDAO = new CardDAOImpl();
         this.salvadanaioDAO = new PiggyBankDAOImpl();
-        this.transazioneDAO = new TransactionDAOImpl();
+        this.transactionDAO = new TransactionDAOImpl();
         this.collectionDAO = new CollectionDAOImpl();
     }
 
@@ -492,7 +492,7 @@ public class Controller {
         if (frameTransaction != null)
             frameTransaction(false);
         //Vengono recuperati le transazioni associati al conto scelto.
-        transactions = transazioneDAO.selectTransazioniByIban(selectedBankAccount);
+        transactions = transactionDAO.selectTransazioniByIban(selectedBankAccount);
         selectedBankAccount.setTransactions(transactions);
         if(frameBankTransfer!=null){
             frameBankTransfer(false);
@@ -529,15 +529,22 @@ public class Controller {
     public void sendBankTransfer(String ibanReceiver, String amount, String name, String surname, String reason, String category, String typeBankTransfer, String nameCollection){
         try{
             if(typeBankTransfer.equals("Bonifico")){
+                //Controlla se l'importo inserito è valido
                 if(!amount.isEmpty() && Math.round(Double.parseDouble(amount)*100.00)/100.00 != 0.00d) {
+                    //Controlla se l'importo non superi il limite in caso di carta di debito
                     if((getCard().getTypeCard().equals("CartaDiDebito") && Math.round(Double.parseDouble(amount)*100.00)/100.00 <= 3000) || (getCard().getTypeCard().equals("CartaDiCredito"))) {
+                        //Controlla se l'iban del destinatario inserito non è lo stesso del mittente
                         if (!selectedBankAccount.getIban().equals(ibanReceiver)) {
+                            //Controlla se il saldo del conto è maggiore uguale dell'importo inserito
                             if (selectedBankAccount.getBalance() >= (Math.round(Double.parseDouble(amount) * 100.00) / 100.00)) {
+                                //Controlla se sono stati inseriti i dati
                                 if (!ibanReceiver.isEmpty() && !name.isEmpty() && !surname.isEmpty() && !reason.isEmpty()) {
-                                    if (transazioneDAO.checkIban(ibanReceiver, name, surname)) {
+                                    //Controlla se i dati del destinatario corrispondono con l'iban inserito
+                                    if (transactionDAO.checkIban(ibanReceiver, name, surname)) {
+                                        //Nel caso non viene inserita una raccolta, viene messo 'ALTRO' di default
                                         if (nameCollection == null)
                                             nameCollection = "ALTRO";
-                                        transazioneDAO.sendBankTransfer(selectedBankAccount, ibanReceiver, String.valueOf(Math.round(Double.parseDouble(amount)*100.00)/100.00) , reason, category, nameCollection);
+                                        transactionDAO.sendBankTransfer(selectedBankAccount, ibanReceiver, String.valueOf(Math.round(Double.parseDouble(amount)*100.00)/100.00) , reason, category, nameCollection);
                                         JOptionPane.showMessageDialog(
                                                 frameBankTransfer,
                                                 "Bonifico inviato con successo!",
@@ -605,10 +612,10 @@ public class Controller {
                         if (!selectedBankAccount.getIban().equals(ibanReceiver)) {
                             if (selectedBankAccount.getBalance() >= (Math.round(Double.parseDouble(amount) * 100.00) / 100.00 + 2)) {
                                 if (!ibanReceiver.isEmpty() && !name.isEmpty() && !surname.isEmpty() && !reason.isEmpty()) {
-                                    if (transazioneDAO.checkIban(ibanReceiver, name, surname)) {
+                                    if (transactionDAO.checkIban(ibanReceiver, name, surname)) {
                                         if (nameCollection == null)
                                             nameCollection = "ALTRO";
-                                        transazioneDAO.sendIstantBankTransfer(selectedBankAccount, ibanReceiver, String.valueOf(Math.round(Double.parseDouble(amount) * 100.00)/100.00), reason, category, nameCollection);
+                                        transactionDAO.sendIstantBankTransfer(selectedBankAccount, ibanReceiver, String.valueOf(Math.round(Double.parseDouble(amount) * 100.00)/100.00), reason, category, nameCollection);
                                         JOptionPane.showMessageDialog(
                                                 frameBankTransfer,
                                                 "Bonifico inviato con successo!",
@@ -695,7 +702,7 @@ public class Controller {
      * @param iban riferimento dell'iban da cui prendere nome e cognome.
      * */
     public void selectNameAndSurnameByIban(String iban){
-        credentialsIban = transazioneDAO.selectNameAndSurnameByIban(iban);
+        credentialsIban = transactionDAO.selectNameAndSurnameByIban(iban);
     }
 
     /**
@@ -732,7 +739,7 @@ public class Controller {
      * Metodo per recuperare il totale della collezione desiderata.
      * @param name riferimento del nome della collezione per cui ottenere la somma.*/
     public double selectSumOfCollections(String name){
-        return transazioneDAO.selectSumOfCollections(selectedBankAccount, name);
+        return transactionDAO.selectSumOfCollections(selectedBankAccount, name);
     }
 
 
@@ -742,7 +749,7 @@ public class Controller {
      * */
     public void showCollectionView(Collection collection){
         selectedCollection = collection;
-        transactionsCollection = transazioneDAO.selectTransactionsByCollection(selectedCollection, selectedBankAccount);
+        transactionsCollection = transactionDAO.selectTransactionsByCollection(selectedCollection, selectedBankAccount);
 
 
         selectedCollection.setTransactions(transactionsCollection);
@@ -801,7 +808,7 @@ public class Controller {
      * @param month mese per cui effettuare il report.
      * */
     public void viewReport(String month){
-        report = transazioneDAO.viewReport(selectedBankAccount, month);
+        report = transactionDAO.viewReport(selectedBankAccount, month);
 
     }
 
@@ -812,7 +819,7 @@ public class Controller {
      * @retrun double totale in uscita calcolato.
      * */
     public double totalMonthlySent(BankAccount bankAccount, String month){
-        return transazioneDAO.totalSentMonthly(bankAccount, month);
+        return transactionDAO.totalSentMonthly(bankAccount, month);
     }
 
     /**
@@ -822,7 +829,7 @@ public class Controller {
      * @retrun double totale in entrata calcolato.
      * */
     public double totalMonthlyReceived(BankAccount bankAccount, String month){
-        return transazioneDAO.totalReceivedMonthly(bankAccount, month);
+        return transactionDAO.totalReceivedMonthly(bankAccount, month);
     }
 
     /**
