@@ -29,14 +29,14 @@ public class CardDAOImpl implements CardDAO {
                      viene creata una carta di credito altrimenti.*/
 
                     if (resultSet.getString("tipocarta").equals("CartaDiDebito")) {
-                        Card cartaDiDebito = new DebitCard(resultSet.getString("pan"), resultSet.getString("pin"), resultSet.getString("cvv"), resultSet.getString("tipocarta"),
+                        Card debitCard = new DebitCard(resultSet.getString("pan"), resultSet.getString("pin"), resultSet.getString("cvv"), resultSet.getString("tipocarta"),
                                 bankAccount, resultSet.getDouble("maxinvio"));
-                        return cartaDiDebito;
+                        return debitCard;
                     }
                     else {
-                        Card cartaDiCredito = new CreditCard(resultSet.getString("pan"), resultSet.getString("pin"), resultSet.getString("cvv"), resultSet.getString("tipocarta"),
+                        Card creditCard = new CreditCard(resultSet.getString("pan"), resultSet.getString("pin"), resultSet.getString("cvv"), resultSet.getString("tipocarta"),
                                 bankAccount, resultSet.getDouble("price_upgrade"));
-                        return cartaDiCredito;
+                        return creditCard;
                     }
 
                 }

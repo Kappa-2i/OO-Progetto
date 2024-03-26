@@ -7,8 +7,7 @@ import EXCEPTIONS.MyExc;
 
 import java.sql.*;
 
-public class AccountDAOImpl implements AccountDAO {
-
+public class AccountDAOImpl implements AccountDAO{
 
     @Override
     public void insertAccount(String email, String password, String name, String surname){
@@ -32,7 +31,6 @@ public class AccountDAOImpl implements AccountDAO {
             e.printStackTrace();
         }
     }
-
 
 
     @Override

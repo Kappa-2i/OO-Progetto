@@ -71,16 +71,5 @@ public class PiggyBank {
         this.creationDate = creationDate;
     }
 
-    @Override
-    public String toString() {
-        return "Salvadanaio{" +
-                "nomeSalvadanaio='" + namePiggyBank + '\'' +
-                ", descrizione='" + description + '\'' +
-                ", obiettivo=" + target +
-                ", saldoRisparmio=" + savingBalance +
-                ", saldoRimanente=" + remainingBalance +
-                ", dataCreazione='" + creationDate + '\'' +
-                '}';
-    }
 }
 

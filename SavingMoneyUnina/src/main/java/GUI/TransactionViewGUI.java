@@ -299,7 +299,8 @@ public class TransactionViewGUI extends JFrame {
                 dataset, // data
                 true, // include legend
                 true,
-                false);
+                false
+        );
         chart.setBackgroundPaint(new Color(246, 248, 255)); // Cambia il colore di sfondo dell'intero grafico
 
 

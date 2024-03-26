@@ -162,7 +162,6 @@ public class BankAccountPickViewGUI extends JFrame {
         panelCenter.setBackground(new Color(246, 248, 255));
         panelCenter.setOpaque(true);
 
-        controller.selectBankAccountByAccount(controller.getAccount());
         showBankAccount();
         // Creazione dello JScrollPane che conterrà panelSignIn
         JScrollPane scrollPane = new JScrollPane(panelCenter);
@@ -376,14 +375,13 @@ public class BankAccountPickViewGUI extends JFrame {
             JLabel createBankAccountLabel = new JLabel("Crea Conto Corrente +");
             if (fontRegularBold != null)
                 createBankAccountLabel.setFont(fontRegularBold);
+
             createBankAccountLabel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e){
                     if(controller.insertBankAccount(controller.getAccount().getEmail())) {
-
                             setVisible(false);
                             controller.checkCredentials(controller.getAccount().getEmail(), controller.getAccount().getPassword());
-
                     }
                 }
             });

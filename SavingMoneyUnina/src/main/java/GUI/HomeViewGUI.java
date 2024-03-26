@@ -433,6 +433,12 @@ public class HomeViewGUI extends JFrame {
         piggyBanksButtonIcon.setBorderPainted(false);
         piggyBanksButtonIcon.setBorder(null);
         piggyBanksButtonIcon.setFocusPainted(false);
+        piggyBanksButtonIcon.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                controller.showPiggyBankView();
+            }
+        });
 
 
         if (fontRegular != null){

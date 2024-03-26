@@ -33,7 +33,7 @@ public class Controller {
     //Dichiarazioni delle Dao
     private AccountDAO accountDao;
     private BankAccountDAO contoCorrenteDAO;
-    private CardDAO cartaDAO;
+    private CardDAO cardDAO;
     private PiggyBankDAO salvadanaioDAO;
     private TransactionDAO transactionDAO;
     private CollectionDAO collectionDAO;
@@ -58,7 +58,7 @@ public class Controller {
         //DAO
         this.accountDao = new AccountDAOImpl();
         this.contoCorrenteDAO = new BankAccountDAOImpl();
-        this.cartaDAO = new CardDAOImpl();
+        this.cardDAO = new CardDAOImpl();
         this.salvadanaioDAO = new PiggyBankDAOImpl();
         this.transactionDAO = new TransactionDAOImpl();
         this.collectionDAO = new CollectionDAOImpl();
@@ -157,8 +157,6 @@ public class Controller {
                     iconAlert
             );
         }
-
-
     }
 
     
@@ -211,7 +209,7 @@ public class Controller {
         frameHome(false);
 
         //Viene aggiornata la pagina con i conti corretti.
-            checkCredentials(account.getEmail(), account.getPassword());
+        checkCredentials(account.getEmail(), account.getPassword());
 
         JOptionPane.showMessageDialog(
                 framePickBankAccount,
@@ -224,15 +222,13 @@ public class Controller {
 
     /**
      * Metodo per gesitre la visualizzaione della pagina di Home page.
-     * @param conto riferimento per le informazioni da visualizzare in Home Page.*/
-    public void showHomeView(BankAccount conto){
+     * @param bankAccount riferimento per le informazioni da visualizzare in Home Page.*/
+    public void showHomeView(BankAccount bankAccount){
 
         //Viene selezionato il conto dopo averlo scelto dalla pagina di selezione.
-        selectedBankAccount = conto;
+        selectedBankAccount = bankAccount;
         //Viene recuperata la carta associata al conto scelto.
-        if(card != null)
-            card = null;
-        card = cartaDAO.selectCard(selectedBankAccount);
+        card = cardDAO.selectCard(selectedBankAccount);
 
         framePickBankAccount(false);
         if(framePiggyBank != null)
@@ -293,7 +289,7 @@ public class Controller {
      * @param pan riferimento per la carta da aggiornare.*/
     public void upgradeCard(String pan){
         if(selectedBankAccount.getBalance() >= 5) {
-            cartaDAO.upgradeCard(pan);
+            cardDAO.upgradeCard(pan);
             JOptionPane.showMessageDialog(
                     frameHome,
                     "La tua carta è stata aggiornata a carta di credito!",
@@ -320,7 +316,7 @@ public class Controller {
      * Metodo che permette di effetuare il downgrade della carta Da credito a Debito.
      * @param pan riferimento per la carta da aggiornare.*/
     public void downgradeCard(String pan){
-        cartaDAO.downgradeCard(pan);
+        cardDAO.downgradeCard(pan);
         JOptionPane.showMessageDialog(
                 null,
                 "La tua carta è stata aggiornata a carta di debito!",
@@ -809,7 +805,6 @@ public class Controller {
      * */
     public void viewReport(String month){
         report = transactionDAO.viewReport(selectedBankAccount, month);
-
     }
 
     /**
